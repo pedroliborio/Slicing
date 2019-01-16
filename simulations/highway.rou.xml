@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<routes>
+	<vType accel="1.0" decel="5.0" id="Car" length="3.5" maxSpeed="10.5" sigma="0.5" />
+	<route id="route0" edges="edge0"/>
+	<flow id="flow0" departLane="random" type="Car" route="route0" begin="0.0" departSpeed="max" period="1" number="100" />
+</routes>
