@@ -30,7 +30,7 @@ PROJECTRELATIVE_PATH =
 O = $(PROJECT_OUTPUT_DIR)/$(CONFIGNAME)/$(PROJECTRELATIVE_PATH)
 
 # Object files for local .cc, .msg and .sm files
-OBJS = $O/application/RSUApp.o $O/application/VehApp.o
+OBJS = $O/application/VehApp.o
 
 # Message files
 MSGFILES =

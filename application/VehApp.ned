@@ -14,12 +14,56 @@
 // 
 
 package com.liborio.slicing.application;
-import org.car2x.veins.modules.application.ieee80211p.BaseWaveApplLayer;
+import org.car2x.veins.base.modules.IBaseApplLayer;
 //
 // TODO auto-generated module
 //
-simple VehApp extends BaseWaveApplLayer
+
+simple VehApp like IBaseApplLayer
 {
- 	@class(VehApp);
-	@display("i=block/app2");   
+    parameters:
+        bool debug = default(false); //whether to print debug output
+
+        int headerLength = default(88bit) @unit(bit); //header length of the application
+
+        bool sendBeacons = default(true); //tell the applayer to periodically send beacons
+        int beaconLengthBits = default(256bit) @unit(bit); //the length of a beacon packet
+        int beaconUserPriority = default(7); //the user priority (UP) of the beacon messages
+        double beaconInterval = default(1s) @unit(s); //the intervall between 2 beacon messages
+
+        int dataLengthBits = default(1024bit) @unit(bit); //the length of a data packet
+        bool dataOnSch = default(false); //tells the applayer whether to use a service channel for datapackets or the control channel
+        int dataUserPriority = default(7); //the default user priority (UP) for data packets
+
+        bool avoidBeaconSynchronization = default(true); //don't start beaconing directly after node was created but delay to avoid artifical synchronization
+
+        bool sendWSA = default(false);
+        int wsaLengthBits = default(250bit) @unit(bit);
+        double wsaInterval =  default(1s) @unit(s);
+
+        bool communicateWhileParked = default(false); //whether the car should communicate when it is parked in SUMO
+        
+        // Attributes added by Pedro
+        //send Entertainment Messages
+        bool sendEntMsg = default(false);
+        //Entertainment Message A
+        int  entMsgADataLengthBits = default(262144bit) @unit(bit); //256 kbits 
+        int  entMsgAUserPriority = default(4); //De acordo com a UP definida no padrão 802.11p para video
+        double entMsgAInterval = default(1s) @unit(s); //enviados a cada 1 seg
+        //Entertainment Message B
+        int  entMsgBDataLengthBits = default(524288bit) @unit(bit); //512 kbits
+        int  entMsgBUserPriority = default(4); //De acordo com a UP definida no padrão 802.11p para video
+        double entMsgBInterval = default(1s) @unit(s); //enviados a cada 1 seg
+         
+        
+        @class(SlicingApp);
+		@display("i=block/app2");
+
+    gates:
+        input lowerLayerIn; // from mac layer
+        output lowerLayerOut; // to mac layer
+        input lowerControlIn;
+        output lowerControlOut;
+    
 }
+
