@@ -19,7 +19,7 @@ import org.car2x.veins.base.modules.IBaseApplLayer;
 // TODO auto-generated module
 //
 
-simple VehApp like IBaseApplLayer
+simple RSUApp like IBaseApplLayer
 {
     parameters:
         bool debug = default(false); //whether to print debug output
@@ -43,21 +43,21 @@ simple VehApp like IBaseApplLayer
 
         bool communicateWhileParked = default(false); //whether the car should communicate when it is parked in SUMO
         
-        // Attributes added by Pedro
-        int maximumTransUnit = default(1500);
+        //XXX Attributes added by Pedro
+        int maximumTransUnit = default(1500); //bytes
         //send Entertainment Messages
         bool sendEntMsg = default(false);
         //Entertainment Message A
         int  entMsgADataLengthBits = default(262144bit) @unit(bit); //256 kbits 
         int  entMsgAUserPriority = default(4); //De acordo com a UP definida no padrão 802.11p para video
-        double entMsgAInterval = default(1s) @unit(s); //enviados a cada 1 seg
+        double entMsgAInterval = default(0.4s) @unit(s); //enviados a cada 40ms
         //Entertainment Message B
         int  entMsgBDataLengthBits = default(524288bit) @unit(bit); //512 kbits
         int  entMsgBUserPriority = default(4); //De acordo com a UP definida no padrão 802.11p para video
-        double entMsgBInterval = default(1s) @unit(s); //enviados a cada 1 seg
+        double entMsgBInterval = default(0.4s) @unit(s); //enviados a cada 40ms
          
         
-        @class(VehApp);
+        @class(RSUApp);
 		@display("i=block/app2");
 
     gates:

@@ -13,8 +13,8 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef __SLICING_VEHAPP_H_
-#define __SLICING_VEHAPP_H_
+#ifndef __SLICING_RSUAPP_H_
+#define __SLICING_RSUAPP_H_
 
 #include <map>
 #include "veins/base/modules/BaseApplLayer.h"
@@ -30,9 +30,7 @@
 //XXX My Includes
 #include "veins/modules/messages/EntertainmentMessageA_m.h"
 #include "veins/modules/messages/EntertainmentMessageB_m.h"
-
 #include "Definitions.h"
-
 
 using Veins::TraCIMobility;
 using Veins::TraCICommandInterface;
@@ -59,10 +57,10 @@ using Veins::AnnotationManagerAccess;
  * @see PhyLayer80211p
  * @see Decider80211p
  */
-class VehApp : public BaseApplLayer {
+class RSUApp : public BaseApplLayer {
 
     public:
-        ~VehApp();
+        ~RSUApp();
         virtual void initialize(int stage);
         virtual void finish();
 
@@ -71,9 +69,10 @@ class VehApp : public BaseApplLayer {
         enum WaveApplMessageKinds {
             SEND_BEACON_EVT,
             SEND_WSA_EVT,
-            //XXX Added By Pedro two events for twoo Entertainment applications
+            //XXX Added By Pedro two events for two Entertainment applications
             SEND_ENT_A_EVT,
-            SEND_ENT_B_EVT
+            SEND_ENT_B_EVT,
+            SERVICE_MAINTENANCE_EVT //timer for maintenance of the services
         };
 
     protected:
@@ -97,7 +96,7 @@ class VehApp : public BaseApplLayer {
         virtual void onBSM(BasicSafetyMessage* bsm);
 
         /** @brief this function is called upon receiving a WaveServiceAdvertisement */
-        virtual void onWSA(WaveServiceAdvertisment* wsa) { };
+        virtual void onWSA(WaveServiceAdvertisment* wsa);
 
         /** @brief this function is called every time the vehicle receives a position update signal */
         virtual void handlePositionUpdate(cObject* obj);
@@ -148,8 +147,11 @@ class VehApp : public BaseApplLayer {
         //XXX My Methods
         virtual void onEntMsgA(EntertainmentMessageA* entMsgA) { };
         virtual void onEntMsgB(EntertainmentMessageB* entMsgB) { };
-        virtual void InitializeEntService();
-        virtual void ManageEntServiceState(); //Mage the state of teh service (s)
+
+        virtual void SendDataEntService(WaveShortMessage* wsm, uint32_t size);
+        virtual void InitializeEntService(BasicSafetyMessage* bsm);
+        virtual void MaintenanceEntService(BasicSafetyMessage* bsm);
+        virtual void TimeOutEntService();
 
     protected:
 
@@ -171,9 +173,6 @@ class VehApp : public BaseApplLayer {
         simtime_t beaconInterval;
         bool sendBeacons;
 
-        //XXX Added by me Information of Services on Beacons
-        int serviceState; //indicates the state of the service requesting = 0, receiving =1, finished = 3
-
         /* WSM (data) settings */
         uint32_t  dataLengthBits;
         uint32_t  dataUserPriority;
@@ -181,6 +180,8 @@ class VehApp : public BaseApplLayer {
 
         //XXX For now we defining generic WSM for Entertainment not necessary a video
         //these parameters also can be given on the .ini file
+        /* Maximum Transmission Unit*/
+        uint32_t maximumTransUnit;
         /*ESM A (data) settings*/
         uint32_t  entMsgADataLengthBits;
         uint32_t  entMsgAUserPriority;
@@ -193,6 +194,22 @@ class VehApp : public BaseApplLayer {
 
         //send the added Entertainment Messages (this is initially scheduled on initialize method)
         bool sendEntMsg;
+
+        //services maintenance interval
+        simtime_t serviceMaintInterval;
+
+        //Pointers to files of video Traces
+        std::fstream *videoMedQ;
+        std::fstream *videoHighQ;
+        uint32_t videoMsgSize;
+
+        //Map to manage video streaming
+        std::map<int,std::fstream> videoStreamMap;
+        //Map to timers to schedule video stream messages
+        std::map<int,cMessage*> timersVideoStreamMap;
+        //Map to verify times of last received messages
+        std::map<int,simtime_t> lastBeaconVideoStream;
+
 
         /* WSA settings */
         int currentOfferedServiceId;
@@ -227,6 +244,8 @@ class VehApp : public BaseApplLayer {
         //Two events for two different applications of entertainment
         cMessage* sendEntMsgAEvt;
         cMessage* sendEntMsgBEvt;
+        //a self message for maintenance of the service events
+        cMessage* serviceMaintEvt;
 };
 
 #endif

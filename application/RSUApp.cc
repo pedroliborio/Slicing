@@ -1,5 +1,3 @@
-
-
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
@@ -15,14 +13,16 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#include "VehApp.h"
+#include "RSUApp.h"
 
-const simsignalwrap_t VehApp::mobilityStateChangedSignal = simsignalwrap_t(MIXIM_SIGNAL_MOBILITY_CHANGE_NAME);
-const simsignalwrap_t VehApp::parkingStateChangedSignal = simsignalwrap_t(TRACI_SIGNAL_PARKING_CHANGE_NAME);
+Define_Module(RSUApp);
 
-Define_Module(VehApp);
+const simsignalwrap_t RSUApp::mobilityStateChangedSignal = simsignalwrap_t(MIXIM_SIGNAL_MOBILITY_CHANGE_NAME);
+const simsignalwrap_t RSUApp::parkingStateChangedSignal = simsignalwrap_t(TRACI_SIGNAL_PARKING_CHANGE_NAME);
 
-void VehApp::initialize(int stage) {
+Define_Module(RSUApp);
+
+void RSUApp::initialize(int stage) {
     BaseApplLayer::initialize(stage);
 
     if (stage==0) {
@@ -66,6 +66,8 @@ void VehApp::initialize(int stage) {
 
         //XXX Added by Pedro Parameters for the Entertainment Messages
 
+        maximumTransUnit = par("maximumTransUnit").longValue();
+
         sendEntMsg = par("sendEntMsg").boolValue();
 
         entMsgADataLengthBits = par("entMsgADataLengthBits").longValue();
@@ -76,6 +78,8 @@ void VehApp::initialize(int stage) {
         entMsgBUserPriority = par("entMsgBUserPriority").longValue();
         entMsgBInterval = par("entMsgBInterval").doubleValue();
 
+        serviceMaintInterval = SimTime(1.0, SIMTIME_S); //timer to maintenance of the services interval
+
 
         isParked = false;
 
@@ -85,8 +89,9 @@ void VehApp::initialize(int stage) {
 
         sendBeaconEvt = new cMessage("beacon evt", SEND_BEACON_EVT);
         sendWSAEvt = new cMessage("wsa evt", SEND_WSA_EVT);
-        sendEntMsgAEvt = new cMessage("ent msg A evt", SEND_ENT_A_EVT);
-        sendEntMsgBEvt = new cMessage("ent msg B evt", SEND_ENT_B_EVT);
+        sendEntMsgAEvt = new cMessage("ent msg A evt", SEND_ENT_A_EVT); // event of send video type A
+        sendEntMsgBEvt = new cMessage("ent msg B evt", SEND_ENT_B_EVT); // event of send video type B
+        serviceMaintEvt = new cMessage("service maintenance", SERVICE_MAINTENANCE_EVT); //maintenance of the services
 
         generatedBSMs = 0;
         generatedWSAs = 0;
@@ -95,11 +100,12 @@ void VehApp::initialize(int stage) {
         receivedWSAs = 0;
         receivedWSMs = 0;
 
-        //XXX stats for entertainment msgs
+        //XXX Added By Pedro Stats for entertainment msgs
         generatedEntMsgA = 0;
         receivedEntMsgA = 0;
         generatedEntMsgB = 0;
         receivedEntMsgB = 0;
+
     }
     else if (stage == 1) {
         //simulate asynchronous channel access
@@ -125,27 +131,24 @@ void VehApp::initialize(int stage) {
 
             if (sendBeacons) {
                 scheduleAt(firstBeacon, sendBeaconEvt);
-                //XXX Added By Pedro
-                serviceState = 1;
             }
 
-            if (sendEntMsg) {
-                mac->changeServiceChannel(Channels::SCH1);
-                scheduleAt(computeAsynchronousSendingTime(entMsgAInterval, type_SCH), sendEntMsgAEvt);
-                scheduleAt(computeAsynchronousSendingTime(entMsgBInterval, type_SCH), sendEntMsgBEvt);
-                //FIXME verificar a questao de cooordenar a fatia de tempo transmitindo no canal
-            }
+//            if (sendEntMsg) {
+//                mac->changeServiceChannel(Channels::SCH1);
+//                scheduleAt(computeAsynchronousSendingTime(entMsgAInterval, type_SCH), sendEntMsgAEvt);
+//                scheduleAt(computeAsynchronousSendingTime(entMsgBInterval, type_SCH), sendEntMsgBEvt);
+//                //FIXME verificar a questao de cooordenar a fatia de tempo transmitindo no canal
+//            }
+
 
         }
 
-        //Inicializa WSA para solicitar serviço
-
+        //XXX Schedule Maintenance of service Interval
+        scheduleAt(simTime()+serviceMaintInterval, serviceMaintEvt);
     }
-
-
 }
 
-simtime_t VehApp::computeAsynchronousSendingTime(simtime_t interval, t_channel chan) {
+simtime_t RSUApp::computeAsynchronousSendingTime(simtime_t interval, t_channel chan) {
 
     /*
      * avoid that periodic messages for one channel type are scheduled in the other channel interval
@@ -186,7 +189,7 @@ simtime_t VehApp::computeAsynchronousSendingTime(simtime_t interval, t_channel c
     return firstEvent;
 }
 
-void VehApp::populateWSM(WaveShortMessage* wsm, int rcvId, int serial) {
+void RSUApp::populateWSM(WaveShortMessage* wsm, int rcvId, int serial) {
 
     wsm->setWsmVersion(1);
     wsm->setTimestamp(simTime());
@@ -199,30 +202,27 @@ void VehApp::populateWSM(WaveShortMessage* wsm, int rcvId, int serial) {
     if (BasicSafetyMessage* bsm = dynamic_cast<BasicSafetyMessage*>(wsm) ) {
         bsm->setSenderPos(curPosition);
         bsm->setSenderSpeed(curSpeed);
-        bsm->setPsid(currentOfferedServiceId);
+        bsm->setPsid(-1);
         bsm->setChannelNumber(Channels::CCH);
         bsm->addBitLength(beaconLengthBits);
         wsm->setUserPriority(beaconUserPriority);
-        //XXX Added by Pedro
-        bsm->setServiceState(serviceState);
     }
     else if (WaveServiceAdvertisment* wsa = dynamic_cast<WaveServiceAdvertisment*>(wsm)) {
         wsa->setChannelNumber(Channels::CCH);
-        //XXX Modified By Pedro
         wsa->setTargetChannel(currentServiceChannel);
         wsa->setPsid(currentOfferedServiceId);
-        //XXX https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7428792 (Standard aproved for PSIDs)
         wsa->setServiceDescription(currentServiceDescription.c_str());
     }
     else if (EntertainmentMessageA* entMsgA = dynamic_cast<EntertainmentMessageA*>(wsm)) {
         entMsgA->setChannelNumber(Channels::SCH1);
-        entMsgA->addBitLength(1000);//FIXME need to be modified bby the video frame size
         entMsgA->setUserPriority(4);
+        //the video frame size is setup in the call of this method
     }
     else if (EntertainmentMessageB* entMsgB = dynamic_cast<EntertainmentMessageB*>(wsm)) {
-        entMsgA->setChannelNumber(Channels::SCH1);
-        entMsgA->addBitLength(1000);//FIXME need to be modified bby the video frame size
-        entMsgA->setUserPriority(4);
+        /*entMsgB->setChannelNumber(Channels::SCH1);
+        entMsgB->addBitLength(1000);
+        //FIXME need to be modified bby the video frame size
+        entMsgB->setUserPriority(4);*/
         //para alterar o canal de envio
         //mac->changeServiceChannel(wsa->getTargetChannel());
     }
@@ -237,7 +237,7 @@ void VehApp::populateWSM(WaveShortMessage* wsm, int rcvId, int serial) {
     }
 }
 
-void VehApp::receiveSignal(cComponent* source, simsignal_t signalID, cObject* obj, cObject* details) {
+void RSUApp::receiveSignal(cComponent* source, simsignal_t signalID, cObject* obj, cObject* details) {
     Enter_Method_Silent();
     if (signalID == mobilityStateChangedSignal) {
         handlePositionUpdate(obj);
@@ -247,13 +247,13 @@ void VehApp::receiveSignal(cComponent* source, simsignal_t signalID, cObject* ob
     }
 }
 
-void VehApp::handlePositionUpdate(cObject* obj) {
+void RSUApp::handlePositionUpdate(cObject* obj) {
     ChannelMobilityPtrType const mobility = check_and_cast<ChannelMobilityPtrType>(obj);
     curPosition = mobility->getCurrentPosition();
     curSpeed = mobility->getCurrentSpeed();
 }
 
-void VehApp::handleParkingUpdate(cObject* obj) {
+void RSUApp::handleParkingUpdate(cObject* obj) {
     //this code should only run when used with TraCI
     isParked = mobility->getParkingState();
     if (communicateWhileParked == false) {
@@ -267,7 +267,7 @@ void VehApp::handleParkingUpdate(cObject* obj) {
     }
 }
 
-void VehApp::handleLowerMsg(cMessage* msg) {
+void RSUApp::handleLowerMsg(cMessage* msg) {
 
     WaveShortMessage* wsm = dynamic_cast<WaveShortMessage*>(msg);
     ASSERT(wsm);
@@ -296,12 +296,11 @@ void VehApp::handleLowerMsg(cMessage* msg) {
     delete(msg);
 }
 
-void VehApp::handleSelfMsg(cMessage* msg) {
+void RSUApp::handleSelfMsg(cMessage* msg) {
     switch (msg->getKind()) {
     case SEND_BEACON_EVT: {
         BasicSafetyMessage* bsm = new BasicSafetyMessage();
         populateWSM(bsm);
-        ManageEntServiceState();
         sendDown(bsm);
         scheduleAt(simTime() + beaconInterval, sendBeaconEvt);
         break;
@@ -314,11 +313,40 @@ void VehApp::handleSelfMsg(cMessage* msg) {
         break;
     }
     case SEND_ENT_A_EVT: {
-        EntertainmentMessageA* entMsgA = new EntertainmentMessageA();
-        populateWSM(entMsgA);
-        sendDown(entMsgA);
+
+        int vehID = std::stoi(msg->getName()); // convert vehicle id stored in message event
+        uint32_t videoFrameSize, restFragmentSize;
+        int i, numFragments;
+
+        std::map<int,std::fstream>::iterator itVSM = videoStreamMap.begin();
+        itVSM = videoStreamMap.find(vehID);
+        if (itVSM != videoStreamMap.end()) {
+
+            itVSM->second >> videoFrameSize;
+
+            numFragments = videoFrameSize / maximumTransUnit;
+            restFragmentSize = videoFrameSize % maximumTransUnit;
+
+            if (numFragments > 0) {
+                for (i = 0; i < numFragments; i++) {
+                    EntertainmentMessageA* entMsgA = new EntertainmentMessageA();
+                    populateWSM(entMsgA);
+                    entMsgA->addByteLength(1500);
+                    sendDown(entMsgA);
+                }
+            }
+            if (restFragmentSize > 0) {
+                EntertainmentMessageA* entMsgA = new EntertainmentMessageA();
+                populateWSM(entMsgA);
+                entMsgA->addByteLength(restFragmentSize);
+                sendDown(entMsgA);
+            }
+
+        }
+        else{
+            error ("Got a SelfMessage ENT_A of an vehicle of unknown ID");
+        }
         scheduleAt(simTime() + entMsgAInterval, sendEntMsgAEvt);
-        // FIXME this will need to be scheduled dynamically by the time found in the video
         break;
     }
     case SEND_ENT_B_EVT: {
@@ -326,7 +354,10 @@ void VehApp::handleSelfMsg(cMessage* msg) {
         populateWSM(entMsgB);
         sendDown(entMsgB);
         scheduleAt(simTime() + entMsgBInterval, sendEntMsgBEvt);
-        //FIXME this will need to be scheduled dynamically by the time found in the video
+        break;
+    }
+    case SERVICE_MAINTENANCE_EVT: {
+        TimeOutEntService();
         break;
     }
     default: {
@@ -337,35 +368,158 @@ void VehApp::handleSelfMsg(cMessage* msg) {
     }
 }
 
-void VehApp::onBSM(BasicSafetyMessage* bsm){
+void RSUApp::onWSA(WaveServiceAdvertisment* wsa){
+
+    //Aqui virao as informações de serviço implementacao multicanal do slicng
+
+//        mac->changeServiceChannel(wsa->getTargetChannel());
+//        currentOfferedServiceId = wsa->getPsid();
+//        currentServiceChannel = (Channels::ChannelNumber) wsa->getTargetChannel();
+//        currentServiceDescription = wsa->getServiceDescription();
+
 
 
 }
 
-void VehApp::InitializeEntService(){
-
-    currentServiceChannel = Channels::SCH1;
-    mac->changeServiceChannel(currentServiceChannel);
-
-    if( ( RNGCONTEXT bernoulli(0.5) ) ){
-        currentOfferedServiceId = WavePsid::Entertainment_A;
-        currentServiceDescription = "Media Application A";
+void RSUApp::onBSM(BasicSafetyMessage* bsm){
+    if(bsm->getServiceState() == WaveEntServiceState::REQUESTING){
+        InitializeEntService(bsm);
     }
     else{
-        currentOfferedServiceId = WavePsid::Entertainment_B;
-        currentServiceDescription = "Media Application B";
-    }
-    //scheduleAt(computeAsynchronousSendingTime(wsaInterval, type_CCH), sendWSAEvt);
-}
-
-void VehApp::ManageEntServiceState(){
-    if(serviceState == WaveEntServiceState::REQUESTING){
-        serviceState = WaveEntServiceState::RECEIVING;
+        if(bsm->getServiceState() == WaveEntServiceState::RECEIVING){
+            MaintenanceEntService(bsm);
+        }
+        else{
+            error("Just got a BSM of a unknown service state.");
+        }
     }
 }
 
+/*
+ * This method will initialize pointer to files for stream video messages
+ * as well schedule self messages for maintain the frequency of the video
+ * stream (specific for each vehicles). Because each vehicle has their own
+ * stream of video to receive with different times of access.
+ */
 
-void VehApp::finish() {
+void RSUApp::InitializeEntService(BasicSafetyMessage* bsm){
+
+    std::string msgText;
+    //Initialize Maps data structures
+    //based on PSIDs of services
+    //Entertainment_A = 40,
+    //Entertainment_B = 41
+
+    if ( bsm->getPsid() == WavePsid::Entertainment_A ) {
+
+        videoStreamMap.emplace(
+            bsm->getSenderAddress(),
+            std::fstream("../../video_dataset/Terse_Parkplatz_10.dat.txt",std::fstream::in));
+
+        //inserting elemnt with a hint after insert it returns a iterator to the new inserted element
+        //see hint version at: http://www.cplusplus.com/reference/map/map/insert/
+        //so we can use the second element to create a timer for this vehicle video stream
+
+        std::map<int,cMessage*>::iterator it = timersVideoStreamMap.begin();
+        it = timersVideoStreamMap.insert (it, std::pair<int,cMessage*>(bsm->getSenderAddress(),
+                new cMessage(std::to_string(bsm->getSenderAddress()).c_str(), SEND_ENT_A_EVT) ));
+        mac->changeServiceChannel(Channels::SCH1);
+
+        scheduleAt(simTime() + computeAsynchronousSendingTime(entMsgAInterval, type_SCH), it->second);
+
+
+    }
+    else {
+        if( bsm->getPsid() == WavePsid::Entertainment_B ) {
+            videoStreamMap.emplace(
+                        bsm->getSenderAddress(),
+                        std::fstream("../../video_dataset/Terse_Simpsons.dat.txt",std::fstream::in));
+
+            //inserting elemnt with a hint after insert it returns a iterator to the new inserted element
+            //see hint version at: http://www.cplusplus.com/reference/map/map/insert/
+            //so we can use the second element to create a timer for this vehicle video stream
+
+            std::map<int,cMessage*>::iterator it = timersVideoStreamMap.begin();
+            it = timersVideoStreamMap.insert (it, std::pair<int,cMessage*>( bsm->getSenderAddress(),
+                    new cMessage(std::to_string(bsm->getSenderAddress()).c_str(), SEND_ENT_B_EVT) ));
+            mac->changeServiceChannel(Channels::SCH1);
+
+            scheduleAt(simTime() + computeAsynchronousSendingTime(entMsgBInterval, type_SCH), it->second);
+        }
+        else{
+            error("Got a BSM of unknown/unregistered PSID.");
+        }
+    }
+
+    //XXX Added By Pedro Opening Files for Entertainment Messages (Video Traces)
+    //Cada arquivo possui as informações:
+    //Frame No. | Time[ms] |  Length [byte]
+    //videoMedQ->open("../../video_dataset/Terse_Parkplatz_10.dat.txt",std::fstream::in);
+    //videoHighQ->open("../../video_dataset/Terse_Simpsons.dat.txt",std::fstream::in);
+}
+
+void RSUApp::MaintenanceEntService(BasicSafetyMessage* bsm){
+    lastBeaconVideoStream.insert( std::pair<int,simtime_t>( bsm->getSenderAddress(),bsm->getTimestamp() ) );
+}
+
+
+/*
+ * This method evaluates all last times of received beacons of
+ * each vehicle which RSU is streaming over
+ * If its is too old (ex. 4 sec.) this stream need to be closed
+ * FIXME The future version need to begin a handover at this point
+ * because vehicle will get in coverage of the subsequent RSU.
+ */
+void RSUApp::TimeOutEntService(){
+
+    std::map<int,simtime_t>::iterator itr = lastBeaconVideoStream.begin();
+    while (itr != lastBeaconVideoStream.end()) {
+        if ( (simTime().dbl() - itr->second.dbl()) >= 4.0) {
+
+            std::map<int,std::fstream>::iterator itVSM = videoStreamMap.begin();
+            itVSM = videoStreamMap.find(itr->first);
+            if (itVSM != videoStreamMap.end()) {
+                itVSM->second.close(); //fecha o arquivo de stream de video
+                videoStreamMap.erase (itVSM); //remove do map
+            }
+
+            std::map<int,cMessage*>::iterator itTimerVSM = timersVideoStreamMap.begin();
+            itTimerVSM = timersVideoStreamMap.find(itr->first);
+            if (itTimerVSM != timersVideoStreamMap.end()) {
+                //we need to verify if its message is currently scheduled (should be)
+                //in true case, it needs to be canceled and deleted
+                if(itTimerVSM->second->isScheduled()){
+                    cancelAndDelete(itTimerVSM->second);
+                }
+                timersVideoStreamMap.erase (itTimerVSM); //remove do map
+            }
+
+            itr = lastBeaconVideoStream.erase(itr);
+        }
+        else {
+           ++itr;
+        }
+    }
+
+}
+
+
+void RSUApp::SendDataEntService(WaveShortMessage* wsm, uint32_t size){
+
+//    fullPkt = trec_.trec_size / maximumTransUnit;
+//    restPkt = trec_.trec_size % maximumTransUnit;
+//    if (fullPkt > 0) {
+//        for (i = 0; i < fullPkt; i++) {
+//
+//        }
+//    }
+//    if (restPkt != 0) {
+//
+//    }
+}
+
+
+void RSUApp::finish() {
     recordScalar("generatedWSMs",generatedWSMs);
     recordScalar("receivedWSMs",receivedWSMs);
 
@@ -385,19 +539,22 @@ void VehApp::finish() {
     recordScalar("generatedEntMsgB",generatedEntMsgB);
     recordScalar("receivedEntMsgB",receivedEntMsgB);
 
-
+    //XXX Closing Services involved data files
+    videoMedQ->close();
+    videoHighQ->close();
 
 }
 
-VehApp::~VehApp() {
+RSUApp::~RSUApp() {
     cancelAndDelete(sendBeaconEvt);
     cancelAndDelete(sendWSAEvt);
     cancelAndDelete(sendEntMsgAEvt);
     cancelAndDelete(sendEntMsgBEvt);
+    cancelAndDelete(serviceMaintEvt);
     findHost()->unsubscribe(mobilityStateChangedSignal, this);
 }
 
-void VehApp::startService(Channels::ChannelNumber channel, int serviceId, std::string serviceDescription) {
+void RSUApp::startService(Channels::ChannelNumber channel, int serviceId, std::string serviceDescription) {
     if (sendWSAEvt->isScheduled()) {
         error("Starting service although another service was already started");
     }
@@ -412,22 +569,22 @@ void VehApp::startService(Channels::ChannelNumber channel, int serviceId, std::s
 
 }
 
-void VehApp::stopService() {
+void RSUApp::stopService() {
     cancelEvent(sendWSAEvt);
     currentOfferedServiceId = -1;
 }
 
-void VehApp::sendDown(cMessage* msg) {
+void RSUApp::sendDown(cMessage* msg) {
     checkAndTrackPacket(msg);
     BaseApplLayer::sendDown(msg);
 }
 
-void VehApp::sendDelayedDown(cMessage* msg, simtime_t delay) {
+void RSUApp::sendDelayedDown(cMessage* msg, simtime_t delay) {
     checkAndTrackPacket(msg);
     BaseApplLayer::sendDelayedDown(msg, delay);
 }
 
-void VehApp::checkAndTrackPacket(cMessage* msg) {
+void RSUApp::checkAndTrackPacket(cMessage* msg) {
     if (isParked && !communicateWhileParked) error("Attempted to transmit a message while parked, but this is forbidden by current configuration");
 
     if (dynamic_cast<BasicSafetyMessage*>(msg)) {
