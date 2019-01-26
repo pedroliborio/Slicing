@@ -145,8 +145,8 @@ class RSUApp : public BaseApplLayer {
         virtual void checkAndTrackPacket(cMessage* msg);
 
         //XXX My Methods
-        virtual void onEntMsgA(EntertainmentMessageA* entMsgA) { };
-        virtual void onEntMsgB(EntertainmentMessageB* entMsgB) { };
+        virtual void onEntMsgA(EntertainmentMessageA* entMsgA);
+        virtual void onEntMsgB(EntertainmentMessageB* entMsgB);
 
         virtual void SendDataEntService(WaveShortMessage* wsm, uint32_t size);
         virtual void InitializeEntService(BasicSafetyMessage* bsm);
@@ -232,10 +232,10 @@ class RSUApp : public BaseApplLayer {
         uint32_t receivedBSMs;
 
         /* XXX stats entertainment msgs*/
-        uint32_t generatedEntMsgA;
-        uint32_t receivedEntMsgA;
-        uint32_t generatedEntMsgB;
-        uint32_t receivedEntMsgB;
+        std::map<int,uint32_t> generatedEntMsgA;
+        std::map<int,uint32_t> receivedEntMsgA;
+        std::map<int,uint32_t> generatedEntMsgB;
+        std::map<int,uint32_t> receivedEntMsgB;
 
         /* messages for periodic events such as beacon and WSA transmissions */
         cMessage* sendBeaconEvt;

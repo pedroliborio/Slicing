@@ -100,12 +100,6 @@ void RSUApp::initialize(int stage) {
         receivedWSAs = 0;
         receivedWSMs = 0;
 
-        //XXX Added By Pedro Stats for entertainment msgs
-        generatedEntMsgA = 0;
-        receivedEntMsgA = 0;
-        generatedEntMsgB = 0;
-        receivedEntMsgB = 0;
-
     }
     else if (stage == 1) {
         //simulate asynchronous channel access
@@ -143,7 +137,7 @@ void RSUApp::initialize(int stage) {
 
         }
 
-        //XXX Schedule Maintenance of service Interval
+        //XXX Schedule Maintenance of service Event
         scheduleAt(simTime()+serviceMaintInterval, serviceMaintEvt);
     }
 }
@@ -219,12 +213,8 @@ void RSUApp::populateWSM(WaveShortMessage* wsm, int rcvId, int serial) {
         //the video frame size is setup in the call of this method
     }
     else if (EntertainmentMessageB* entMsgB = dynamic_cast<EntertainmentMessageB*>(wsm)) {
-        /*entMsgB->setChannelNumber(Channels::SCH1);
-        entMsgB->addBitLength(1000);
-        //FIXME need to be modified bby the video frame size
-        entMsgB->setUserPriority(4);*/
-        //para alterar o canal de envio
-        //mac->changeServiceChannel(wsa->getTargetChannel());
+        entMsgB->setChannelNumber(Channels::SCH1);
+        entMsgB->setUserPriority(4);
     }
     //XXX Changed By Me
     else{
@@ -281,11 +271,20 @@ void RSUApp::handleLowerMsg(cMessage* msg) {
         onWSA(wsa);
     }
     else if (EntertainmentMessageA* entMsgA = dynamic_cast<EntertainmentMessageA*>(wsm)) {
-        receivedEntMsgA++;
+
+        std::map<int,uint32_t>::iterator itStatsEntMsg = receivedEntMsgA.begin();
+        itStatsEntMsg = receivedEntMsgA.find(entMsgA->getSenderAddress());
+        if (itStatsEntMsg != receivedEntMsgA.end()) {
+            itStatsEntMsg->second++;
+        }
         onEntMsgA(entMsgA);
     }
     else if (EntertainmentMessageB* entMsgB = dynamic_cast<EntertainmentMessageB*>(wsm)) {
-        receivedEntMsgB++;
+        std::map<int,uint32_t>::iterator itStatsEntMsg = receivedEntMsgB.begin();
+        itStatsEntMsg = receivedEntMsgB.find(entMsgB->getSenderAddress());
+        if (itStatsEntMsg != receivedEntMsgB.end()) {
+            itStatsEntMsg->second++;
+        }
         onEntMsgB(entMsgB);
     }
     else {
@@ -324,17 +323,17 @@ void RSUApp::handleSelfMsg(cMessage* msg) {
 
             itVSM->second >> videoFrameSize;
 
-            numFragments = videoFrameSize / maximumTransUnit;
+            numFragments = std::floor( (videoFrameSize / maximumTransUnit) );
             restFragmentSize = videoFrameSize % maximumTransUnit;
 
-            if (numFragments > 0) {
-                for (i = 0; i < numFragments; i++) {
-                    EntertainmentMessageA* entMsgA = new EntertainmentMessageA();
-                    populateWSM(entMsgA);
-                    entMsgA->addByteLength(1500);
-                    sendDown(entMsgA);
-                }
+
+            for (i = 0; i < numFragments; i++) {
+                EntertainmentMessageA* entMsgA = new EntertainmentMessageA();
+                populateWSM(entMsgA);
+                entMsgA->addByteLength(maximumTransUnit);
+                sendDown(entMsgA);
             }
+
             if (restFragmentSize > 0) {
                 EntertainmentMessageA* entMsgA = new EntertainmentMessageA();
                 populateWSM(entMsgA);
@@ -346,14 +345,45 @@ void RSUApp::handleSelfMsg(cMessage* msg) {
         else{
             error ("Got a SelfMessage ENT_A of an vehicle of unknown ID");
         }
+
         scheduleAt(simTime() + entMsgAInterval, sendEntMsgAEvt);
         break;
     }
     case SEND_ENT_B_EVT: {
-        EntertainmentMessageA* entMsgB = new EntertainmentMessageA();
-        populateWSM(entMsgB);
-        sendDown(entMsgB);
-        scheduleAt(simTime() + entMsgBInterval, sendEntMsgBEvt);
+        int vehID = std::stoi(msg->getName()); // convert vehicle id stored in message event
+        uint32_t videoFrameSize, restFragmentSize;
+        int i, numFragments;
+
+        std::map<int,std::fstream>::iterator itVSM = videoStreamMap.begin();
+        itVSM = videoStreamMap.find(vehID);
+        if (itVSM != videoStreamMap.end()) {
+
+            itVSM->second >> videoFrameSize;
+
+            numFragments = std::floor( (videoFrameSize / maximumTransUnit) );
+            restFragmentSize = videoFrameSize % maximumTransUnit;
+
+
+            for (i = 0; i < numFragments; i++) {
+                EntertainmentMessageB* entMsgB = new EntertainmentMessageB();
+                populateWSM(entMsgB);
+                entMsgB->addByteLength(maximumTransUnit);
+                sendDown(entMsgB);
+            }
+
+            if (restFragmentSize > 0) {
+                EntertainmentMessageB* entMsgB = new EntertainmentMessageB();
+                populateWSM(entMsgB);
+                entMsgB->addByteLength(restFragmentSize);
+                sendDown(entMsgB);
+            }
+
+        }
+        else{
+            error ("Got a SelfMessage ENT_B of an vehicle of unknown ID");
+        }
+
+        scheduleAt(simTime() + entMsgAInterval, sendEntMsgAEvt); //schedule next message
         break;
     }
     case SERVICE_MAINTENANCE_EVT: {
@@ -395,6 +425,16 @@ void RSUApp::onBSM(BasicSafetyMessage* bsm){
     }
 }
 
+void RSUApp::onEntMsgA(EntertainmentMessageA* entMsgA){
+
+}
+
+void RSUApp::onEntMsgB(EntertainmentMessageB* entMsgB){
+
+}
+
+
+
 /*
  * This method will initialize pointer to files for stream video messages
  * as well schedule self messages for maintain the frequency of the video
@@ -412,21 +452,24 @@ void RSUApp::InitializeEntService(BasicSafetyMessage* bsm){
 
     if ( bsm->getPsid() == WavePsid::Entertainment_A ) {
 
+        //Video File Stream
         videoStreamMap.emplace(
             bsm->getSenderAddress(),
             std::fstream("../../video_dataset/Terse_Parkplatz_10.dat.txt",std::fstream::in));
 
-        //inserting elemnt with a hint after insert it returns a iterator to the new inserted element
-        //see hint version at: http://www.cplusplus.com/reference/map/map/insert/
-        //so we can use the second element to create a timer for this vehicle video stream
-
+        //Event of send each frame of the video
         std::map<int,cMessage*>::iterator it = timersVideoStreamMap.begin();
         it = timersVideoStreamMap.insert (it, std::pair<int,cMessage*>(bsm->getSenderAddress(),
                 new cMessage(std::to_string(bsm->getSenderAddress()).c_str(), SEND_ENT_A_EVT) ));
         mac->changeServiceChannel(Channels::SCH1);
-
         scheduleAt(simTime() + computeAsynchronousSendingTime(entMsgAInterval, type_SCH), it->second);
 
+        //Statistics of this service
+        std::map<int,uint32_t>::iterator itRecv = receivedEntMsgA.begin();
+        itRecv = receivedEntMsgA.insert (itRecv, std::pair<int,uint32_t>(bsm->getSenderAddress(), 0));
+
+        std::map<int,uint32_t>::iterator itGen = generatedEntMsgA.begin();
+        itGen = generatedEntMsgA.insert (itGen, std::pair<int,uint32_t>(bsm->getSenderAddress(), 0));
 
     }
     else {
@@ -435,19 +478,21 @@ void RSUApp::InitializeEntService(BasicSafetyMessage* bsm){
                         bsm->getSenderAddress(),
                         std::fstream("../../video_dataset/Terse_Simpsons.dat.txt",std::fstream::in));
 
-            //inserting elemnt with a hint after insert it returns a iterator to the new inserted element
-            //see hint version at: http://www.cplusplus.com/reference/map/map/insert/
-            //so we can use the second element to create a timer for this vehicle video stream
-
             std::map<int,cMessage*>::iterator it = timersVideoStreamMap.begin();
             it = timersVideoStreamMap.insert (it, std::pair<int,cMessage*>( bsm->getSenderAddress(),
                     new cMessage(std::to_string(bsm->getSenderAddress()).c_str(), SEND_ENT_B_EVT) ));
             mac->changeServiceChannel(Channels::SCH1);
-
             scheduleAt(simTime() + computeAsynchronousSendingTime(entMsgBInterval, type_SCH), it->second);
+
+            //Statistics of this service
+            std::map<int,uint32_t>::iterator itRecv = receivedEntMsgB.begin();
+            itRecv = receivedEntMsgB.insert (itRecv, std::pair<int,uint32_t>(bsm->getSenderAddress(), 0));
+
+            std::map<int,uint32_t>::iterator itGen = generatedEntMsgB.begin();
+            itGen = generatedEntMsgB.insert (itGen, std::pair<int,uint32_t>(bsm->getSenderAddress(), 0));
         }
         else{
-            error("Got a BSM of unknown/unregistered PSID.");
+            error("Got a BSM of unknown PSID.");
         }
     }
 
@@ -459,7 +504,12 @@ void RSUApp::InitializeEntService(BasicSafetyMessage* bsm){
 }
 
 void RSUApp::MaintenanceEntService(BasicSafetyMessage* bsm){
-    lastBeaconVideoStream.insert( std::pair<int,simtime_t>( bsm->getSenderAddress(),bsm->getTimestamp() ) );
+
+    std::map<int,simtime_t>::iterator itLBVS = lastBeaconVideoStream.begin();
+    itLBVS = lastBeaconVideoStream.find(bsm->getSenderAddress());
+    if (itLBVS != lastBeaconVideoStream.end()) {
+        itLBVS->second = bsm->getTimestamp();
+    }
 }
 
 
@@ -474,6 +524,7 @@ void RSUApp::TimeOutEntService(){
 
     std::map<int,simtime_t>::iterator itr = lastBeaconVideoStream.begin();
     while (itr != lastBeaconVideoStream.end()) {
+
         if ( (simTime().dbl() - itr->second.dbl()) >= 4.0) {
 
             std::map<int,std::fstream>::iterator itVSM = videoStreamMap.begin();
@@ -487,11 +538,39 @@ void RSUApp::TimeOutEntService(){
             itTimerVSM = timersVideoStreamMap.find(itr->first);
             if (itTimerVSM != timersVideoStreamMap.end()) {
                 //we need to verify if its message is currently scheduled (should be)
-                //in true case, it needs to be canceled and deleted
+                //if so, it needs to be canceled and deleted
                 if(itTimerVSM->second->isScheduled()){
                     cancelAndDelete(itTimerVSM->second);
                 }
                 timersVideoStreamMap.erase (itTimerVSM); //remove do map
+            }
+
+            std::map<int,uint32_t>::iterator itStatsEntMsg = receivedEntMsgA.begin();
+            itStatsEntMsg = receivedEntMsgA.find(itr->first);
+            if (itStatsEntMsg != receivedEntMsgA.end()) {
+                recordScalar("idVeh", itStatsEntMsg->first);
+                recordScalar("receivedEntMsgA", itStatsEntMsg->second);
+            }
+
+            itStatsEntMsg = generatedEntMsgA.begin();
+            itStatsEntMsg = generatedEntMsgA.find(itr->first);
+            if (itStatsEntMsg != generatedEntMsgA.end()) {
+                recordScalar("idVeh", itStatsEntMsg->first);
+                recordScalar("generatedEntMsgA", itStatsEntMsg->second);
+            }
+
+            itStatsEntMsg = receivedEntMsgB.begin();
+            itStatsEntMsg = receivedEntMsgB.find(itr->first);
+            if (itStatsEntMsg != receivedEntMsgB.end()) {
+                recordScalar("idVeh", itStatsEntMsg->first);
+                recordScalar("receivedEntMsgB", itStatsEntMsg->second);
+            }
+
+            itStatsEntMsg = generatedEntMsgB.begin();
+            itStatsEntMsg = generatedEntMsgB.find(itr->first);
+            if (itStatsEntMsg != generatedEntMsgB.end()) {
+                recordScalar("idVeh", itStatsEntMsg->first);
+                recordScalar("generatedEntMsgB", itStatsEntMsg->second);
             }
 
             itr = lastBeaconVideoStream.erase(itr);
@@ -532,17 +611,7 @@ void RSUApp::finish() {
     recordScalar("generatedWSAs",generatedWSAs);
     recordScalar("receivedWSAs",receivedWSAs);
 
-    // XXX stats for entertainment msgs
-    recordScalar("generatedEntMsgA",generatedEntMsgA);
-    recordScalar("receivedEntMsgA",receivedEntMsgA);
-
-    recordScalar("generatedEntMsgB",generatedEntMsgB);
-    recordScalar("receivedEntMsgB",receivedEntMsgB);
-
-    //XXX Closing Services involved data files
-    videoMedQ->close();
-    videoHighQ->close();
-
+    // XXX stats for entertainment msgs: see TimeOutEntService Method
 }
 
 RSUApp::~RSUApp() {
@@ -595,13 +664,25 @@ void RSUApp::checkAndTrackPacket(cMessage* msg) {
         DBG_APP << "sending down a WSA" << std::endl;
         generatedWSAs++;
     }
-    else if (dynamic_cast<EntertainmentMessageA*>(msg)) {
-        DBG_APP << "sending down a esm A" << std::endl;
-        generatedEntMsgA++;
+    else if (EntertainmentMessageA* entMsgA = dynamic_cast<EntertainmentMessageA*>(msg)) {
+        DBG_APP << "sending down a esm A of vehicle: " << std::to_string(entMsgA->getSenderAddress()) << std::endl;
+
+        std::map<int,uint32_t>::iterator itStatsEntMsg = generatedEntMsgB.begin();
+        itStatsEntMsg = generatedEntMsgB.find(entMsgA->getSenderAddress());
+        if (itStatsEntMsg != generatedEntMsgB.end()) {
+            itStatsEntMsg->second++;
+        }
     }
-    else if (dynamic_cast<EntertainmentMessageB*>(msg)) {
-        DBG_APP << "sending down a esm B" << std::endl;
-        generatedEntMsgB++;
+    else if (EntertainmentMessageB* entMsgB = dynamic_cast<EntertainmentMessageB*>(msg)) {
+
+        DBG_APP << "sending down a esm B of vehicle: " << std::to_string(entMsgB->getSenderAddress()) << std::endl;
+
+        std::map<int,uint32_t>::iterator itStatsEntMsg = generatedEntMsgB.begin();
+        itStatsEntMsg = generatedEntMsgB.find(entMsgB->getSenderAddress());
+        if (itStatsEntMsg != generatedEntMsgB.end()) {
+            itStatsEntMsg->second++;
+        }
+
     }
     else if (dynamic_cast<WaveShortMessage*>(msg)) {
             DBG_APP << "sending down a wsm" << std::endl;

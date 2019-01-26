@@ -146,8 +146,8 @@ class VehApp : public BaseApplLayer {
         virtual void checkAndTrackPacket(cMessage* msg);
 
         //XXX My Methods
-        virtual void onEntMsgA(EntertainmentMessageA* entMsgA) { };
-        virtual void onEntMsgB(EntertainmentMessageB* entMsgB) { };
+        virtual void onEntMsgA(EntertainmentMessageA* entMsgA);
+        virtual void onEntMsgB(EntertainmentMessageB* entMsgB);
         virtual void InitializeEntService();
         virtual void ManageEntServiceState(); //Mage the state of teh service (s)
 

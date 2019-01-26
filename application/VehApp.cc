@@ -126,19 +126,13 @@ void VehApp::initialize(int stage) {
             if (sendBeacons) {
                 scheduleAt(firstBeacon, sendBeaconEvt);
                 //XXX Added By Pedro
-                serviceState = 1;
-            }
-
-            if (sendEntMsg) {
-                mac->changeServiceChannel(Channels::SCH1);
-                scheduleAt(computeAsynchronousSendingTime(entMsgAInterval, type_SCH), sendEntMsgAEvt);
-                scheduleAt(computeAsynchronousSendingTime(entMsgBInterval, type_SCH), sendEntMsgBEvt);
-                //FIXME verificar a questao de cooordenar a fatia de tempo transmitindo no canal
+                serviceState = WaveEntServiceState::REQUESTING;
             }
 
         }
 
-        //Inicializa WSA para solicitar serviço
+        //XXX Initialize Requeting of services
+        InitializeEntService();
 
     }
 
@@ -199,7 +193,7 @@ void VehApp::populateWSM(WaveShortMessage* wsm, int rcvId, int serial) {
     if (BasicSafetyMessage* bsm = dynamic_cast<BasicSafetyMessage*>(wsm) ) {
         bsm->setSenderPos(curPosition);
         bsm->setSenderSpeed(curSpeed);
-        bsm->setPsid(currentOfferedServiceId);
+        bsm->setPsid(currentOfferedServiceId); //XXX Modified By Me to inform the PSID of the service
         bsm->setChannelNumber(Channels::CCH);
         bsm->addBitLength(beaconLengthBits);
         wsm->setUserPriority(beaconUserPriority);
@@ -215,16 +209,10 @@ void VehApp::populateWSM(WaveShortMessage* wsm, int rcvId, int serial) {
         wsa->setServiceDescription(currentServiceDescription.c_str());
     }
     else if (EntertainmentMessageA* entMsgA = dynamic_cast<EntertainmentMessageA*>(wsm)) {
-        entMsgA->setChannelNumber(Channels::SCH1);
-        entMsgA->addBitLength(1000);//FIXME need to be modified bby the video frame size
-        entMsgA->setUserPriority(4);
+
     }
     else if (EntertainmentMessageB* entMsgB = dynamic_cast<EntertainmentMessageB*>(wsm)) {
-        entMsgA->setChannelNumber(Channels::SCH1);
-        entMsgA->addBitLength(1000);//FIXME need to be modified bby the video frame size
-        entMsgA->setUserPriority(4);
-        //para alterar o canal de envio
-        //mac->changeServiceChannel(wsa->getTargetChannel());
+
     }
     //XXX Changed By Me
     else{
@@ -301,8 +289,8 @@ void VehApp::handleSelfMsg(cMessage* msg) {
     case SEND_BEACON_EVT: {
         BasicSafetyMessage* bsm = new BasicSafetyMessage();
         populateWSM(bsm);
-        ManageEntServiceState();
         sendDown(bsm);
+        ManageEntServiceState();
         scheduleAt(simTime() + beaconInterval, sendBeaconEvt);
         break;
     }
@@ -314,19 +302,11 @@ void VehApp::handleSelfMsg(cMessage* msg) {
         break;
     }
     case SEND_ENT_A_EVT: {
-        EntertainmentMessageA* entMsgA = new EntertainmentMessageA();
-        populateWSM(entMsgA);
-        sendDown(entMsgA);
-        scheduleAt(simTime() + entMsgAInterval, sendEntMsgAEvt);
-        // FIXME this will need to be scheduled dynamically by the time found in the video
+        //only receiving for now
         break;
     }
     case SEND_ENT_B_EVT: {
-        EntertainmentMessageA* entMsgB = new EntertainmentMessageA();
-        populateWSM(entMsgB);
-        sendDown(entMsgB);
-        scheduleAt(simTime() + entMsgBInterval, sendEntMsgBEvt);
-        //FIXME this will need to be scheduled dynamically by the time found in the video
+        //only receiving for now
         break;
     }
     default: {
@@ -339,6 +319,13 @@ void VehApp::handleSelfMsg(cMessage* msg) {
 
 void VehApp::onBSM(BasicSafetyMessage* bsm){
 
+}
+
+void VehApp::onEntMsgA(EntertainmentMessageA* entMsgA){
+
+}
+
+void VehApp::onEntMsgB(EntertainmentMessageB* entMsgB){
 
 }
 
@@ -355,7 +342,6 @@ void VehApp::InitializeEntService(){
         currentOfferedServiceId = WavePsid::Entertainment_B;
         currentServiceDescription = "Media Application B";
     }
-    //scheduleAt(computeAsynchronousSendingTime(wsaInterval, type_CCH), sendWSAEvt);
 }
 
 void VehApp::ManageEntServiceState(){
