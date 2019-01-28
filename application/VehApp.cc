@@ -125,15 +125,13 @@ void VehApp::initialize(int stage) {
 
             if (sendBeacons) {
                 scheduleAt(firstBeacon, sendBeaconEvt);
-                //XXX Added By Pedro
-                serviceState = WaveEntServiceState::REQUESTING;
             }
 
         }
 
-        //XXX Initialize Requeting of services
+        //XXX Initialize Requesting of services
         InitializeEntService();
-
+        std::cout << "wtf" << endl;
     }
 
 
@@ -185,9 +183,12 @@ void VehApp::populateWSM(WaveShortMessage* wsm, int rcvId, int serial) {
     wsm->setWsmVersion(1);
     wsm->setTimestamp(simTime());
     wsm->setSenderAddress(myId);
-    wsm->setRecipientAddress(rcvId);
+    wsm->setRecipientAddress(-1); //XXX changed by me, before the default value is rcvId
     wsm->setSerial(serial);
     wsm->setBitLength(headerLength);
+    //XXX Set Receiver Address Added By Me
+    // I am not able to use recipient address because of recent implementation of unicast
+    wsm->setRcvAddress(rcvId);
 
 
     if (BasicSafetyMessage* bsm = dynamic_cast<BasicSafetyMessage*>(wsm) ) {
@@ -269,12 +270,18 @@ void VehApp::handleLowerMsg(cMessage* msg) {
         onWSA(wsa);
     }
     else if (EntertainmentMessageA* entMsgA = dynamic_cast<EntertainmentMessageA*>(wsm)) {
-        receivedEntMsgA++;
-        onEntMsgA(entMsgA);
+        //XXX Only handle msgs destinated to me
+        if(entMsgA->getRcvAddress() == myId){
+            receivedEntMsgA++;
+            onEntMsgA(entMsgA);
+        }
     }
     else if (EntertainmentMessageB* entMsgB = dynamic_cast<EntertainmentMessageB*>(wsm)) {
-        receivedEntMsgB++;
-        onEntMsgB(entMsgB);
+        //XXX Only handle msgs destinated to me
+        if(entMsgB->getRcvAddress() == myId){
+            receivedEntMsgB++;
+            onEntMsgB(entMsgB);
+        }
     }
     else {
         receivedWSMs++;
@@ -288,8 +295,13 @@ void VehApp::handleSelfMsg(cMessage* msg) {
     switch (msg->getKind()) {
     case SEND_BEACON_EVT: {
         BasicSafetyMessage* bsm = new BasicSafetyMessage();
-        populateWSM(bsm);
+
+        populateWSM(bsm, getSimulation()->getModuleByPath("rsu[0]")->getId());
         sendDown(bsm);
+
+        std::cout << "My Address " << bsm->getSenderAddress() << endl;
+        std::cout << "Service State Variable" << serviceState << endl;
+
         ManageEntServiceState();
         scheduleAt(simTime() + beaconInterval, sendBeaconEvt);
         break;
@@ -336,12 +348,15 @@ void VehApp::InitializeEntService(){
 
     if( ( RNGCONTEXT bernoulli(0.5) ) ){
         currentOfferedServiceId = WavePsid::Entertainment_A;
-        currentServiceDescription = "Media Application A";
+        currentServiceDescription = "Entertainment Application A";
     }
     else{
         currentOfferedServiceId = WavePsid::Entertainment_B;
-        currentServiceDescription = "Media Application B";
+        currentServiceDescription = "Entertainment Application B";
     }
+
+    serviceState = WaveEntServiceState::REQUESTING; // set service state to requesting
+
 }
 
 void VehApp::ManageEntServiceState(){
