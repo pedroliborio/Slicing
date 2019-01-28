@@ -1,0 +1,73 @@
+file 16484 1548688257                                           
+version 2
+run General-9-20190128-13:10:56-4382
+attr configname General
+attr datetime 20190128-13:10:56
+attr experiment General
+attr inifile omnetpp.ini
+attr iterationvars ""
+attr iterationvarsf ""
+attr measurement ""
+attr network com.liborio.slicing.SlicingScenario
+attr processid 4382
+attr repetition 9
+attr replication #9
+attr resultdir results
+attr runnumber 9
+attr seedset 9
+param **.debug false
+param **.coreDebug false
+param *.playgroundSizeX 600m
+param *.playgroundSizeY 600m
+param *.playgroundSizeZ 50m
+param *.annotations.draw true
+param *.manager.updateInterval 0.4s
+param *.manager.host "\"localhost\""
+param *.manager.port 9999
+param *.manager.autoShutdown true
+param *.manager.launchConfig "xmldoc(\"highway.launchd.xml\")"
+param *.rsu[0].mobility.x 275.0
+param *.rsu[0].mobility.y 23.0
+param *.rsu[0].mobility.z 3
+param *.rsu[*].applType "\"RSUApp\""
+param *.rsu[*].appl.headerLength "80 bit"
+param *.rsu[*].appl.sendBeacons false
+param *.rsu[*].appl.dataOnSch true
+param *.rsu[*].appl.beaconInterval 1s
+param *.rsu[*].appl.beaconUserPriority 7
+param *.rsu[*].appl.dataUserPriority 5
+param *.connectionManager.sendDirect true
+param *.connectionManager.maxInterfDist 2600m
+param *.connectionManager.drawMaxIntfDist false
+param *.**.nic.mac1609_4.useServiceChannel true
+param *.**.nic.mac1609_4.txPower 20mW
+param *.**.nic.mac1609_4.bitrate 6Mbps
+param *.**.nic.phy80211p.sensitivity -89dBm
+param *.**.nic.phy80211p.useThermalNoise true
+param *.**.nic.phy80211p.thermalNoise -110dBm
+param *.**.nic.phy80211p.decider "xmldoc(\"config.xml\")"
+param *.**.nic.phy80211p.analogueModels "xmldoc(\"config.xml\")"
+param *.**.nic.phy80211p.usePropagationDelay true
+param *.**.nic.phy80211p.antenna "xmldoc(\"antenna.xml\", \"/root/Antenna[@id='monopole']\")"
+param *.node[*].applType "\"VehApp\""
+param *.node[*].appl.headerLength "80 bit"
+param *.node[*].appl.sendBeacons true
+param *.node[*].appl.dataOnSch true
+param *.node[*].appl.beaconInterval 1s
+param *.node[*].appl.wsaInterval 1s
+param *.node[*].veinsmobilityType.debug true
+param *.node[*].veinsmobility.x 0
+param *.node[*].veinsmobility.y 0
+param *.node[*].veinsmobility.z 1.895
+
+vector 0 SlicingScenario.node[0].veinsmobility posx ETV
+vector 1 SlicingScenario.node[0].veinsmobility posy ETV
+vector 2 SlicingScenario.node[0].veinsmobility speed ETV
+vector 3 SlicingScenario.node[0].veinsmobility acceleration ETV
+vector 4 SlicingScenario.node[0].veinsmobility co2emission ETV
+4	2440 2828 58 4756 1.2 45.2 111 0.973 2.9453281909626 196.87343692368 380.2753485234
+3	5268 3219 58 4756 1.2 45.2 111 -0.47371978242881 0.43945064605214 -0.21504343196284 4.7800002823656
+2	8487 3028 25 4756 0.8 45.2 112 10.912621124033 11.108491379991 1233.0515273978 13575.552474698
+1	11515 1936 9 4756 0.4 45.2 113 29.95 36.55 3895.85 135125.5625
+0	13451 3032 9 4756 0.4 45.2 113 28.528 507.59137129453 30055.06711051 10227759.734414
+

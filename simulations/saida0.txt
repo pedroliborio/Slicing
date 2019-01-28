@@ -1,0 +1,1099 @@
+OMNeT++ Discrete Event Simulation  (C) 1992-2017 Andras Varga, OpenSim Ltd.
+Version: 5.3, build: 180411-87513e3, edition: Academic Public License -- NOT FOR COMMERCIAL USE
+See the license for distribution terms and warranty disclaimer
+
+Setting up Cmdenv...
+
+Loading NED files from ..:  4
+Loading NED files from ../../veins/examples/veins:  1
+Loading NED files from ../../veins/src/veins:  38
+Loading NED files from /home/liborio/simulations/omnet/workspace/Slicing/simulations:  0
+
+Preparing for running configuration General, run #0...
+Assigned runID=General-0-20190128-18:07:09-18650
+Setting up network "com.liborio.slicing.SlicingScenario"...
+Initializing...
+RSU ID RSU: 7
+
+Running simulation...
+** Event #0   t=0   Elapsed: 1.1e-05s (0m 00s)  0% completed  (0% total)
+     Speed:     ev/sec=0   simsec/sec=0   ev/simsec=0
+     Messages:  created: 18   present: 18   in FES: 5
+wtf
+My Address 13
+Service State Variable0
+initializing service on RSU
+Sender Address 13
+Service State Variable0
+Service Initialized for vehicle 13, PSID: 40, state:0
+receivedEntMsgB empty!
+generatedEntMsgB empty!
+RSU: Performing the maintenance of service.
+My Address 13
+Service State Variable1
+RSU Maintenance of service.
+Sender Address: 13
+Service State Variable: 1
+Service PSID: 40
+Last Timestamp: 1.937587209977
+RSU: Performing the maintenance of service.
+RSU: Sending a Video Frame A
+Frame size: 7441
+Fragments: 4
+Size last fragment: 1441
+Fragment Timestamp: 2.21031425245
+Fragment Size: 1510bytes.
+Sending down a esm A to Vehicle: 13
+Fragment Timestamp: 2.21031425245
+Fragment Size: 1510bytes.
+Sending down a esm A to Vehicle: 13
+Fragment Timestamp: 2.21031425245
+Fragment Size: 1510bytes.
+Sending down a esm A to Vehicle: 13
+Fragment Timestamp: 2.21031425245
+Fragment Size: 1510bytes.
+Sending down a esm A to Vehicle: 13
+Fragment Timestamp: 2.21031425245
+Fragment Size: 1451bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 2.61031425245
+RSU: Sending a Video Frame A
+Frame size: 1142
+Fragments: 0
+Size last fragment: 1142
+Fragment Timestamp: 2.61031425245
+Fragment Size: 1152bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 3.01031425245
+My Address 13
+Service State Variable1
+RSU Maintenance of service.
+Sender Address: 13
+Service State Variable: 1
+Service PSID: 40
+Last Timestamp: 2.937587209977
+RSU: Performing the maintenance of service.
+RSU: Sending a Video Frame A
+Frame size: 1048
+Fragments: 0
+Size last fragment: 1048
+Fragment Timestamp: 3.01031425245
+Fragment Size: 1058bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 3.41031425245
+RSU: Sending a Video Frame A
+Frame size: 1352
+Fragments: 0
+Size last fragment: 1352
+Fragment Timestamp: 3.41031425245
+Fragment Size: 1362bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 3.81031425245
+RSU: Sending a Video Frame A
+Frame size: 999
+Fragments: 0
+Size last fragment: 999
+Fragment Timestamp: 3.81031425245
+Fragment Size: 1009bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 4.21031425245
+My Address 13
+Service State Variable1
+RSU Maintenance of service.
+Sender Address: 13
+Service State Variable: 1
+Service PSID: 40
+Last Timestamp: 3.937587209977
+RSU: Performing the maintenance of service.
+RSU: Sending a Video Frame A
+Frame size: 920
+Fragments: 0
+Size last fragment: 920
+Fragment Timestamp: 4.21031425245
+Fragment Size: 930bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 4.61031425245
+RSU: Sending a Video Frame A
+Frame size: 1202
+Fragments: 0
+Size last fragment: 1202
+Fragment Timestamp: 4.61031425245
+Fragment Size: 1212bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 5.01031425245
+My Address 13
+Service State Variable1
+RSU Maintenance of service.
+Sender Address: 13
+Service State Variable: 1
+Service PSID: 40
+Last Timestamp: 4.937587209977
+RSU: Performing the maintenance of service.
+RSU: Sending a Video Frame A
+Frame size: 923
+Fragments: 0
+Size last fragment: 923
+Fragment Timestamp: 5.01031425245
+Fragment Size: 933bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 5.41031425245
+RSU: Sending a Video Frame A
+Frame size: 906
+Fragments: 0
+Size last fragment: 906
+Fragment Timestamp: 5.41031425245
+Fragment Size: 916bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 5.81031425245
+RSU: Sending a Video Frame A
+Frame size: 980
+Fragments: 0
+Size last fragment: 980
+Fragment Timestamp: 5.81031425245
+Fragment Size: 990bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 6.21031425245
+My Address 13
+Service State Variable1
+RSU Maintenance of service.
+Sender Address: 13
+Service State Variable: 1
+Service PSID: 40
+Last Timestamp: 5.937587209977
+RSU: Performing the maintenance of service.
+RSU: Sending a Video Frame A
+Frame size: 547
+Fragments: 0
+Size last fragment: 547
+Fragment Timestamp: 6.21031425245
+Fragment Size: 557bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 6.61031425245
+RSU: Sending a Video Frame A
+Frame size: 612
+Fragments: 0
+Size last fragment: 612
+Fragment Timestamp: 6.61031425245
+Fragment Size: 622bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 7.01031425245
+My Address 13
+Service State Variable1
+RSU Maintenance of service.
+Sender Address: 13
+Service State Variable: 1
+Service PSID: 40
+Last Timestamp: 6.937587209977
+RSU: Performing the maintenance of service.
+RSU: Sending a Video Frame A
+Frame size: 7424
+Fragments: 4
+Size last fragment: 1424
+Fragment Timestamp: 7.01031425245
+Fragment Size: 1510bytes.
+Sending down a esm A to Vehicle: 13
+Fragment Timestamp: 7.01031425245
+Fragment Size: 1510bytes.
+Sending down a esm A to Vehicle: 13
+Fragment Timestamp: 7.01031425245
+Fragment Size: 1510bytes.
+Sending down a esm A to Vehicle: 13
+Fragment Timestamp: 7.01031425245
+Fragment Size: 1510bytes.
+Sending down a esm A to Vehicle: 13
+Fragment Timestamp: 7.01031425245
+Fragment Size: 1434bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 7.41031425245
+RSU: Sending a Video Frame A
+Frame size: 897
+Fragments: 0
+Size last fragment: 897
+Fragment Timestamp: 7.41031425245
+Fragment Size: 907bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 7.81031425245
+RSU: Sending a Video Frame A
+Frame size: 1064
+Fragments: 0
+Size last fragment: 1064
+Fragment Timestamp: 7.81031425245
+Fragment Size: 1074bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 8.21031425245
+My Address 13
+Service State Variable1
+RSU Maintenance of service.
+Sender Address: 13
+Service State Variable: 1
+Service PSID: 40
+Last Timestamp: 7.937587209977
+RSU: Performing the maintenance of service.
+RSU: Sending a Video Frame A
+Frame size: 1210
+Fragments: 0
+Size last fragment: 1210
+Fragment Timestamp: 8.21031425245
+Fragment Size: 1220bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 8.61031425245
+RSU: Sending a Video Frame A
+Frame size: 849
+Fragments: 0
+Size last fragment: 849
+Fragment Timestamp: 8.61031425245
+Fragment Size: 859bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 9.01031425245
+My Address 13
+Service State Variable1
+RSU Maintenance of service.
+Sender Address: 13
+Service State Variable: 1
+Service PSID: 40
+Last Timestamp: 8.937587209977
+RSU: Performing the maintenance of service.
+RSU: Sending a Video Frame A
+Frame size: 821
+Fragments: 0
+Size last fragment: 821
+Fragment Timestamp: 9.01031425245
+Fragment Size: 831bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 9.41031425245
+RSU: Sending a Video Frame A
+Frame size: 972
+Fragments: 0
+Size last fragment: 972
+Fragment Timestamp: 9.41031425245
+Fragment Size: 982bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 9.81031425245
+RSU: Sending a Video Frame A
+Frame size: 752
+Fragments: 0
+Size last fragment: 752
+Fragment Timestamp: 9.81031425245
+Fragment Size: 762bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 10.21031425245
+My Address 13
+Service State Variable1
+RSU Maintenance of service.
+Sender Address: 13
+Service State Variable: 1
+Service PSID: 40
+Last Timestamp: 9.937587209977
+RSU: Performing the maintenance of service.
+RSU: Sending a Video Frame A
+Frame size: 773
+Fragments: 0
+Size last fragment: 773
+Fragment Timestamp: 10.21031425245
+Fragment Size: 783bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 10.61031425245
+RSU: Sending a Video Frame A
+Frame size: 953
+Fragments: 0
+Size last fragment: 953
+Fragment Timestamp: 10.61031425245
+Fragment Size: 963bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 11.01031425245
+My Address 13
+Service State Variable1
+RSU Maintenance of service.
+Sender Address: 13
+Service State Variable: 1
+Service PSID: 40
+Last Timestamp: 10.937587209977
+RSU: Performing the maintenance of service.
+RSU: Sending a Video Frame A
+Frame size: 593
+Fragments: 0
+Size last fragment: 593
+Fragment Timestamp: 11.01031425245
+Fragment Size: 603bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 11.41031425245
+RSU: Sending a Video Frame A
+Frame size: 486
+Fragments: 0
+Size last fragment: 486
+Fragment Timestamp: 11.41031425245
+Fragment Size: 496bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 11.81031425245
+RSU: Sending a Video Frame A
+Frame size: 7405
+Fragments: 4
+Size last fragment: 1405
+Fragment Timestamp: 11.81031425245
+Fragment Size: 1510bytes.
+Sending down a esm A to Vehicle: 13
+Fragment Timestamp: 11.81031425245
+Fragment Size: 1510bytes.
+Sending down a esm A to Vehicle: 13
+Fragment Timestamp: 11.81031425245
+Fragment Size: 1510bytes.
+Sending down a esm A to Vehicle: 13
+Fragment Timestamp: 11.81031425245
+Fragment Size: 1510bytes.
+Sending down a esm A to Vehicle: 13
+Fragment Timestamp: 11.81031425245
+Fragment Size: 1415bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 12.21031425245
+My Address 13
+Service State Variable1
+RSU Maintenance of service.
+Sender Address: 13
+Service State Variable: 1
+Service PSID: 40
+Last Timestamp: 11.937587209977
+RSU: Performing the maintenance of service.
+RSU: Sending a Video Frame A
+Frame size: 1153
+Fragments: 0
+Size last fragment: 1153
+Fragment Timestamp: 12.21031425245
+Fragment Size: 1163bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 12.61031425245
+RSU: Sending a Video Frame A
+Frame size: 1099
+Fragments: 0
+Size last fragment: 1099
+Fragment Timestamp: 12.61031425245
+Fragment Size: 1109bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 13.01031425245
+My Address 13
+Service State Variable1
+RSU Maintenance of service.
+Sender Address: 13
+Service State Variable: 1
+Service PSID: 40
+Last Timestamp: 12.937587209977
+RSU: Performing the maintenance of service.
+RSU: Sending a Video Frame A
+Frame size: 1136
+Fragments: 0
+Size last fragment: 1136
+Fragment Timestamp: 13.01031425245
+Fragment Size: 1146bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 13.41031425245
+RSU: Sending a Video Frame A
+Frame size: 896
+Fragments: 0
+Size last fragment: 896
+Fragment Timestamp: 13.41031425245
+Fragment Size: 906bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 13.81031425245
+RSU: Sending a Video Frame A
+Frame size: 846
+Fragments: 0
+Size last fragment: 846
+Fragment Timestamp: 13.81031425245
+Fragment Size: 856bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 14.21031425245
+My Address 13
+Service State Variable1
+RSU Maintenance of service.
+Sender Address: 13
+Service State Variable: 1
+Service PSID: 40
+Last Timestamp: 13.937587209977
+RSU: Performing the maintenance of service.
+RSU: Sending a Video Frame A
+Frame size: 1105
+Fragments: 0
+Size last fragment: 1105
+Fragment Timestamp: 14.21031425245
+Fragment Size: 1115bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 14.61031425245
+RSU: Sending a Video Frame A
+Frame size: 878
+Fragments: 0
+Size last fragment: 878
+Fragment Timestamp: 14.61031425245
+Fragment Size: 888bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 15.01031425245
+My Address 13
+Service State Variable1
+RSU Maintenance of service.
+Sender Address: 13
+Service State Variable: 1
+Service PSID: 40
+Last Timestamp: 14.937587209977
+RSU: Performing the maintenance of service.
+RSU: Sending a Video Frame A
+Frame size: 915
+Fragments: 0
+Size last fragment: 915
+Fragment Timestamp: 15.01031425245
+Fragment Size: 925bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 15.41031425245
+RSU: Sending a Video Frame A
+Frame size: 1111
+Fragments: 0
+Size last fragment: 1111
+Fragment Timestamp: 15.41031425245
+Fragment Size: 1121bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 15.81031425245
+RSU: Sending a Video Frame A
+Frame size: 680
+Fragments: 0
+Size last fragment: 680
+Fragment Timestamp: 15.81031425245
+Fragment Size: 690bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 16.21031425245
+My Address 13
+Service State Variable1
+RSU Maintenance of service.
+Sender Address: 13
+Service State Variable: 1
+Service PSID: 40
+Last Timestamp: 15.937587209977
+RSU: Performing the maintenance of service.
+RSU: Sending a Video Frame A
+Frame size: 611
+Fragments: 0
+Size last fragment: 611
+Fragment Timestamp: 16.21031425245
+Fragment Size: 621bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 16.61031425245
+RSU: Sending a Video Frame A
+Frame size: 7409
+Fragments: 4
+Size last fragment: 1409
+Fragment Timestamp: 16.61031425245
+Fragment Size: 1510bytes.
+Sending down a esm A to Vehicle: 13
+Fragment Timestamp: 16.61031425245
+Fragment Size: 1510bytes.
+Sending down a esm A to Vehicle: 13
+Fragment Timestamp: 16.61031425245
+Fragment Size: 1510bytes.
+Sending down a esm A to Vehicle: 13
+Fragment Timestamp: 16.61031425245
+Fragment Size: 1510bytes.
+Sending down a esm A to Vehicle: 13
+Fragment Timestamp: 16.61031425245
+Fragment Size: 1419bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 17.01031425245
+My Address 13
+Service State Variable1
+RSU Maintenance of service.
+Sender Address: 13
+Service State Variable: 1
+Service PSID: 40
+Last Timestamp: 16.937587209977
+RSU: Performing the maintenance of service.
+RSU: Sending a Video Frame A
+Frame size: 991
+Fragments: 0
+Size last fragment: 991
+Fragment Timestamp: 17.01031425245
+Fragment Size: 1001bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 17.41031425245
+RSU: Sending a Video Frame A
+Frame size: 1009
+Fragments: 0
+Size last fragment: 1009
+Fragment Timestamp: 17.41031425245
+Fragment Size: 1019bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 17.81031425245
+RSU: Sending a Video Frame A
+Frame size: 1409
+Fragments: 0
+Size last fragment: 1409
+Fragment Timestamp: 17.81031425245
+Fragment Size: 1419bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 18.21031425245
+My Address 13
+Service State Variable1
+RSU Maintenance of service.
+Sender Address: 13
+Service State Variable: 1
+Service PSID: 40
+Last Timestamp: 17.937587209977
+RSU: Performing the maintenance of service.
+RSU: Sending a Video Frame A
+Frame size: 864
+Fragments: 0
+Size last fragment: 864
+Fragment Timestamp: 18.21031425245
+Fragment Size: 874bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 18.61031425245
+RSU: Sending a Video Frame A
+Frame size: 893
+Fragments: 0
+Size last fragment: 893
+Fragment Timestamp: 18.61031425245
+Fragment Size: 903bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 19.01031425245
+My Address 13
+Service State Variable1
+RSU Maintenance of service.
+Sender Address: 13
+Service State Variable: 1
+Service PSID: 40
+Last Timestamp: 18.937587209977
+RSU: Performing the maintenance of service.
+RSU: Sending a Video Frame A
+Frame size: 1192
+Fragments: 0
+Size last fragment: 1192
+Fragment Timestamp: 19.01031425245
+Fragment Size: 1202bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 19.41031425245
+RSU: Sending a Video Frame A
+Frame size: 826
+Fragments: 0
+Size last fragment: 826
+Fragment Timestamp: 19.41031425245
+Fragment Size: 836bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 19.81031425245
+RSU: Sending a Video Frame A
+Frame size: 838
+Fragments: 0
+Size last fragment: 838
+Fragment Timestamp: 19.81031425245
+Fragment Size: 848bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 20.21031425245
+My Address 13
+Service State Variable1
+RSU Maintenance of service.
+Sender Address: 13
+Service State Variable: 1
+Service PSID: 40
+Last Timestamp: 19.937587209977
+RSU: Performing the maintenance of service.
+RSU: Sending a Video Frame A
+Frame size: 984
+Fragments: 0
+Size last fragment: 984
+Fragment Timestamp: 20.21031425245
+Fragment Size: 994bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 20.61031425245
+RSU: Sending a Video Frame A
+Frame size: 617
+Fragments: 0
+Size last fragment: 617
+Fragment Timestamp: 20.61031425245
+Fragment Size: 627bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 21.01031425245
+My Address 13
+Service State Variable1
+RSU Maintenance of service.
+Sender Address: 13
+Service State Variable: 1
+Service PSID: 40
+Last Timestamp: 20.937587209977
+RSU: Performing the maintenance of service.
+RSU: Sending a Video Frame A
+Frame size: 644
+Fragments: 0
+Size last fragment: 644
+Fragment Timestamp: 21.01031425245
+Fragment Size: 654bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 21.41031425245
+RSU: Sending a Video Frame A
+Frame size: 7427
+Fragments: 4
+Size last fragment: 1427
+Fragment Timestamp: 21.41031425245
+Fragment Size: 1510bytes.
+Sending down a esm A to Vehicle: 13
+Fragment Timestamp: 21.41031425245
+Fragment Size: 1510bytes.
+Sending down a esm A to Vehicle: 13
+Fragment Timestamp: 21.41031425245
+Fragment Size: 1510bytes.
+Sending down a esm A to Vehicle: 13
+Fragment Timestamp: 21.41031425245
+Fragment Size: 1510bytes.
+Sending down a esm A to Vehicle: 13
+Fragment Timestamp: 21.41031425245
+Fragment Size: 1437bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 21.81031425245
+RSU: Sending a Video Frame A
+Frame size: 997
+Fragments: 0
+Size last fragment: 997
+Fragment Timestamp: 21.81031425245
+Fragment Size: 1007bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 22.21031425245
+My Address 13
+Service State Variable1
+RSU Maintenance of service.
+Sender Address: 13
+Service State Variable: 1
+Service PSID: 40
+Last Timestamp: 21.937587209977
+RSU: Performing the maintenance of service.
+RSU: Sending a Video Frame A
+Frame size: 988
+Fragments: 0
+Size last fragment: 988
+Fragment Timestamp: 22.21031425245
+Fragment Size: 998bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 22.61031425245
+RSU: Sending a Video Frame A
+Frame size: 1231
+Fragments: 0
+Size last fragment: 1231
+Fragment Timestamp: 22.61031425245
+Fragment Size: 1241bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 23.01031425245
+My Address 13
+Service State Variable1
+RSU Maintenance of service.
+Sender Address: 13
+Service State Variable: 1
+Service PSID: 40
+Last Timestamp: 22.937587209977
+RSU: Performing the maintenance of service.
+RSU: Sending a Video Frame A
+Frame size: 886
+Fragments: 0
+Size last fragment: 886
+Fragment Timestamp: 23.01031425245
+Fragment Size: 896bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 23.41031425245
+RSU: Sending a Video Frame A
+Frame size: 860
+Fragments: 0
+Size last fragment: 860
+Fragment Timestamp: 23.41031425245
+Fragment Size: 870bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 23.81031425245
+RSU: Sending a Video Frame A
+Frame size: 999
+Fragments: 0
+Size last fragment: 999
+Fragment Timestamp: 23.81031425245
+Fragment Size: 1009bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 24.21031425245
+My Address 13
+Service State Variable1
+RSU Maintenance of service.
+Sender Address: 13
+Service State Variable: 1
+Service PSID: 40
+Last Timestamp: 23.937587209977
+RSU: Performing the maintenance of service.
+RSU: Sending a Video Frame A
+Frame size: 870
+Fragments: 0
+Size last fragment: 870
+Fragment Timestamp: 24.21031425245
+Fragment Size: 880bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 24.61031425245
+RSU: Sending a Video Frame A
+Frame size: 774
+Fragments: 0
+Size last fragment: 774
+Fragment Timestamp: 24.61031425245
+Fragment Size: 784bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 25.01031425245
+My Address 13
+Service State Variable1
+RSU Maintenance of service.
+Sender Address: 13
+Service State Variable: 1
+Service PSID: 40
+Last Timestamp: 24.937587209977
+RSU: Performing the maintenance of service.
+RSU: Sending a Video Frame A
+Frame size: 1026
+Fragments: 0
+Size last fragment: 1026
+Fragment Timestamp: 25.01031425245
+Fragment Size: 1036bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 25.41031425245
+RSU: Sending a Video Frame A
+Frame size: 608
+Fragments: 0
+Size last fragment: 608
+Fragment Timestamp: 25.41031425245
+Fragment Size: 618bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 25.81031425245
+RSU: Sending a Video Frame A
+Frame size: 608
+Fragments: 0
+Size last fragment: 608
+Fragment Timestamp: 25.81031425245
+Fragment Size: 618bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 26.21031425245
+My Address 13
+Service State Variable1
+RSU Maintenance of service.
+Sender Address: 13
+Service State Variable: 1
+Service PSID: 40
+Last Timestamp: 25.937587209977
+RSU: Performing the maintenance of service.
+RSU: Sending a Video Frame A
+Frame size: 7435
+Fragments: 4
+Size last fragment: 1435
+Fragment Timestamp: 26.21031425245
+Fragment Size: 1510bytes.
+Sending down a esm A to Vehicle: 13
+Fragment Timestamp: 26.21031425245
+Fragment Size: 1510bytes.
+Sending down a esm A to Vehicle: 13
+Fragment Timestamp: 26.21031425245
+Fragment Size: 1510bytes.
+Sending down a esm A to Vehicle: 13
+Fragment Timestamp: 26.21031425245
+Fragment Size: 1510bytes.
+Sending down a esm A to Vehicle: 13
+Fragment Timestamp: 26.21031425245
+Fragment Size: 1445bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 26.61031425245
+RSU: Sending a Video Frame A
+Frame size: 941
+Fragments: 0
+Size last fragment: 941
+Fragment Timestamp: 26.61031425245
+Fragment Size: 951bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 27.01031425245
+My Address 13
+Service State Variable1
+RSU Maintenance of service.
+Sender Address: 13
+Service State Variable: 1
+Service PSID: 40
+Last Timestamp: 26.937587209977
+RSU: Performing the maintenance of service.
+RSU: Sending a Video Frame A
+Frame size: 968
+Fragments: 0
+Size last fragment: 968
+Fragment Timestamp: 27.01031425245
+Fragment Size: 978bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 27.41031425245
+RSU: Sending a Video Frame A
+Frame size: 1273
+Fragments: 0
+Size last fragment: 1273
+Fragment Timestamp: 27.41031425245
+Fragment Size: 1283bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 27.81031425245
+RSU: Sending a Video Frame A
+Frame size: 928
+Fragments: 0
+Size last fragment: 928
+Fragment Timestamp: 27.81031425245
+Fragment Size: 938bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 28.21031425245
+My Address 13
+Service State Variable1
+RSU Maintenance of service.
+Sender Address: 13
+Service State Variable: 1
+Service PSID: 40
+Last Timestamp: 27.937587209977
+RSU: Performing the maintenance of service.
+RSU: Sending a Video Frame A
+Frame size: 943
+Fragments: 0
+Size last fragment: 943
+Fragment Timestamp: 28.21031425245
+Fragment Size: 953bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 28.61031425245
+RSU: Sending a Video Frame A
+Frame size: 1185
+Fragments: 0
+Size last fragment: 1185
+Fragment Timestamp: 28.61031425245
+Fragment Size: 1195bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 29.01031425245
+My Address 13
+Service State Variable1
+RSU Maintenance of service.
+Sender Address: 13
+Service State Variable: 1
+Service PSID: 40
+Last Timestamp: 28.937587209977
+RSU: Performing the maintenance of service.
+RSU: Sending a Video Frame A
+Frame size: 884
+Fragments: 0
+Size last fragment: 884
+Fragment Timestamp: 29.01031425245
+Fragment Size: 894bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 29.41031425245
+RSU: Sending a Video Frame A
+Frame size: 872
+Fragments: 0
+Size last fragment: 872
+Fragment Timestamp: 29.41031425245
+Fragment Size: 882bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 29.81031425245
+RSU: Sending a Video Frame A
+Frame size: 1017
+Fragments: 0
+Size last fragment: 1017
+Fragment Timestamp: 29.81031425245
+Fragment Size: 1027bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 30.21031425245
+My Address 13
+Service State Variable1
+RSU Maintenance of service.
+Sender Address: 13
+Service State Variable: 1
+Service PSID: 40
+Last Timestamp: 29.937587209977
+RSU: Performing the maintenance of service.
+RSU: Sending a Video Frame A
+Frame size: 604
+Fragments: 0
+Size last fragment: 604
+Fragment Timestamp: 30.21031425245
+Fragment Size: 614bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 30.61031425245
+RSU: Sending a Video Frame A
+Frame size: 525
+Fragments: 0
+Size last fragment: 525
+Fragment Timestamp: 30.61031425245
+Fragment Size: 535bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 31.01031425245
+My Address 13
+Service State Variable1
+RSU: Performing the maintenance of service.
+RSU: Sending a Video Frame A
+Frame size: 7479
+Fragments: 4
+Size last fragment: 1479
+Fragment Timestamp: 31.01031425245
+Fragment Size: 1510bytes.
+Sending down a esm A to Vehicle: 13
+Fragment Timestamp: 31.01031425245
+Fragment Size: 1510bytes.
+Sending down a esm A to Vehicle: 13
+Fragment Timestamp: 31.01031425245
+Fragment Size: 1510bytes.
+Sending down a esm A to Vehicle: 13
+Fragment Timestamp: 31.01031425245
+Fragment Size: 1510bytes.
+Sending down a esm A to Vehicle: 13
+Fragment Timestamp: 31.01031425245
+Fragment Size: 1489bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 31.41031425245
+RSU: Sending a Video Frame A
+Frame size: 873
+Fragments: 0
+Size last fragment: 873
+Fragment Timestamp: 31.41031425245
+Fragment Size: 883bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 31.81031425245
+RSU: Sending a Video Frame A
+Frame size: 976
+Fragments: 0
+Size last fragment: 976
+Fragment Timestamp: 31.81031425245
+Fragment Size: 986bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 32.21031425245
+My Address 13
+Service State Variable1
+RSU: Performing the maintenance of service.
+RSU: Sending a Video Frame A
+Frame size: 1285
+Fragments: 0
+Size last fragment: 1285
+Fragment Timestamp: 32.21031425245
+Fragment Size: 1295bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 32.61031425245
+RSU: Sending a Video Frame A
+Frame size: 894
+Fragments: 0
+Size last fragment: 894
+Fragment Timestamp: 32.61031425245
+Fragment Size: 904bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 33.01031425245
+My Address 13
+Service State Variable1
+RSU: Performing the maintenance of service.
+RSU: Sending a Video Frame A
+Frame size: 834
+Fragments: 0
+Size last fragment: 834
+Fragment Timestamp: 33.01031425245
+Fragment Size: 844bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 33.41031425245
+RSU: Sending a Video Frame A
+Frame size: 1043
+Fragments: 0
+Size last fragment: 1043
+Fragment Timestamp: 33.41031425245
+Fragment Size: 1053bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 33.81031425245
+RSU: Sending a Video Frame A
+Frame size: 790
+Fragments: 0
+Size last fragment: 790
+Fragment Timestamp: 33.81031425245
+Fragment Size: 800bytes.
+Sending down a esm A to Vehicle: 13
+Timestamp do proximo frame: 34.21031425245
+My Address 13
+Service State Variable1
+RSU: Performing the maintenance of service.
+Service Time Out: 4.062412790023
+Vehicle ID: 13
+Finalizing service instance: 
+My Address 13
+Service State Variable1
+RSU: Performing the maintenance of service.
+My Address 13
+Service State Variable1
+RSU: Performing the maintenance of service.
+My Address 13
+Service State Variable1
+RSU: Performing the maintenance of service.
+My Address 13
+Service State Variable1
+RSU: Performing the maintenance of service.
+My Address 13
+Service State Variable1
+RSU: Performing the maintenance of service.
+My Address 13
+Service State Variable1
+RSU: Performing the maintenance of service.
+My Address 13
+Service State Variable1
+RSU: Performing the maintenance of service.
+My Address 13
+Service State Variable1
+RSU: Performing the maintenance of service.
+My Address 13
+Service State Variable1
+RSU: Performing the maintenance of service.
+My Address 13
+Service State Variable1
+RSU: Performing the maintenance of service.
+My Address 13
+Service State Variable1
+RSU: Performing the maintenance of service.
+RSU: Performing the maintenance of service.
+RSU: Performing the maintenance of service.
+RSU: Performing the maintenance of service.
+RSU: Performing the maintenance of service.
+RSU: Performing the maintenance of service.
+RSU: Performing the maintenance of service.
+RSU: Performing the maintenance of service.
+RSU: Performing the maintenance of service.
+RSU: Performing the maintenance of service.
+RSU: Performing the maintenance of service.
+RSU: Performing the maintenance of service.
+RSU: Performing the maintenance of service.
+RSU: Performing the maintenance of service.
+RSU: Performing the maintenance of service.
+RSU: Performing the maintenance of service.
+RSU: Performing the maintenance of service.
+RSU: Performing the maintenance of service.
+RSU: Performing the maintenance of service.
+RSU: Performing the maintenance of service.
+RSU: Performing the maintenance of service.
+RSU: Performing the maintenance of service.
+RSU: Performing the maintenance of service.
+RSU: Performing the maintenance of service.
+RSU: Performing the maintenance of service.
+RSU: Performing the maintenance of service.
+RSU: Performing the maintenance of service.
+RSU: Performing the maintenance of service.
+RSU: Performing the maintenance of service.
+RSU: Performing the maintenance of service.
+RSU: Performing the maintenance of service.
+RSU: Performing the maintenance of service.
+RSU: Performing the maintenance of service.
+RSU: Performing the maintenance of service.
+RSU: Performing the maintenance of service.
+RSU: Performing the maintenance of service.
+RSU: Performing the maintenance of service.
+RSU: Performing the maintenance of service.
+RSU: Performing the maintenance of service.
+RSU: Performing the maintenance of service.
+RSU: Performing the maintenance of service.
+RSU: Performing the maintenance of service.
+RSU: Performing the maintenance of service.
+RSU: Performing the maintenance of service.
+RSU: Performing the maintenance of service.
+RSU: Performing the maintenance of service.
+RSU: Performing the maintenance of service.
+RSU: Performing the maintenance of service.
+RSU: Performing the maintenance of service.
+RSU: Performing the maintenance of service.
+RSU: Performing the maintenance of service.
+RSU: Performing the maintenance of service.
+RSU: Performing the maintenance of service.
+RSU: Performing the maintenance of service.
+RSU: Performing the maintenance of service.
+RSU: Performing the maintenance of service.
+** Event #5269   t=100   Elapsed: 0.344498s (0m 00s)  100% completed  (100% total)
+     Speed:     ev/sec=15295.1   simsec/sec=290.284   ev/simsec=52.69
+     Messages:  created: 1785   present: 20   in FES: 2
+
+<!> Simulation time limit reached -- at t=100s, event #5269
+
+Calling finish() at end of Run #0...
+
+End.

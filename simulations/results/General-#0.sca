@@ -1,0 +1,121 @@
+version 2
+run General-0-20190128-18:07:09-18650
+attr configname General
+attr datetime 20190128-18:07:09
+attr experiment General
+attr inifile omnetpp.ini
+attr iterationvars ""
+attr iterationvarsf ""
+attr measurement ""
+attr network com.liborio.slicing.SlicingScenario
+attr processid 18650
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 0
+attr seedset 0
+param **.debug false
+param **.coreDebug false
+param *.playgroundSizeX 1200m
+param *.playgroundSizeY 1200m
+param *.playgroundSizeZ 50m
+param *.annotations.draw true
+param *.manager.updateInterval 0.4s
+param *.manager.host "\"localhost\""
+param *.manager.port 9999
+param *.manager.autoShutdown true
+param *.manager.launchConfig "xmldoc(\"highway.launchd.xml\")"
+param *.rsu[0].mobility.x 275.0
+param *.rsu[0].mobility.y 23.0
+param *.rsu[0].mobility.z 3
+param *.rsu[*].applType "\"RSUApp\""
+param *.rsu[*].appl.headerLength "80 bit"
+param *.rsu[*].appl.sendBeacons false
+param *.rsu[*].appl.dataOnSch true
+param *.rsu[*].appl.beaconInterval 1s
+param *.rsu[*].appl.beaconUserPriority 7
+param *.rsu[*].appl.dataUserPriority 5
+param *.connectionManager.sendDirect true
+param *.connectionManager.maxInterfDist 2600m
+param *.connectionManager.drawMaxIntfDist false
+param *.**.nic.mac1609_4.useServiceChannel true
+param *.**.nic.mac1609_4.txPower 20mW
+param *.**.nic.mac1609_4.bitrate 18Mbps
+param *.**.nic.phy80211p.sensitivity -89dBm
+param *.**.nic.phy80211p.useThermalNoise true
+param *.**.nic.phy80211p.thermalNoise -110dBm
+param *.**.nic.phy80211p.decider "xmldoc(\"config.xml\")"
+param *.**.nic.phy80211p.analogueModels "xmldoc(\"config.xml\")"
+param *.**.nic.phy80211p.usePropagationDelay true
+param *.**.nic.phy80211p.antenna "xmldoc(\"antenna.xml\", \"/root/Antenna[@id='monopole']\")"
+param *.node[*].applType "\"VehApp\""
+param *.node[*].appl.headerLength "80 bit"
+param *.node[*].appl.sendBeacons true
+param *.node[*].appl.dataOnSch true
+param *.node[*].appl.beaconInterval 1s
+param *.node[*].appl.wsaInterval 1s
+param *.node[*].veinsmobilityType.debug true
+param *.node[*].veinsmobility.x 0
+param *.node[*].veinsmobility.y 0
+param *.node[*].veinsmobility.z 1.895
+
+scalar SlicingScenario.rsu[0].appl idVeh 13
+scalar SlicingScenario.rsu[0].appl receivedEntMsgA 0
+scalar SlicingScenario.rsu[0].appl generatedEntMsgA 108
+scalar SlicingScenario.node[0].appl generatedWSMs 0
+scalar SlicingScenario.node[0].appl receivedWSMs 0
+scalar SlicingScenario.node[0].appl generatedBSMs 45
+scalar SlicingScenario.node[0].appl receivedBSMs 0
+scalar SlicingScenario.node[0].appl generatedWSAs 0
+scalar SlicingScenario.node[0].appl receivedWSAs 0
+scalar SlicingScenario.node[0].appl generatedWSAs 0
+scalar SlicingScenario.node[0].appl receivedWSAs 0
+scalar SlicingScenario.node[0].appl generatedEntMsgA 0
+scalar SlicingScenario.node[0].appl receivedEntMsgA 94
+scalar SlicingScenario.node[0].appl generatedEntMsgB 0
+scalar SlicingScenario.node[0].appl receivedEntMsgB 0
+scalar SlicingScenario.node[0].nic.phy80211p busyTime 0.0011279646017699
+scalar SlicingScenario.node[0].nic.mac1609_4 ReceivedUnicastPackets 0
+scalar SlicingScenario.node[0].nic.mac1609_4 ReceivedBroadcasts 94
+scalar SlicingScenario.node[0].nic.mac1609_4 SentPackets 45
+scalar SlicingScenario.node[0].nic.mac1609_4 SentAcknowledgements 0
+scalar SlicingScenario.node[0].nic.mac1609_4 SNIRLostPackets 0
+scalar SlicingScenario.node[0].nic.mac1609_4 RXTXLostPackets 0
+scalar SlicingScenario.node[0].nic.mac1609_4 TotalLostPackets 0
+scalar SlicingScenario.node[0].nic.mac1609_4 DroppedPacketsInMac 0
+scalar SlicingScenario.node[0].nic.mac1609_4 TooLittleTime 0
+scalar SlicingScenario.node[0].nic.mac1609_4 TimesIntoBackoff 45
+scalar SlicingScenario.node[0].nic.mac1609_4 SlotsBackoff 74
+scalar SlicingScenario.node[0].nic.mac1609_4 NumInternalContention 0
+scalar SlicingScenario.node[0].nic.mac1609_4 totalBusyTime 0.053909
+scalar SlicingScenario.node[0].veinsmobility startTime 0.4
+scalar SlicingScenario.node[0].veinsmobility totalTime 44.8
+scalar SlicingScenario.node[0].veinsmobility stopTime 45.6
+scalar SlicingScenario.node[0].veinsmobility minSpeed 10.910940086879
+scalar SlicingScenario.node[0].veinsmobility maxSpeed 11.106242040396
+scalar SlicingScenario.node[0].veinsmobility totalDistance 976.10887885044
+scalar SlicingScenario.node[0].veinsmobility totalCO2Emission 78.59751605683
+scalar SlicingScenario.manager roiArea 0
+scalar SlicingScenario.rsu[0].appl generatedWSMs 0
+scalar SlicingScenario.rsu[0].appl receivedWSMs 0
+scalar SlicingScenario.rsu[0].appl generatedBSMs 0
+scalar SlicingScenario.rsu[0].appl receivedBSMs 30
+scalar SlicingScenario.rsu[0].appl generatedWSAs 0
+scalar SlicingScenario.rsu[0].appl receivedWSAs 0
+scalar SlicingScenario.rsu[0].appl generatedWSAs 0
+scalar SlicingScenario.rsu[0].appl receivedWSAs 0
+scalar SlicingScenario.rsu[0].nic.phy80211p busyTime 1.92e-05
+scalar SlicingScenario.rsu[0].nic.mac1609_4 ReceivedUnicastPackets 0
+scalar SlicingScenario.rsu[0].nic.mac1609_4 ReceivedBroadcasts 30
+scalar SlicingScenario.rsu[0].nic.mac1609_4 SentPackets 108
+scalar SlicingScenario.rsu[0].nic.mac1609_4 SentAcknowledgements 0
+scalar SlicingScenario.rsu[0].nic.mac1609_4 SNIRLostPackets 0
+scalar SlicingScenario.rsu[0].nic.mac1609_4 RXTXLostPackets 0
+scalar SlicingScenario.rsu[0].nic.mac1609_4 TotalLostPackets 0
+scalar SlicingScenario.rsu[0].nic.mac1609_4 DroppedPacketsInMac 0
+scalar SlicingScenario.rsu[0].nic.mac1609_4 TooLittleTime 0
+scalar SlicingScenario.rsu[0].nic.mac1609_4 TimesIntoBackoff 188
+scalar SlicingScenario.rsu[0].nic.mac1609_4 SlotsBackoff 359
+scalar SlicingScenario.rsu[0].nic.mac1609_4 NumInternalContention 0
+scalar SlicingScenario.rsu[0].nic.mac1609_4 totalBusyTime 0.060524
+

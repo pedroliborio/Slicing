@@ -1,17 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- generated on sáb 15 dez 2018 12:33:59 -02 by Netedit Version 0.32.0
+<!-- generated on seg 28 jan 2019 18:01:13 -02 by Netedit Version 0.32.0
 <?xml version="1.0" encoding="UTF-8"?>
 
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/netconvertConfiguration.xsd">
 
+    <input>
+        <sumo-net-file value="highway.net.xml"/>
+    </input>
+
     <output>
-        <output-file value="/home/liborio/simulations/omnet/workspace/SlicingApp/simulations/highway.net.xml"/>
+        <output-file value="highway.net.xml"/>
     </output>
 
     <processing>
+        <no-internal-links value="true"/>
         <no-turnarounds value="true"/>
         <offset.disable-normalization value="true"/>
+        <lefthand value="false"/>
+        <junctions.corner-detail value="0"/>
+        <rectangular-lane-cut value="false"/>
+        <walkingareas value="false"/>
     </processing>
 
 </configuration>
@@ -19,16 +28,16 @@
 
 <net version="0.27" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/net_file.xsd">
 
-    <location netOffset="0.00,0.00" convBoundary="-5.89,52.89,67.96,52.89" origBoundary="10000000000.00,10000000000.00,-10000000000.00,-10000000000.00" projParameter="!"/>
+    <location netOffset="0.00,0.00" convBoundary="10.00,10.00,1000.00,10.00" origBoundary="-10000000000.00,-10000000000.00,10000000000.00,10000000000.00" projParameter="!"/>
 
     <edge id="edge0" from="gneJ0" to="gneJ1" priority="1" length="500.00">
-        <lane id="edge0_0" index="0" speed="13.89" length="500.00" shape="-5.89,41.34 67.96,41.34"/>
-        <lane id="edge0_1" index="1" speed="13.89" length="500.00" shape="-5.89,44.64 67.96,44.64"/>
-        <lane id="edge0_2" index="2" speed="13.89" length="500.00" shape="-5.89,47.94 67.96,47.94"/>
-        <lane id="edge0_3" index="3" speed="13.89" length="500.00" shape="-5.89,51.24 67.96,51.24"/>
+        <lane id="edge0_0" index="0" speed="11.11" length="500.00" shape="10.00,-1.55 1000.00,-1.55"/>
+        <lane id="edge0_1" index="1" speed="11.11" length="500.00" shape="10.00,1.75 1000.00,1.75"/>
+        <lane id="edge0_2" index="2" speed="11.11" length="500.00" shape="10.00,5.05 1000.00,5.05"/>
+        <lane id="edge0_3" index="3" speed="11.11" length="500.00" shape="10.00,8.35 1000.00,8.35"/>
     </edge>
 
-    <junction id="gneJ0" type="dead_end" x="-5.89" y="52.89" incLanes="" intLanes="" shape="-5.89,52.84 -5.89,39.74"/>
-    <junction id="gneJ1" type="dead_end" x="67.96" y="52.89" incLanes="edge0_0 edge0_1 edge0_2 edge0_3" intLanes="" shape="67.96,39.74 67.96,52.84"/>
+    <junction id="gneJ0" type="dead_end" x="10.00" y="10.00" incLanes="" intLanes="" shape="10.00,9.95 10.00,-3.15"/>
+    <junction id="gneJ1" type="dead_end" x="1000.00" y="10.00" incLanes="edge0_0 edge0_1 edge0_2 edge0_3" intLanes="" shape="1000.00,-3.15 1000.00,9.95"/>
 
 </net>
