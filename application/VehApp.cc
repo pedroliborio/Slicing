@@ -100,6 +100,7 @@ void VehApp::initialize(int stage) {
         receivedEntMsgA = 0;
         generatedEntMsgB = 0;
         receivedEntMsgB = 0;
+
     }
     else if (stage == 1) {
         //simulate asynchronous channel access
@@ -257,12 +258,34 @@ void VehApp::handleParkingUpdate(cObject* obj) {
 }
 
 void VehApp::handleLowerMsg(cMessage* msg) {
+    //XXX variables to compute network metrics
+    simtime_t jitter;
+    simtime_t delay;
 
     WaveShortMessage* wsm = dynamic_cast<WaveShortMessage*>(msg);
     ASSERT(wsm);
 
     if (BasicSafetyMessage* bsm = dynamic_cast<BasicSafetyMessage*>(wsm)) {
-        receivedBSMs++;
+        if(netMetricsBSM.receivedPackets == 0) {
+            netMetricsBSM.timeRxFirst = simTime();
+        }
+        else{
+            netMetricsBSM.timeRxLast = simTime();
+        }
+
+        netMetricsBSM.receivedPackets++;
+        netMetricsBSM.rxBytesSum += bsm->getByteLength();
+        delay = simTime() - bsm->getTimestamp();
+        netMetricsBSM.delaySum += delay;
+        jitter = netMetricsBSM.lastDelay - delay;
+        netMetricsBSM.lastDelay = delay;
+
+        if (jitter > SimTime(0)) {
+            netMetricsBSM.jitterSum += jitter;
+        }
+        else{
+            netMetricsBSM.jitterSum -= jitter;
+        }
         onBSM(bsm);
     }
     else if (WaveServiceAdvertisment* wsa = dynamic_cast<WaveServiceAdvertisment*>(wsm)) {
@@ -271,15 +294,56 @@ void VehApp::handleLowerMsg(cMessage* msg) {
     }
     else if (EntertainmentMessageA* entMsgA = dynamic_cast<EntertainmentMessageA*>(wsm)) {
         //XXX Only handle msgs destinated to me
-        if(entMsgA->getRcvAddress() == myId){
-            receivedEntMsgA++;
+        if (entMsgA->getRcvAddress() == myId) {
+
+            if(netMetricsEntA.receivedPackets == 0) {
+                netMetricsEntA.timeRxFirst = simTime();
+            }
+            else{
+                netMetricsEntA.timeRxLast = simTime();
+            }
+
+            netMetricsEntA.receivedPackets++;
+            netMetricsEntA.rxBytesSum += entMsgA->getByteLength();
+            delay = simTime() - entMsgA->getTimestamp();
+            netMetricsEntA.delaySum +=  delay;
+            jitter = netMetricsEntA.lastDelay - delay;
+            netMetricsEntA.lastDelay = delay;
+
+            if (jitter > SimTime(0)) {
+                netMetricsEntA.jitterSum += jitter;
+            }
+            else{
+                netMetricsEntA.jitterSum -= jitter;
+            }
             onEntMsgA(entMsgA);
         }
+        //FIXME need to implement statistics to msgs that not for me but i had received
+        //for now this need to be accounted because unicast isnot proided in veins in multichannel
     }
     else if (EntertainmentMessageB* entMsgB = dynamic_cast<EntertainmentMessageB*>(wsm)) {
         //XXX Only handle msgs destinated to me
         if(entMsgB->getRcvAddress() == myId){
-            receivedEntMsgB++;
+            if(netMetricsEntB.receivedPackets == 0) {
+                netMetricsEntB.timeRxFirst = simTime();
+            }
+            else{
+                netMetricsEntB.timeRxLast = simTime();
+            }
+
+            netMetricsEntB.receivedPackets++;
+            netMetricsEntB.rxBytesSum += entMsgB->getByteLength();
+            delay = simTime() - entMsgB->getTimestamp();
+            netMetricsEntB.delaySum += delay;
+            jitter = netMetricsEntB.lastDelay - delay;
+            netMetricsEntB.lastDelay = delay;
+
+            if (jitter > SimTime(0)) {
+                netMetricsEntB.jitterSum += jitter;
+            }
+            else{
+                netMetricsEntB.jitterSum -= jitter;
+            }
             onEntMsgB(entMsgB);
         }
     }
@@ -294,6 +358,7 @@ void VehApp::handleLowerMsg(cMessage* msg) {
 void VehApp::handleSelfMsg(cMessage* msg) {
     switch (msg->getKind()) {
     case SEND_BEACON_EVT: {
+
         BasicSafetyMessage* bsm = new BasicSafetyMessage();
 
         populateWSM(bsm, getSimulation()->getModuleByPath("rsu[0]")->getId());
@@ -303,8 +368,11 @@ void VehApp::handleSelfMsg(cMessage* msg) {
         std::cout << "Service State Variable" << serviceState << endl;
 
         ManageEntServiceState();
+
+
         scheduleAt(simTime() + beaconInterval, sendBeaconEvt);
         break;
+
     }
     case SEND_WSA_EVT:   {
         WaveServiceAdvertisment* wsa = new WaveServiceAdvertisment();
@@ -370,8 +438,9 @@ void VehApp::finish() {
     recordScalar("generatedWSMs",generatedWSMs);
     recordScalar("receivedWSMs",receivedWSMs);
 
-    recordScalar("generatedBSMs",generatedBSMs);
-    recordScalar("receivedBSMs",receivedBSMs);
+    //XXX I modified this for best stats of BSM the another ones are untouched for now
+    recordScalar("generatedBSMs", netMetricsBSM.generatedPackets);
+    recordScalar("receivedBSMs", netMetricsBSM.receivedPackets);
 
     recordScalar("generatedWSAs",generatedWSAs);
     recordScalar("receivedWSAs",receivedWSAs);
@@ -383,16 +452,18 @@ void VehApp::finish() {
     std::string text;
     if (currentOfferedServiceId == WavePsid::Entertainment_A){
         text = "generatedEntMsgA_"+std::to_string(myId);
-        recordScalar(text.c_str(),generatedEntMsgA);
+        recordScalar(text.c_str(),netMetricsEntA.generatedPackets);
         text = "receivedEntMsgA_"+std::to_string(myId);
-        recordScalar(text.c_str(),receivedEntMsgA);
+        recordScalar(text.c_str(),netMetricsEntA.receivedPackets);
     }
     else{
         text = "generatedEntMsgB_"+std::to_string(myId);
-        recordScalar(text.c_str(),generatedEntMsgB);
+        recordScalar(text.c_str(),netMetricsEntB.generatedPackets);
         text = "receivedEntMsgB_"+std::to_string(myId);
-        recordScalar(text.c_str(),receivedEntMsgB);
+        recordScalar(text.c_str(),netMetricsEntB.receivedPackets);
     }
+
+    //FIXME record the anotehr net statistics here!
 }
 
 VehApp::~VehApp() {
@@ -436,24 +507,53 @@ void VehApp::sendDelayedDown(cMessage* msg, simtime_t delay) {
 void VehApp::checkAndTrackPacket(cMessage* msg) {
     if (isParked && !communicateWhileParked) error("Attempted to transmit a message while parked, but this is forbidden by current configuration");
 
-    if (dynamic_cast<BasicSafetyMessage*>(msg)) {
+    if (BasicSafetyMessage* bsm = dynamic_cast<BasicSafetyMessage*>(msg)) {
         DBG_APP << "sending down a BSM" << std::endl;
-        generatedBSMs++;
+
+        if(netMetricsBSM.generatedPackets == 0){
+            netMetricsBSM.timeTxFirst = simTime();
+        }
+        else{
+            netMetricsBSM.timeTxLast = simTime();
+        }
+        netMetricsBSM.txBytesSum += bsm->getByteLength();
+
+        netMetricsBSM.generatedPackets++;
+
+
     }
     else if (dynamic_cast<WaveServiceAdvertisment*>(msg)) {
         DBG_APP << "sending down a WSA" << std::endl;
         generatedWSAs++;
     }
-    else if (dynamic_cast<EntertainmentMessageA*>(msg)) {
+    else if (EntertainmentMessageA* entMsgA = dynamic_cast<EntertainmentMessageA*>(msg)) {
         DBG_APP << "sending down a esm A" << std::endl;
-        generatedEntMsgA++;
+
+        if(generatedEntMsgA == 0){
+            netMetricsEntA.timeTxFirst = simTime();
+        }
+        else{
+            netMetricsEntA.timeTxLast = simTime();
+        }
+        netMetricsEntA.txBytesSum += bsm->getByteLength();
+
+        netMetricsEntA.generatedPackets++;
     }
     else if (dynamic_cast<EntertainmentMessageB*>(msg)) {
         DBG_APP << "sending down a esm B" << std::endl;
-        generatedEntMsgB++;
+
+        if(netMetricsEntB.generatedPackets == 0){
+            netMetricsEntB.timeTxFirst = simTime();
+        }
+        else{
+            netMetricsEntB.timeTxLast = simTime();
+        }
+        netMetricsEntB.txBytesSum += bsm->getByteLength();
+
+        netMetricsEntB.generatedPackets++;
     }
     else if (dynamic_cast<WaveShortMessage*>(msg)) {
-            DBG_APP << "sending down a wsm" << std::endl;
-            generatedWSMs++;
+        DBG_APP << "sending down a wsm" << std::endl;
+        generatedWSMs++;
     }
 }

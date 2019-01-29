@@ -220,6 +220,16 @@ class VehApp : public BaseApplLayer {
         uint32_t generatedEntMsgB;
         uint32_t receivedEntMsgB;
 
+        /* XXX stats for network metrics by service  (SCH)*/
+        NetMetrics netMetricsEntA;
+        NetMetrics netMetricsEntB;
+
+        /* XXX stats for network metrics by service  (CCH)*/
+        NetMetrics netMetricsBSM;
+
+        //FIXME Probably will be necessary create for WSAs in the final version
+
+
         /* messages for periodic events such as beacon and WSA transmissions */
         cMessage* sendBeaconEvt;
         cMessage* sendWSAEvt;

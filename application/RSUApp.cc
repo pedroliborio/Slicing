@@ -141,6 +141,7 @@ void RSUApp::initialize(int stage) {
         //XXX Schedule Maintenance of service Event
         scheduleAt(simTime()+serviceMaintInterval, serviceMaintEvt);
         //findHost()->getDisplayString().updateWith("r=500,green");
+
     }
 }
 
@@ -617,18 +618,18 @@ void RSUApp::MaintenanceEntService(BasicSafetyMessage* bsm){
  */
 void RSUApp::TimeOutEntService(){
 
-    simtime_t timeOut;
+    simtime_t serviceTimeOut;
 
     std::cout << "RSU: Performing the maintenance of service." << endl;
 
     std::map<int,simtime_t>::iterator itr = lastBeaconVideoStream.begin();
     while (itr != lastBeaconVideoStream.end()) {
 
-        timeOut = simTime().dbl() - itr->second.dbl();
+        serviceTimeOut = simTime().dbl() - itr->second.dbl();
 
-        if (timeOut >= 4.0) {
+        if (serviceTimeOut >= 4.0) {
 
-            std::cout << "Service Time Out: " << timeOut << endl;
+            std::cout << "Service Time Out: " << serviceTimeOut << endl;
             std::cout << "Vehicle ID: " << itr->first << endl;
             std::cout << "Finalizing service instance: " << endl;
 
