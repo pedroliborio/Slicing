@@ -131,6 +131,7 @@ void VehApp::initialize(int stage) {
 
         //XXX Initialize Requesting of services
         InitializeEntService();
+        //findHost()->getDisplayString().updateWith("r=300,green");
     }
 
 
@@ -379,14 +380,19 @@ void VehApp::finish() {
     recordScalar("receivedWSAs",receivedWSAs);
 
     // XXX stats for entertainment msgs
-    recordScalar("generatedEntMsgA",generatedEntMsgA);
-    recordScalar("receivedEntMsgA",receivedEntMsgA);
-
-    recordScalar("generatedEntMsgB",generatedEntMsgB);
-    recordScalar("receivedEntMsgB",receivedEntMsgB);
-
-
-
+    std::string text;
+    if (currentOfferedServiceId == WavePsid::Entertainment_A){
+        text = "generatedEntMsgA_"+std::to_string(myId);
+        recordScalar(text.c_str(),generatedEntMsgA);
+        text = "receivedEntMsgA_"+std::to_string(myId);
+        recordScalar(text.c_str(),receivedEntMsgA);
+    }
+    else{
+        text = "generatedEntMsgB_"+std::to_string(myId);
+        recordScalar(text.c_str(),generatedEntMsgB);
+        text = "receivedEntMsgB_"+std::to_string(myId);
+        recordScalar(text.c_str(),receivedEntMsgB);
+    }
 }
 
 VehApp::~VehApp() {

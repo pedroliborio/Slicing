@@ -140,6 +140,7 @@ void RSUApp::initialize(int stage) {
         std::cout <<"RSU ID RSU: "<< myId << endl;
         //XXX Schedule Maintenance of service Event
         scheduleAt(simTime()+serviceMaintInterval, serviceMaintEvt);
+        //findHost()->getDisplayString().updateWith("r=500,green");
     }
 }
 
@@ -649,32 +650,6 @@ void RSUApp::TimeOutEntService(){
                 timersVideoStreamMap.erase (itTimerVSM); //remove do map
             }
 
-            std::map<int,uint32_t>::iterator itStatsEntMsg = receivedEntMsgA.begin();
-            itStatsEntMsg = receivedEntMsgA.find(itr->first);
-            if (itStatsEntMsg != receivedEntMsgA.end()) {
-                recordScalar("idVeh", itStatsEntMsg->first);
-                recordScalar("receivedEntMsgA", itStatsEntMsg->second);
-            }
-
-            itStatsEntMsg = generatedEntMsgA.begin();
-            itStatsEntMsg = generatedEntMsgA.find(itr->first);
-            if (itStatsEntMsg != generatedEntMsgA.end()) {
-                recordScalar("generatedEntMsgA", itStatsEntMsg->second);
-            }
-
-            itStatsEntMsg = receivedEntMsgB.begin();
-            itStatsEntMsg = receivedEntMsgB.find(itr->first);
-            if (itStatsEntMsg != receivedEntMsgB.end()) {
-                recordScalar("idVeh", itStatsEntMsg->first);
-                recordScalar("receivedEntMsgB", itStatsEntMsg->second);
-            }
-
-            itStatsEntMsg = generatedEntMsgB.begin();
-            itStatsEntMsg = generatedEntMsgB.find(itr->first);
-            if (itStatsEntMsg != generatedEntMsgB.end()) {
-                recordScalar("generatedEntMsgB", itStatsEntMsg->second);
-            }
-
             itr = lastBeaconVideoStream.erase(itr);
         }
         else {
@@ -714,6 +689,38 @@ void RSUApp::finish() {
     recordScalar("receivedWSAs",receivedWSAs);
 
     // XXX stats for entertainment msgs: see TimeOutEntService Method
+
+    std::string text;
+
+    std::map<int,uint32_t>::iterator itStatsEntMsg = receivedEntMsgA.begin();
+    while (itStatsEntMsg != receivedEntMsgA.end()) {
+        text = "receivedEntMsgA_"+std::to_string(itStatsEntMsg->first);
+        recordScalar(text.c_str(), itStatsEntMsg->second);
+        itStatsEntMsg = receivedEntMsgA.erase(itStatsEntMsg);
+    }
+
+    itStatsEntMsg = generatedEntMsgA.begin();
+    while (itStatsEntMsg != generatedEntMsgA.end()) {
+        text = "generatedEntMsgA_"+std::to_string(itStatsEntMsg->first);
+        recordScalar(text.c_str(), itStatsEntMsg->second);
+        itStatsEntMsg = generatedEntMsgA.erase(itStatsEntMsg);
+    }
+
+
+    itStatsEntMsg = receivedEntMsgB.begin();
+    while (itStatsEntMsg != receivedEntMsgB.end()) {
+        text = "receivedEntMsgB_"+std::to_string(itStatsEntMsg->first);
+        recordScalar(text.c_str(), itStatsEntMsg->second);
+        itStatsEntMsg = receivedEntMsgB.erase(itStatsEntMsg);
+    }
+
+    itStatsEntMsg = generatedEntMsgB.begin();
+    while (itStatsEntMsg != generatedEntMsgB.end()) {
+        text = "generatedEntMsgB_"+std::to_string(itStatsEntMsg->first);
+        recordScalar(text.c_str(), itStatsEntMsg->second);
+        itStatsEntMsg = generatedEntMsgB.erase(itStatsEntMsg);
+    }
+
 }
 
 RSUApp::~RSUApp() {
