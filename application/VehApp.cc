@@ -131,7 +131,6 @@ void VehApp::initialize(int stage) {
 
         //XXX Initialize Requesting of services
         InitializeEntService();
-        std::cout << "wtf" << endl;
     }
 
 
