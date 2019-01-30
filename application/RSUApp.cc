@@ -738,11 +738,32 @@ void RSUApp::SendDataEntService(WaveShortMessage* wsm, uint32_t size){
 
 
 void RSUApp::finish() {
+    std::string text;
+
     recordScalar("generatedWSMs",generatedWSMs);
     recordScalar("receivedWSMs",receivedWSMs);
 
-    recordScalar("generatedBSMs",generatedBSMs);
-    recordScalar("receivedBSMs",receivedBSMs);
+    //XXX I modified this for best stats of BSM the another ones are untouched for now
+    text = "generatedBSM_"+std::to_string(myId);
+    recordScalar(text.c_str(), netMetricsBSM.generatedPackets);
+    text = "receivedBSM_"+std::to_string(myId);
+    recordScalar(text.c_str(), netMetricsBSM.receivedPackets);
+    text = "delaySumBSM_"+std::to_string(myId);
+    recordScalar(text.c_str(),netMetricsBSM.delaySum);
+    text = "jitterSumBSM_"+std::to_string(myId);
+    recordScalar(text.c_str(),netMetricsBSM.jitterSum);
+    text = "rxBytesSumBSM_"+std::to_string(myId);
+    recordScalar(text.c_str(),netMetricsBSM.rxBytesSum);
+    text = "txBytesSumBSM_"+std::to_string(myId);
+    recordScalar(text.c_str(),netMetricsBSM.txBytesSum);
+    text = "timeRxFirstBSM_"+std::to_string(myId);
+    recordScalar(text.c_str(),netMetricsBSM.timeRxFirst);
+    text = "timeRxLastBSM_"+std::to_string(myId);
+    recordScalar(text.c_str(),netMetricsBSM.timeRxLast);
+    text = "timeTxFirstBSM_"+std::to_string(myId);
+    recordScalar(text.c_str(),netMetricsBSM.timeTxFirst);
+    text = "timeTxLastBSM_"+std::to_string(myId);
+    recordScalar(text.c_str(),netMetricsBSM.timeTxLast);
 
     recordScalar("generatedWSAs",generatedWSAs);
     recordScalar("receivedWSAs",receivedWSAs);
@@ -750,38 +771,59 @@ void RSUApp::finish() {
     recordScalar("generatedWSAs",generatedWSAs);
     recordScalar("receivedWSAs",receivedWSAs);
 
-    //XXX stats for entertainment msgs: see TimeOutEntService Method
-
-    std::string text;
+    //XXX stats
 
     std::map<int,NetMetrics>::iterator itStatsEntMsg = netMetricsEntA.begin();
-    while (itStatsEntMsg != receivedEntMsgA.end()) {
-        text = "receivedEntMsgA_"+std::to_string(itStatsEntMsg->first);
-        recordScalar(text.c_str(), itStatsEntMsg->second);
-        itStatsEntMsg = receivedEntMsgA.erase(itStatsEntMsg);
+    while (itStatsEntMsg != netMetricsEntA.end()) {
+        text = "generatedEntMsgA_"+std::to_string(myId);
+        recordScalar(text.c_str(),itStatsEntMsg->second.generatedPackets);
+        text = "receivedEntMsgA_"+std::to_string(myId);
+        recordScalar(text.c_str(),itStatsEntMsg->second.receivedPackets);
+        text = "delaySumEntMsgA_"+std::to_string(myId);
+        recordScalar(text.c_str(),itStatsEntMsg->second.delaySum);
+        text = "jitterSumEntMsgA_"+std::to_string(myId);
+        recordScalar(text.c_str(),itStatsEntMsg->second.jitterSum);
+        text = "rxBytesSumEntMsgA_"+std::to_string(myId);
+        recordScalar(text.c_str(),itStatsEntMsg->second.rxBytesSum);
+        text = "txBytesSumEntMsgA_"+std::to_string(myId);
+        recordScalar(text.c_str(),itStatsEntMsg->second.txBytesSum);
+        text = "timeRxFirstEntMsgA_"+std::to_string(myId);
+        recordScalar(text.c_str(),itStatsEntMsg->second.timeRxFirst);
+        text = "timeRxLastEntMsgA_"+std::to_string(myId);
+        recordScalar(text.c_str(),itStatsEntMsg->second.timeRxLast);
+        text = "timeTxFirstEntMsgA_"+std::to_string(myId);
+        recordScalar(text.c_str(),itStatsEntMsg->second.timeTxFirst);
+        text = "timeTxLastEntMsgA_"+std::to_string(myId);
+        recordScalar(text.c_str(),itStatsEntMsg->second.timeTxLast);
+        itStatsEntMsg = netMetricsEntA.erase(itStatsEntMsg);
     }
 
-    itStatsEntMsg = generatedEntMsgA.begin();
-    while (itStatsEntMsg != generatedEntMsgA.end()) {
-        text = "generatedEntMsgA_"+std::to_string(itStatsEntMsg->first);
-        recordScalar(text.c_str(), itStatsEntMsg->second);
-        itStatsEntMsg = generatedEntMsgA.erase(itStatsEntMsg);
+    itStatsEntMsg = netMetricsEntB.begin();
+    while (itStatsEntMsg != netMetricsEntB.end()) {
+        text = "generatedEntMsgB_"+std::to_string(myId);
+        recordScalar(text.c_str(),itStatsEntMsg->second.generatedPackets);
+        text = "receivedEntMsgB_"+std::to_string(myId);
+        recordScalar(text.c_str(),itStatsEntMsg->second.receivedPackets);
+        text = "delaySumEntMsgB_"+std::to_string(myId);
+        recordScalar(text.c_str(),itStatsEntMsg->second.delaySum);
+        text = "jitterSumEntMsgB_"+std::to_string(myId);
+        recordScalar(text.c_str(),itStatsEntMsg->second.jitterSum);
+        text = "rxBytesSumEntMsgB_"+std::to_string(myId);
+        recordScalar(text.c_str(),itStatsEntMsg->second.rxBytesSum);
+        text = "txBytesSumEntMsgB_"+std::to_string(myId);
+        recordScalar(text.c_str(),itStatsEntMsg->second.txBytesSum);
+        text = "timeRxFirstEntMsgB_"+std::to_string(myId);
+        recordScalar(text.c_str(),itStatsEntMsg->second.timeRxFirst);
+        text = "timeRxLastEntMsgB_"+std::to_string(myId);
+        recordScalar(text.c_str(),itStatsEntMsg->second.timeRxLast);
+        text = "timeTxFirstEntMsgB_"+std::to_string(myId);
+        recordScalar(text.c_str(),itStatsEntMsg->second.timeTxFirst);
+        text = "timeTxLastEntMsgB_"+std::to_string(myId);
+        recordScalar(text.c_str(),itStatsEntMsg->second.timeTxLast);
+        itStatsEntMsg = netMetricsEntB.erase(itStatsEntMsg);
     }
 
 
-    itStatsEntMsg = receivedEntMsgB.begin();
-    while (itStatsEntMsg != receivedEntMsgB.end()) {
-        text = "receivedEntMsgB_"+std::to_string(itStatsEntMsg->first);
-        recordScalar(text.c_str(), itStatsEntMsg->second);
-        itStatsEntMsg = receivedEntMsgB.erase(itStatsEntMsg);
-    }
-
-    itStatsEntMsg = generatedEntMsgB.begin();
-    while (itStatsEntMsg != generatedEntMsgB.end()) {
-        text = "generatedEntMsgB_"+std::to_string(itStatsEntMsg->first);
-        recordScalar(text.c_str(), itStatsEntMsg->second);
-        itStatsEntMsg = generatedEntMsgB.erase(itStatsEntMsg);
-    }
 
 }
 

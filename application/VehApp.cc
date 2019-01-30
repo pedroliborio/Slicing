@@ -435,12 +435,16 @@ void VehApp::ManageEntServiceState(){
 
 
 void VehApp::finish() {
+    std::string text;
+
     recordScalar("generatedWSMs",generatedWSMs);
     recordScalar("receivedWSMs",receivedWSMs);
 
     //XXX I modified this for best stats of BSM the another ones are untouched for now
-    recordScalar("generatedBSMs", netMetricsBSM.generatedPackets);
-    recordScalar("receivedBSMs", netMetricsBSM.receivedPackets);
+    text = "generatedBSM_"+std::to_string(myId);
+    recordScalar(text.c_str(), netMetricsBSM.generatedPackets);
+    text = "receivedBSM_"+std::to_string(myId);
+    recordScalar(text.c_str(), netMetricsBSM.receivedPackets);
     text = "delaySumBSM_"+std::to_string(myId);
     recordScalar(text.c_str(),netMetricsBSM.delaySum);
     text = "jitterSumBSM_"+std::to_string(myId);
@@ -465,7 +469,6 @@ void VehApp::finish() {
     recordScalar("receivedWSAs",receivedWSAs);
 
     // XXX stats for entertainment msgs
-    std::string text;
     if (currentOfferedServiceId == WavePsid::Entertainment_A){
 
         text = "generatedEntMsgA_"+std::to_string(myId);
