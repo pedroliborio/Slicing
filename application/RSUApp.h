@@ -231,11 +231,14 @@ class RSUApp : public BaseApplLayer {
         uint32_t receivedWSAs;
         uint32_t receivedBSMs;
 
-        /* XXX stats entertainment msgs*/
-        std::map<int,uint32_t> generatedEntMsgA;
-        std::map<int,uint32_t> receivedEntMsgA;
-        std::map<int,uint32_t> generatedEntMsgB;
-        std::map<int,uint32_t> receivedEntMsgB;
+        /* XXX stats for network metrics by service  (SCH)*/
+        std::map<int,NetMetrics> netMetricsEntA;
+        std::map<int,NetMetrics> netMetricsEntB;
+
+        /* XXX stats for network metrics by service  (CCH)*/
+        NetMetrics netMetricsBSM;
+
+        //FIXME Probably will be necessary create for WSAs in the final version
 
         /* messages for periodic events such as beacon and WSA transmissions */
         cMessage* sendBeaconEvt;

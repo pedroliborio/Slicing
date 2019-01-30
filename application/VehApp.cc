@@ -441,6 +441,22 @@ void VehApp::finish() {
     //XXX I modified this for best stats of BSM the another ones are untouched for now
     recordScalar("generatedBSMs", netMetricsBSM.generatedPackets);
     recordScalar("receivedBSMs", netMetricsBSM.receivedPackets);
+    text = "delaySumBSM_"+std::to_string(myId);
+    recordScalar(text.c_str(),netMetricsBSM.delaySum);
+    text = "jitterSumBSM_"+std::to_string(myId);
+    recordScalar(text.c_str(),netMetricsBSM.jitterSum);
+    text = "rxBytesSumBSM_"+std::to_string(myId);
+    recordScalar(text.c_str(),netMetricsBSM.rxBytesSum);
+    text = "txBytesSumBSM_"+std::to_string(myId);
+    recordScalar(text.c_str(),netMetricsBSM.txBytesSum);
+    text = "timeRxFirstBSM_"+std::to_string(myId);
+    recordScalar(text.c_str(),netMetricsBSM.timeRxFirst);
+    text = "timeRxLastBSM_"+std::to_string(myId);
+    recordScalar(text.c_str(),netMetricsBSM.timeRxLast);
+    text = "timeTxFirstBSM_"+std::to_string(myId);
+    recordScalar(text.c_str(),netMetricsBSM.timeTxFirst);
+    text = "timeTxLastBSM_"+std::to_string(myId);
+    recordScalar(text.c_str(),netMetricsBSM.timeTxLast);
 
     recordScalar("generatedWSAs",generatedWSAs);
     recordScalar("receivedWSAs",receivedWSAs);
@@ -451,20 +467,57 @@ void VehApp::finish() {
     // XXX stats for entertainment msgs
     std::string text;
     if (currentOfferedServiceId == WavePsid::Entertainment_A){
+
         text = "generatedEntMsgA_"+std::to_string(myId);
         recordScalar(text.c_str(),netMetricsEntA.generatedPackets);
         text = "receivedEntMsgA_"+std::to_string(myId);
         recordScalar(text.c_str(),netMetricsEntA.receivedPackets);
+        text = "delaySumEntMsgA_"+std::to_string(myId);
+        recordScalar(text.c_str(),netMetricsEntA.delaySum);
+        text = "jitterSumEntMsgA_"+std::to_string(myId);
+        recordScalar(text.c_str(),netMetricsEntA.jitterSum);
+        text = "rxBytesSumEntMsgA_"+std::to_string(myId);
+        recordScalar(text.c_str(),netMetricsEntA.rxBytesSum);
+        text = "txBytesSumEntMsgA_"+std::to_string(myId);
+        recordScalar(text.c_str(),netMetricsEntA.txBytesSum);
+        text = "timeRxFirstEntMsgA_"+std::to_string(myId);
+        recordScalar(text.c_str(),netMetricsEntA.timeRxFirst);
+        text = "timeRxLastEntMsgA_"+std::to_string(myId);
+        recordScalar(text.c_str(),netMetricsEntA.timeRxLast);
+        text = "timeTxFirstEntMsgA_"+std::to_string(myId);
+        recordScalar(text.c_str(),netMetricsEntA.timeTxFirst);
+        text = "timeTxLastEntMsgA_"+std::to_string(myId);
+        recordScalar(text.c_str(),netMetricsEntA.timeTxLast);
+
     }
     else{
         text = "generatedEntMsgB_"+std::to_string(myId);
         recordScalar(text.c_str(),netMetricsEntB.generatedPackets);
         text = "receivedEntMsgB_"+std::to_string(myId);
         recordScalar(text.c_str(),netMetricsEntB.receivedPackets);
+        text = "delaySumEntMsgB_"+std::to_string(myId);
+        recordScalar(text.c_str(),netMetricsEntB.delaySum);
+        text = "jitterSumEntMsgB_"+std::to_string(myId);
+        recordScalar(text.c_str(),netMetricsEntB.jitterSum);
+        text = "rxBytesSumEntMsgB_"+std::to_string(myId);
+        recordScalar(text.c_str(),netMetricsEntB.rxBytesSum);
+        text = "txBytesSumEntMsgB_"+std::to_string(myId);
+        recordScalar(text.c_str(),netMetricsEntB.txBytesSum);
+        text = "timeRxFirstEntMsgB_"+std::to_string(myId);
+        recordScalar(text.c_str(),netMetricsEntB.timeRxFirst);
+        text = "timeRxLastEntMsgB_"+std::to_string(myId);
+        recordScalar(text.c_str(),netMetricsEntB.timeRxLast);
+        text = "timeTxFirstEntMsgB_"+std::to_string(myId);
+        recordScalar(text.c_str(),netMetricsEntB.timeTxFirst);
+        text = "timeTxLastEntMsgB_"+std::to_string(myId);
+        recordScalar(text.c_str(),netMetricsEntB.timeTxLast);
     }
 
-    //FIXME record the anotehr net statistics here!
+    //FIXME record the another net statistics here!
 }
+
+
+
 
 VehApp::~VehApp() {
     cancelAndDelete(sendBeaconEvt);
@@ -519,7 +572,6 @@ void VehApp::checkAndTrackPacket(cMessage* msg) {
         netMetricsBSM.txBytesSum += bsm->getByteLength();
 
         netMetricsBSM.generatedPackets++;
-
 
     }
     else if (dynamic_cast<WaveServiceAdvertisment*>(msg)) {
