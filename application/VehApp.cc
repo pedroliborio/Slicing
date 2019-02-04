@@ -184,10 +184,10 @@ void VehApp::populateWSM(WaveShortMessage* wsm, int rcvId, int serial) {
     wsm->setWsmVersion(1);
     wsm->setTimestamp(simTime());
     wsm->setSenderAddress(myId);
-    wsm->setRecipientAddress(-1); //XXX changed by me, before the default value is rcvId
+    wsm->setRecipientAddress(-1); //XXX changed by me. before, the default value is rcvId
     wsm->setSerial(serial);
     wsm->setBitLength(headerLength);
-    //XXX Set Receiver Address Added By Me
+    //XXX Set Receiver Address Added By Pedro
     // I am not able to use recipient address because of recent implementation of unicast
     wsm->setRcvAddress(rcvId);
 
@@ -318,8 +318,9 @@ void VehApp::handleLowerMsg(cMessage* msg) {
             }
             onEntMsgA(entMsgA);
         }
-        //FIXME need to implement statistics to msgs that not for me but i had received
-        //for now this need to be accounted because unicast isnot proided in veins in multichannel
+        else{
+            netMetricsEntA.receivedNeighborPackets++;//SCH packets thats not are addressed to me
+        }
     }
     else if (EntertainmentMessageB* entMsgB = dynamic_cast<EntertainmentMessageB*>(wsm)) {
         //XXX Only handle msgs destinated to me
@@ -345,6 +346,9 @@ void VehApp::handleLowerMsg(cMessage* msg) {
                 netMetricsEntB.jitterSum -= jitter;
             }
             onEntMsgB(entMsgB);
+        }
+        else{
+            netMetricsEntB.receivedNeighborPackets++; // SCH packets that not are adressed to me
         }
     }
     else {
@@ -471,48 +475,48 @@ void VehApp::finish() {
     // XXX stats for entertainment msgs
     if (currentOfferedServiceId == WavePsid::Entertainment_A){
 
-        text = "generatedEntMsgA_"+std::to_string(myId);
+        text = "generatedEntMsg_"+std::to_string(Entertainment_A)+"_"+std::to_string(myId);
         recordScalar(text.c_str(),netMetricsEntA.generatedPackets);
-        text = "receivedEntMsgA_"+std::to_string(myId);
+        text = "receivedEntMsg_"+std::to_string(Entertainment_A)+"_"+std::to_string(myId);
         recordScalar(text.c_str(),netMetricsEntA.receivedPackets);
-        text = "delaySumEntMsgA_"+std::to_string(myId);
+        text = "delaySumEntMsg_"+std::to_string(Entertainment_A)+"_"+std::to_string(myId);
         recordScalar(text.c_str(),netMetricsEntA.delaySum);
-        text = "jitterSumEntMsgA_"+std::to_string(myId);
+        text = "jitterSumEntMsg_"+std::to_string(Entertainment_A)+"_"+std::to_string(myId);
         recordScalar(text.c_str(),netMetricsEntA.jitterSum);
-        text = "rxBytesSumEntMsgA_"+std::to_string(myId);
+        text = "rxBytesSumEntMsg_"+std::to_string(Entertainment_A)+"_"+std::to_string(myId);
         recordScalar(text.c_str(),netMetricsEntA.rxBytesSum);
-        text = "txBytesSumEntMsgA_"+std::to_string(myId);
+        text = "txBytesSumEntMsg_"+std::to_string(Entertainment_A)+"_"+std::to_string(myId);
         recordScalar(text.c_str(),netMetricsEntA.txBytesSum);
-        text = "timeRxFirstEntMsgA_"+std::to_string(myId);
+        text = "timeRxFirstEntMsg_"+std::to_string(Entertainment_A)+"_"+std::to_string(myId);
         recordScalar(text.c_str(),netMetricsEntA.timeRxFirst);
-        text = "timeRxLastEntMsgA_"+std::to_string(myId);
+        text = "timeRxLastEntMsg_"+std::to_string(Entertainment_A)+"_"+std::to_string(myId);
         recordScalar(text.c_str(),netMetricsEntA.timeRxLast);
-        text = "timeTxFirstEntMsgA_"+std::to_string(myId);
+        text = "timeTxFirstEntMsg_"+std::to_string(Entertainment_A)+"_"+std::to_string(myId);
         recordScalar(text.c_str(),netMetricsEntA.timeTxFirst);
-        text = "timeTxLastEntMsgA_"+std::to_string(myId);
+        text = "timeTxLastEntMsg_"+std::to_string(Entertainment_A)+"_"+std::to_string(myId);
         recordScalar(text.c_str(),netMetricsEntA.timeTxLast);
 
     }
     else{
-        text = "generatedEntMsgB_"+std::to_string(myId);
+        text = "generatedEntMsg_"+std::to_string(Entertainment_B)+"_"+std::to_string(myId);
         recordScalar(text.c_str(),netMetricsEntB.generatedPackets);
-        text = "receivedEntMsgB_"+std::to_string(myId);
+        text = "receivedEntMsg_"+std::to_string(Entertainment_B)+"_"+std::to_string(myId);
         recordScalar(text.c_str(),netMetricsEntB.receivedPackets);
-        text = "delaySumEntMsgB_"+std::to_string(myId);
+        text = "delaySumEntMsg_"+std::to_string(Entertainment_B)+"_"+std::to_string(myId);
         recordScalar(text.c_str(),netMetricsEntB.delaySum);
-        text = "jitterSumEntMsgB_"+std::to_string(myId);
+        text = "jitterSumEntMsg_"+std::to_string(Entertainment_B)+"_"+std::to_string(myId);
         recordScalar(text.c_str(),netMetricsEntB.jitterSum);
-        text = "rxBytesSumEntMsgB_"+std::to_string(myId);
+        text = "rxBytesSumEntMsg_"+std::to_string(Entertainment_B)+"_"+std::to_string(myId);
         recordScalar(text.c_str(),netMetricsEntB.rxBytesSum);
-        text = "txBytesSumEntMsgB_"+std::to_string(myId);
+        text = "txBytesSumEntMsg_"+std::to_string(Entertainment_B)+"_"+std::to_string(myId);
         recordScalar(text.c_str(),netMetricsEntB.txBytesSum);
-        text = "timeRxFirstEntMsgB_"+std::to_string(myId);
+        text = "timeRxFirstEntMsg_"+std::to_string(Entertainment_B)+"_"+std::to_string(myId);
         recordScalar(text.c_str(),netMetricsEntB.timeRxFirst);
-        text = "timeRxLastEntMsgB_"+std::to_string(myId);
+        text = "timeRxLastEntMsg_"+std::to_string(Entertainment_B)+"_"+std::to_string(myId);
         recordScalar(text.c_str(),netMetricsEntB.timeRxLast);
-        text = "timeTxFirstEntMsgB_"+std::to_string(myId);
+        text = "timeTxFirstEntMsg_"+std::to_string(Entertainment_B)+"_"+std::to_string(myId);
         recordScalar(text.c_str(),netMetricsEntB.timeTxFirst);
-        text = "timeTxLastEntMsgB_"+std::to_string(myId);
+        text = "timeTxLastEntMsg_"+std::to_string(Entertainment_B)+"_"+std::to_string(myId);
         recordScalar(text.c_str(),netMetricsEntB.timeTxLast);
     }
 
@@ -568,6 +572,7 @@ void VehApp::checkAndTrackPacket(cMessage* msg) {
 
         if(netMetricsBSM.generatedPackets == 0){
             netMetricsBSM.timeTxFirst = simTime();
+            netMetricsBSM.timeTxLast = simTime();
         }
         else{
             netMetricsBSM.timeTxLast = simTime();
@@ -586,6 +591,7 @@ void VehApp::checkAndTrackPacket(cMessage* msg) {
 
         if(generatedEntMsgA == 0){
             netMetricsEntA.timeTxFirst = simTime();
+            netMetricsEntA.timeTxLast = simTime();
         }
         else{
             netMetricsEntA.timeTxLast = simTime();
@@ -599,6 +605,7 @@ void VehApp::checkAndTrackPacket(cMessage* msg) {
 
         if(netMetricsEntB.generatedPackets == 0){
             netMetricsEntB.timeTxFirst = simTime();
+            netMetricsEntB.timeTxLast = simTime();
         }
         else{
             netMetricsEntB.timeTxLast = simTime();

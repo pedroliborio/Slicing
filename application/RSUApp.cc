@@ -194,8 +194,9 @@ void RSUApp::populateWSM(WaveShortMessage* wsm, int rcvId, int serial) {
     wsm->setRecipientAddress(-1); //XXX changed by me, before teh default value is rcvId
     wsm->setSerial(serial);
     wsm->setBitLength(headerLength);
-    //XXX Set Receive Address Added By Me
+    //XXX Set Receive Address Added By Pedro
     // I am not able to use recipient address because of recent implementation of unicast
+    //does not support multichannel operations
     wsm->setRcvAddress(rcvId);
 
 
@@ -333,6 +334,11 @@ void RSUApp::handleLowerMsg(cMessage* msg) {
 
             onEntMsgA(entMsgA);
         }
+        else{
+            std::map<int, NetMetrics>::iterator itStatsEntMsg = netMetricsEntA.begin();
+            itStatsEntMsg = netMetricsEntA.find(entMsgA->getSenderAddress());
+            itStatsEntMsg->second.receivedNeighborPackets++;
+        }
     }
     else if (EntertainmentMessageB* entMsgB = dynamic_cast<EntertainmentMessageB*>(wsm)) {
         //XXX Only handle msgs destinated to me
@@ -365,6 +371,11 @@ void RSUApp::handleLowerMsg(cMessage* msg) {
 
             }
             onEntMsgB(entMsgB);
+        }
+        else{
+            std::map<int, NetMetrics>::iterator itStatsEntMsg = netMetricsEntB.begin();
+            itStatsEntMsg = netMetricsEntB.find(entMsgB->getSenderAddress());
+            itStatsEntMsg->second.receivedNeighborPackets++;
         }
     }
     else {
@@ -435,7 +446,6 @@ void RSUApp::handleSelfMsg(cMessage* msg) {
                 scheduleAt(simTime() + entMsgAInterval, itTimerVSM->second);
                 std::cout << "Timestamp do proximo frame: " <<  simTime() + entMsgAInterval << endl;
             }
-
 
         }
         else{
@@ -605,8 +615,8 @@ void RSUApp::InitializeEntService(BasicSafetyMessage* bsm){
             scheduleAt(simTime() + computeAsynchronousSendingTime(entMsgBInterval, type_SCH), it->second);
 
             //Statistics of this service
-            std::map<int,NetMetrics>::iterator itNetM = netMetricsEntA.begin();
-            itNetM = netMetricsEntA.insert (itNetM, std::pair<int,NetMetrics>(bsm->getSenderAddress(),netmetrics));
+            std::map<int,NetMetrics>::iterator itNetM = netMetricsEntB.begin();
+            itNetM = netMetricsEntB.insert (itNetM, std::pair<int,NetMetrics>(bsm->getSenderAddress(),netmetrics));
 
             //This could be outside but for effects of error control we willpu in the two coditions
             std::map<int,simtime_t>::iterator itBVS = lastBeaconVideoStream.begin();
@@ -659,7 +669,7 @@ void RSUApp::MaintenanceEntService(BasicSafetyMessage* bsm){
     itLBVS = lastBeaconVideoStream.find(bsm->getSenderAddress());
     if (itLBVS != lastBeaconVideoStream.end()) {
 
-        itLBVS->second = bsm->getTimestamp();
+        itLBVS->second = bsm->getTimestamp(); // update timestamp of the last beacon msg
 
         std::cout << "Sender Address: " << bsm->getSenderAddress() << endl;
         std::cout << "Service State Variable: " << bsm->getServiceState() << endl;
@@ -768,57 +778,54 @@ void RSUApp::finish() {
     recordScalar("generatedWSAs",generatedWSAs);
     recordScalar("receivedWSAs",receivedWSAs);
 
-    recordScalar("generatedWSAs",generatedWSAs);
-    recordScalar("receivedWSAs",receivedWSAs);
-
     //XXX stats
 
     std::map<int,NetMetrics>::iterator itStatsEntMsg = netMetricsEntA.begin();
     while (itStatsEntMsg != netMetricsEntA.end()) {
-        text = "generatedEntMsgA_"+std::to_string(myId);
+        text = "generatedEntMsg_"+std::to_string(Entertainment_A)+"_"+std::to_string(itStatsEntMsg->first);
         recordScalar(text.c_str(),itStatsEntMsg->second.generatedPackets);
-        text = "receivedEntMsgA_"+std::to_string(myId);
+        text = "receivedEntMsg_"+std::to_string(Entertainment_A)+"_"+std::to_string(itStatsEntMsg->first);
         recordScalar(text.c_str(),itStatsEntMsg->second.receivedPackets);
-        text = "delaySumEntMsgA_"+std::to_string(myId);
+        text = "delaySumEntMsg_"+std::to_string(Entertainment_A)+"_"+std::to_string(itStatsEntMsg->first);
         recordScalar(text.c_str(),itStatsEntMsg->second.delaySum);
-        text = "jitterSumEntMsgA_"+std::to_string(myId);
+        text = "jitterSumEntMsg_"+std::to_string(Entertainment_A)+"_"+std::to_string(itStatsEntMsg->first);
         recordScalar(text.c_str(),itStatsEntMsg->second.jitterSum);
-        text = "rxBytesSumEntMsgA_"+std::to_string(myId);
+        text = "rxBytesSumEntMsg_"+std::to_string(Entertainment_A)+"_"+std::to_string(itStatsEntMsg->first);
         recordScalar(text.c_str(),itStatsEntMsg->second.rxBytesSum);
-        text = "txBytesSumEntMsgA_"+std::to_string(myId);
+        text = "txBytesSumEntMsg_"+std::to_string(Entertainment_A)+"_"+std::to_string(itStatsEntMsg->first);
         recordScalar(text.c_str(),itStatsEntMsg->second.txBytesSum);
-        text = "timeRxFirstEntMsgA_"+std::to_string(myId);
+        text = "timeRxFirstEntMsg_"+std::to_string(Entertainment_A)+"_"+std::to_string(itStatsEntMsg->first);
         recordScalar(text.c_str(),itStatsEntMsg->second.timeRxFirst);
-        text = "timeRxLastEntMsgA_"+std::to_string(myId);
+        text = "timeRxLastEntMsg_"+std::to_string(Entertainment_A)+"_"+std::to_string(itStatsEntMsg->first);
         recordScalar(text.c_str(),itStatsEntMsg->second.timeRxLast);
-        text = "timeTxFirstEntMsgA_"+std::to_string(myId);
+        text = "timeTxFirstEntMsg_"+std::to_string(Entertainment_A)+"_"+std::to_string(itStatsEntMsg->first);
         recordScalar(text.c_str(),itStatsEntMsg->second.timeTxFirst);
-        text = "timeTxLastEntMsgA_"+std::to_string(myId);
+        text = "timeTxLastEntMsg_"+std::to_string(Entertainment_A)+"_"+std::to_string(itStatsEntMsg->first);
         recordScalar(text.c_str(),itStatsEntMsg->second.timeTxLast);
         itStatsEntMsg = netMetricsEntA.erase(itStatsEntMsg);
     }
 
     itStatsEntMsg = netMetricsEntB.begin();
     while (itStatsEntMsg != netMetricsEntB.end()) {
-        text = "generatedEntMsgB_"+std::to_string(myId);
+        text = "generatedEntMsg_"+std::to_string(Entertainment_B)+"_"+std::to_string(itStatsEntMsg->first);
         recordScalar(text.c_str(),itStatsEntMsg->second.generatedPackets);
-        text = "receivedEntMsgB_"+std::to_string(myId);
+        text = "receivedEntMsg_"+std::to_string(Entertainment_B)+"_"+std::to_string(itStatsEntMsg->first);
         recordScalar(text.c_str(),itStatsEntMsg->second.receivedPackets);
-        text = "delaySumEntMsgB_"+std::to_string(myId);
+        text = "delaySumEntMsg_"+std::to_string(Entertainment_B)+"_"+std::to_string(itStatsEntMsg->first);
         recordScalar(text.c_str(),itStatsEntMsg->second.delaySum);
-        text = "jitterSumEntMsgB_"+std::to_string(myId);
+        text = "jitterSumEntMsg_"+std::to_string(Entertainment_B)+"_"+std::to_string(itStatsEntMsg->first);
         recordScalar(text.c_str(),itStatsEntMsg->second.jitterSum);
-        text = "rxBytesSumEntMsgB_"+std::to_string(myId);
+        text = "rxBytesSumEntMs_"+std::to_string(Entertainment_B)+"_"+std::to_string(itStatsEntMsg->first);
         recordScalar(text.c_str(),itStatsEntMsg->second.rxBytesSum);
-        text = "txBytesSumEntMsgB_"+std::to_string(myId);
+        text = "txBytesSumEntMsg_"+std::to_string(Entertainment_B)+"_"+std::to_string(itStatsEntMsg->first);
         recordScalar(text.c_str(),itStatsEntMsg->second.txBytesSum);
-        text = "timeRxFirstEntMsgB_"+std::to_string(myId);
+        text = "timeRxFirstEntMsg_"+std::to_string(Entertainment_B)+"_"+std::to_string(itStatsEntMsg->first);
         recordScalar(text.c_str(),itStatsEntMsg->second.timeRxFirst);
-        text = "timeRxLastEntMsgB_"+std::to_string(myId);
+        text = "timeRxLastEntMsg_"+std::to_string(Entertainment_B)+"_"+std::to_string(itStatsEntMsg->first);
         recordScalar(text.c_str(),itStatsEntMsg->second.timeRxLast);
-        text = "timeTxFirstEntMsgB_"+std::to_string(myId);
+        text = "timeTxFirstEntMsg_"+std::to_string(Entertainment_B)+"_"+std::to_string(itStatsEntMsg->first);
         recordScalar(text.c_str(),itStatsEntMsg->second.timeTxFirst);
-        text = "timeTxLastEntMsgB_"+std::to_string(myId);
+        text = "timeTxLastEntMsg_"+std::to_string(Entertainment_B)+"_"+std::to_string(itStatsEntMsg->first);
         recordScalar(text.c_str(),itStatsEntMsg->second.timeTxLast);
         itStatsEntMsg = netMetricsEntB.erase(itStatsEntMsg);
     }
@@ -830,8 +837,6 @@ void RSUApp::finish() {
 RSUApp::~RSUApp() {
     cancelAndDelete(sendBeaconEvt);
     cancelAndDelete(sendWSAEvt);
-    cancelAndDelete(sendEntMsgAEvt);
-    cancelAndDelete(sendEntMsgBEvt);
     cancelAndDelete(serviceMaintEvt);
     findHost()->unsubscribe(mobilityStateChangedSignal, this);
 }
@@ -874,6 +879,7 @@ void RSUApp::checkAndTrackPacket(cMessage* msg) {
 
         if(netMetricsBSM.generatedPackets == 0){
             netMetricsBSM.timeTxFirst = simTime();
+            netMetricsBSM.timeTxLast = simTime();
         }
         else{
             netMetricsBSM.timeTxLast = simTime();
@@ -895,6 +901,7 @@ void RSUApp::checkAndTrackPacket(cMessage* msg) {
         if (itStatsEntMsg != netMetricsEntA.end()) {
             if(itStatsEntMsg->second.generatedPackets == 0){
                 itStatsEntMsg->second.timeTxFirst = simTime();
+                itStatsEntMsg->second.timeTxLast = simTime();
             }
             else{
                 itStatsEntMsg->second.timeTxLast = simTime();
@@ -913,6 +920,7 @@ void RSUApp::checkAndTrackPacket(cMessage* msg) {
         if (itStatsEntMsg != netMetricsEntB.end()) {
             if(itStatsEntMsg->second.generatedPackets == 0){
                 itStatsEntMsg->second.timeTxFirst = simTime();
+                itStatsEntMsg->second.timeTxLast = simTime();
             }
             else{
                 itStatsEntMsg->second.timeTxLast = simTime();

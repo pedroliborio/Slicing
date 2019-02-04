@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- generated on seg 28 jan 2019 18:01:13 -02 by Netedit Version 0.32.0
+<!-- generated on qui 31 jan 2019 16:13:21 -02 by Netedit Version 0.32.0
 <?xml version="1.0" encoding="UTF-8"?>
 
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/netconvertConfiguration.xsd">
@@ -28,7 +28,7 @@
 
 <net version="0.27" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/net_file.xsd">
 
-    <location netOffset="0.00,0.00" convBoundary="10.00,10.00,1000.00,10.00" origBoundary="-10000000000.00,-10000000000.00,10000000000.00,10000000000.00" projParameter="!"/>
+    <location netOffset="0.00,0.00" convBoundary="10.00,10.00,2000.00,10.00" origBoundary="-10000000000.00,-10000000000.00,10000000000.00,10000000000.00" projParameter="!"/>
 
     <edge id="edge0" from="gneJ0" to="gneJ1" priority="1" length="500.00">
         <lane id="edge0_0" index="0" speed="11.11" length="500.00" shape="10.00,-1.55 1000.00,-1.55"/>
@@ -38,6 +38,6 @@
     </edge>
 
     <junction id="gneJ0" type="dead_end" x="10.00" y="10.00" incLanes="" intLanes="" shape="10.00,9.95 10.00,-3.15"/>
-    <junction id="gneJ1" type="dead_end" x="1000.00" y="10.00" incLanes="edge0_0 edge0_1 edge0_2 edge0_3" intLanes="" shape="1000.00,-3.15 1000.00,9.95"/>
+    <junction id="gneJ1" type="dead_end" x="2000.00" y="10.00" incLanes="edge0_0 edge0_1 edge0_2 edge0_3" intLanes="" shape="2000.00,-3.15 2000.00,9.95"/>
 
 </net>
