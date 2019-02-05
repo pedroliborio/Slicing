@@ -266,6 +266,8 @@ void VehApp::handleLowerMsg(cMessage* msg) {
     ASSERT(wsm);
 
     if (BasicSafetyMessage* bsm = dynamic_cast<BasicSafetyMessage*>(wsm)) {
+
+
         if(netMetricsBSM.receivedPackets == 0) {
             netMetricsBSM.timeRxFirst = simTime();
         }
@@ -298,6 +300,7 @@ void VehApp::handleLowerMsg(cMessage* msg) {
 
             if(netMetricsEntA.receivedPackets == 0) {
                 netMetricsEntA.timeRxFirst = simTime();
+                ManageEntServiceState(); //Just received the first packet so turn the service status to receiving
             }
             else{
                 netMetricsEntA.timeRxLast = simTime();
@@ -327,6 +330,7 @@ void VehApp::handleLowerMsg(cMessage* msg) {
         if(entMsgB->getRcvAddress() == myId){
             if(netMetricsEntB.receivedPackets == 0) {
                 netMetricsEntB.timeRxFirst = simTime();
+                ManageEntServiceState(); //Just received the first packet so turn the service status to receiving
             }
             else{
                 netMetricsEntB.timeRxLast = simTime();
@@ -368,11 +372,8 @@ void VehApp::handleSelfMsg(cMessage* msg) {
         populateWSM(bsm, getSimulation()->getModuleByPath("rsu[0]")->getId());
         sendDown(bsm);
 
-        std::cout << "My Address " << bsm->getSenderAddress() << endl;
-        std::cout << "Service State Variable" << serviceState << endl;
-
-        ManageEntServiceState();
-
+        std::cout << "My Address: " << bsm->getSenderAddress() << endl;
+        std::cout << "Service State Variable: " << serviceState << endl;
 
         scheduleAt(simTime() + beaconInterval, sendBeaconEvt);
         break;
@@ -440,37 +441,42 @@ void VehApp::ManageEntServiceState(){
 
 void VehApp::finish() {
     std::string text;
+    std::string mypsid;
 
-    recordScalar("generatedWSMs",generatedWSMs);
-    recordScalar("receivedWSMs",receivedWSMs);
+    if (currentOfferedServiceId == WavePsid::Entertainment_A){
+        mypsid = std::to_string(WavePsid::Entertainment_A);
+    }
+    else {
+        mypsid = std::to_string(WavePsid::Entertainment_B);
+    }
+
+    //recordScalar("generatedWSMs",generatedWSMs);
+    //recordScalar("receivedWSMs",receivedWSMs);
 
     //XXX I modified this for best stats of BSM the another ones are untouched for now
-    text = "generatedBSM_"+std::to_string(myId);
+    text = "generatedBSM_"+mypsid+"_"+std::to_string(myId);
     recordScalar(text.c_str(), netMetricsBSM.generatedPackets);
-    text = "receivedBSM_"+std::to_string(myId);
+    text = "receivedBSM_"+mypsid+"_"+std::to_string(myId);
     recordScalar(text.c_str(), netMetricsBSM.receivedPackets);
-    text = "delaySumBSM_"+std::to_string(myId);
+    text = "delaySumBSM_"+mypsid+"_"+std::to_string(myId);
     recordScalar(text.c_str(),netMetricsBSM.delaySum);
-    text = "jitterSumBSM_"+std::to_string(myId);
+    text = "jitterSumBSM_"+mypsid+"_"+std::to_string(myId);
     recordScalar(text.c_str(),netMetricsBSM.jitterSum);
-    text = "rxBytesSumBSM_"+std::to_string(myId);
+    text = "rxBytesSumBSM_"+mypsid+"_"+std::to_string(myId);
     recordScalar(text.c_str(),netMetricsBSM.rxBytesSum);
-    text = "txBytesSumBSM_"+std::to_string(myId);
+    text = "txBytesSumBSM_"+mypsid+"_"+std::to_string(myId);
     recordScalar(text.c_str(),netMetricsBSM.txBytesSum);
-    text = "timeRxFirstBSM_"+std::to_string(myId);
+    text = "timeRxFirstBSM_"+mypsid+"_"+std::to_string(myId);
     recordScalar(text.c_str(),netMetricsBSM.timeRxFirst);
-    text = "timeRxLastBSM_"+std::to_string(myId);
+    text = "timeRxLastBSM_"+mypsid+"_"+std::to_string(myId);
     recordScalar(text.c_str(),netMetricsBSM.timeRxLast);
-    text = "timeTxFirstBSM_"+std::to_string(myId);
+    text = "timeTxFirstBSM_"+mypsid+"_"+std::to_string(myId);
     recordScalar(text.c_str(),netMetricsBSM.timeTxFirst);
-    text = "timeTxLastBSM_"+std::to_string(myId);
+    text = "timeTxLastBSM_"+mypsid+"_"+std::to_string(myId);
     recordScalar(text.c_str(),netMetricsBSM.timeTxLast);
 
-    recordScalar("generatedWSAs",generatedWSAs);
-    recordScalar("receivedWSAs",receivedWSAs);
-
-    recordScalar("generatedWSAs",generatedWSAs);
-    recordScalar("receivedWSAs",receivedWSAs);
+    //recordScalar("generatedWSAs",generatedWSAs);
+    //recordScalar("receivedWSAs",receivedWSAs);
 
     // XXX stats for entertainment msgs
     if (currentOfferedServiceId == WavePsid::Entertainment_A){
@@ -495,6 +501,8 @@ void VehApp::finish() {
         recordScalar(text.c_str(),netMetricsEntA.timeTxFirst);
         text = "timeTxLastEntMsg_"+std::to_string(Entertainment_A)+"_"+std::to_string(myId);
         recordScalar(text.c_str(),netMetricsEntA.timeTxLast);
+        text = "receivedNeighborEntMsg_"+std::to_string(Entertainment_A)+"_"+std::to_string(myId);
+        recordScalar(text.c_str(),(netMetricsEntA.receivedNeighborPackets+netMetricsEntB.receivedNeighborPackets)); //sum of neighbor packets of all services in the network
 
     }
     else{
@@ -518,6 +526,8 @@ void VehApp::finish() {
         recordScalar(text.c_str(),netMetricsEntB.timeTxFirst);
         text = "timeTxLastEntMsg_"+std::to_string(Entertainment_B)+"_"+std::to_string(myId);
         recordScalar(text.c_str(),netMetricsEntB.timeTxLast);
+        text = "receivedNeighborEntMsg_"+std::to_string(Entertainment_B)+"_"+std::to_string(myId);
+        recordScalar(text.c_str(),(netMetricsEntB.receivedNeighborPackets+netMetricsEntB.receivedNeighborPackets));
     }
 
     //FIXME record the another net statistics here!

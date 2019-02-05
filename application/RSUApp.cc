@@ -533,10 +533,30 @@ void RSUApp::onWSA(WaveServiceAdvertisment* wsa){
 void RSUApp::onBSM(BasicSafetyMessage* bsm){
 
     if(bsm->getServiceState() == WaveEntServiceState::REQUESTING){
-        InitializeEntService(bsm);
+
+        //Service should be initialized only one time
+        //This is necessary because the messages to initialize can be desynchronized over time
+        std::map<int,simtime_t>::iterator itLBVS = lastBeaconVideoStream.begin();
+        itLBVS = lastBeaconVideoStream.find(bsm->getSenderAddress());
+        if (itLBVS != lastBeaconVideoStream.end()) {
+            //this stream was already initialized!
+            std::cout << "Sender Address: " << bsm->getSenderAddress() << endl;
+            std::cout << "Service State Variable: " << bsm->getServiceState() << endl;
+            std::cout << "Service Already Initialized!" << endl;
+
+            MaintenanceEntService(bsm); // just perform maintenance
+        }
+        else{
+            //This vehicle not was find in the list of recent received beacons
+            //initialize service for it
+            InitializeEntService(bsm);
+        }
     }
     else{
         if(bsm->getServiceState() == WaveEntServiceState::RECEIVING){
+            std::cout << "Sender Address: " << bsm->getSenderAddress() << endl;
+            std::cout << "Service State Variable: " << bsm->getServiceState() << endl;
+            std::cout << "Vehicle Already Changed it status to RECEIVING!" << endl;
             MaintenanceEntService(bsm);
         }
         else{
@@ -563,7 +583,6 @@ void RSUApp::onEntMsgB(EntertainmentMessageB* entMsgB){
  */
 
 void RSUApp::InitializeEntService(BasicSafetyMessage* bsm){
-
     std::cout << "initializing service on RSU" << endl;
 
     std::string msgText;
@@ -701,8 +720,7 @@ void RSUApp::TimeOutEntService(){
         if (serviceTimeOut >= 4.0) {
 
             std::cout << "Service Time Out: " << serviceTimeOut << endl;
-            std::cout << "Vehicle ID: " << itr->first << endl;
-            std::cout << "Finalizing service instance: " << endl;
+            std::cout << "Finalizing service instance for Vehicle ID: " << itr->first << endl;
 
             std::map<int,std::fstream>::iterator itVSM = videoStreamMap.begin();
             itVSM = videoStreamMap.find(itr->first);
@@ -750,8 +768,8 @@ void RSUApp::SendDataEntService(WaveShortMessage* wsm, uint32_t size){
 void RSUApp::finish() {
     std::string text;
 
-    recordScalar("generatedWSMs",generatedWSMs);
-    recordScalar("receivedWSMs",receivedWSMs);
+    //recordScalar("generatedWSMs",generatedWSMs);
+    //recordScalar("receivedWSMs",receivedWSMs);
 
     //XXX I modified this for best stats of BSM the another ones are untouched for now
     text = "generatedBSM_"+std::to_string(myId);
@@ -775,8 +793,8 @@ void RSUApp::finish() {
     text = "timeTxLastBSM_"+std::to_string(myId);
     recordScalar(text.c_str(),netMetricsBSM.timeTxLast);
 
-    recordScalar("generatedWSAs",generatedWSAs);
-    recordScalar("receivedWSAs",receivedWSAs);
+    //recordScalar("generatedWSAs",generatedWSAs);
+    //recordScalar("receivedWSAs",receivedWSAs);
 
     //XXX stats
 
