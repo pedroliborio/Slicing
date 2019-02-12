@@ -68,11 +68,11 @@ void VehApp::initialize(int stage) {
 
         sendEntMsg = par("sendEntMsg").boolValue();
 
-        entMsgADataLengthBits = par("entMsgADataLengthBits").longValue();
+        entMsgADataLengthBytes = par("entMsgADataLengthBytes").longValue();
         entMsgAUserPriority = par("entMsgAUserPriority").longValue();
         entMsgAInterval = par("entMsgAInterval").doubleValue();
 
-        entMsgBDataLengthBits = par("entMsgBDataLengthBits").longValue();
+        entMsgBDataLengthBytes = par("entMsgBDataLengthBytes").longValue();
         entMsgBUserPriority = par("entMsgBUserPriority").longValue();
         entMsgBInterval = par("entMsgBInterval").doubleValue();
 

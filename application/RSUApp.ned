@@ -48,11 +48,11 @@ simple RSUApp like IBaseApplLayer
         //send Entertainment Messages
         bool sendEntMsg = default(false);
         //Entertainment Message A
-        int  entMsgADataLengthBits = default(1500bit) @unit(bit); //256 kbits 
+        int  entMsgADataLengthBytes = default(1500byte) @unit(byte); //256 kbits 
         int  entMsgAUserPriority = default(4); //De acordo com a UP definida no padrão 802.11p para video
         double entMsgAInterval = default(0.4s) @unit(s); //enviados a cada 40ms
         //Entertainment Message B
-        int  entMsgBDataLengthBits = default(1500bit) @unit(bit); //512 kbits
+        int  entMsgBDataLengthBytes = default(1500byte) @unit(byte); //512 kbits
         int  entMsgBUserPriority = default(4); //De acordo com a UP definida no padrão 802.11p para video
         double entMsgBInterval = default(0.4s) @unit(s); //enviados a cada 40ms
          

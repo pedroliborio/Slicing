@@ -48,11 +48,11 @@ simple VehApp like IBaseApplLayer
         //send Entertainment Messages
         bool sendEntMsg = default(false);
         //Entertainment Message A
-        int  entMsgADataLengthBits = default(1500bit) @unit(bit); //This isnot being used for now 
+        int  entMsgADataLengthBytes = default(1500 byte) @unit(byte); //This isnot being used for now 
         int  entMsgAUserPriority = default(4); //De acordo com a UP definida no padrão 802.11p para video
         double entMsgAInterval = default(0.4s) @unit(s); //enviados a cada 0.4 seg
         //Entertainment Message B
-        int  entMsgBDataLengthBits = default(1500bit) @unit(bit); //This is not being used for now
+        int  entMsgBDataLengthBytes = default(1500 byte) @unit(byte); //This is not being used for now
         int  entMsgBUserPriority = default(4); //De acordo com a UP definida no padrão 802.11p para video
         double entMsgBInterval = default(0.4s) @unit(s); //enviados a cada 0.4 seg 
         

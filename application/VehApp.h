@@ -32,6 +32,11 @@
 #include "veins/modules/messages/EntertainmentMessageA_m.h"
 #include "veins/modules/messages/EntertainmentMessageB_m.h"
 
+#include "support/Support.h"
+#include "support/NetMetrics.h"
+
+using namespace Support;
+
 using Veins::TraCIMobility;
 using Veins::TraCICommandInterface;
 using Veins::AnnotationManager;
@@ -60,34 +65,6 @@ using Veins::AnnotationManagerAccess;
 class VehApp : public BaseApplLayer {
 
     public:
-        enum WavePsid {
-            Entertainment_A = 40,
-            Entertainment_B = 41
-        };
-
-        enum WaveEntServiceState{
-            REQUESTING = 0,
-            RECEIVING = 1
-        };
-
-        //XXX Network Metrics Statistics
-        struct t_NetMetrics{
-            simtime_t delaySum = SimTime(0);
-            simtime_t jitterSum = SimTime(0);
-            simtime_t lastDelay = SimTime(0);
-            simtime_t timeRxFirst = SimTime(0);
-            simtime_t timeRxLast = SimTime(0);
-            simtime_t timeTxFirst = SimTime(0);
-            simtime_t timeTxLast = SimTime(0);
-            uint32_t txBytesSum = 0;
-            uint32_t rxBytesSum = 0;
-            uint32_t generatedPackets = 0;
-            uint32_t receivedPackets = 0;
-            uint32_t receivedNeighborPackets = 0;
-
-        };
-
-        typedef struct t_NetMetrics NetMetrics;
         ~VehApp();
         virtual void initialize(int stage);
         virtual void finish();
@@ -208,12 +185,12 @@ class VehApp : public BaseApplLayer {
         //XXX For now we defining generic WSM for Entertainment not necessary a video
         //these parameters also can be given on the .ini file
         /*ESM A (data) settings*/
-        uint32_t  entMsgADataLengthBits;
+        uint32_t  entMsgADataLengthBytes;
         uint32_t  entMsgAUserPriority;
         simtime_t entMsgAInterval;
 
         /*ESM B (data) settings*/
-        uint32_t  entMsgBDataLengthBits;
+        uint32_t  entMsgBDataLengthBytes;
         uint32_t  entMsgBUserPriority;
         simtime_t entMsgBInterval;
 

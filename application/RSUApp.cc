@@ -70,11 +70,11 @@ void RSUApp::initialize(int stage) {
 
         sendEntMsg = par("sendEntMsg").boolValue();
 
-        entMsgADataLengthBits = par("entMsgADataLengthBits").longValue();
+        entMsgADataLengthBytes = par("entMsgADataLengthBytes").longValue();
         entMsgAUserPriority = par("entMsgAUserPriority").longValue();
         entMsgAInterval = par("entMsgAInterval").doubleValue();
 
-        entMsgBDataLengthBits = par("entMsgBDataLengthBits").longValue();
+        entMsgBDataLengthBytes = par("entMsgBDataLengthBytes").longValue();
         entMsgBUserPriority = par("entMsgBUserPriority").longValue();
         entMsgBInterval = par("entMsgBInterval").doubleValue();
 
@@ -275,25 +275,26 @@ void RSUApp::handleLowerMsg(cMessage* msg) {
 
     if (BasicSafetyMessage* bsm = dynamic_cast<BasicSafetyMessage*>(wsm)) {
 
-        if(netMetricsBSM.receivedPackets == 0) {
-            netMetricsBSM.timeRxFirst = simTime();
+        if(netMetricsBSM.getRxPackets() == 0) {
+            netMetricsBSM.setTimeRxFirst(simTime());
+            netMetricsBSM.setTimeRxLast(simTime());
         }
         else{
-            netMetricsBSM.timeRxLast = simTime();
+            netMetricsBSM.setTimeRxLast(simTime());
         }
 
-        netMetricsBSM.receivedPackets++;
-        netMetricsBSM.rxBytesSum += bsm->getByteLength();
+        netMetricsBSM.setRxPackets(netMetricsBSM.getRxPackets()+1);
+        netMetricsBSM.setRxBytes( netMetricsBSM.getRxBytes() + bsm->getByteLength());
         delay = simTime() - bsm->getTimestamp();
-        netMetricsBSM.delaySum += delay;
-        jitter = netMetricsBSM.lastDelay - delay;
-        netMetricsBSM.lastDelay = delay;
+        netMetricsBSM.setDelaySum( netMetricsBSM.getDelaySum() + delay);
+        jitter = netMetricsBSM.getLastDelay() - delay;
+        netMetricsBSM.setLastDelay( delay );
 
         if (jitter > SimTime(0)) {
-            netMetricsBSM.jitterSum += jitter;
+            netMetricsBSM.setJitterSum( netMetricsBSM.getJitterSum() + jitter);
         }
         else{
-            netMetricsBSM.jitterSum -= jitter;
+            netMetricsBSM.setJitterSum( netMetricsBSM.getJitterSum() - jitter);
         }
         onBSM(bsm);
     }
@@ -305,29 +306,30 @@ void RSUApp::handleLowerMsg(cMessage* msg) {
         //XXX Only handle msgs destinated to me
         if (entMsgA->getRcvAddress() == myId) {
 
-            std::map<int, NetMetrics>::iterator itStatsEntMsg = netMetricsEntA.begin();
+            std::map<int, NetMetrics*>::iterator itStatsEntMsg = netMetricsEntA.begin();
             itStatsEntMsg = netMetricsEntA.find(entMsgA->getSenderAddress());
 
             if (itStatsEntMsg != netMetricsEntA.end()) {
 
-                if (itStatsEntMsg->second.receivedPackets == 0) {
-                    itStatsEntMsg->second.timeRxFirst = simTime();
+                if (itStatsEntMsg->second->getRxPackets() == 0) {
+                    itStatsEntMsg->second->setTimeRxFirst(simTime());
+                    itStatsEntMsg->second->setTimeRxLast(simTime());
                 }
                 else {
-                    itStatsEntMsg->second.timeRxLast = simTime();
+                    itStatsEntMsg->second->setTimeRxLast(simTime());
                 }
 
-                itStatsEntMsg->second.receivedPackets++;
-                itStatsEntMsg->second.rxBytesSum += entMsgA->getByteLength();
+                itStatsEntMsg->second->setRxPackets( itStatsEntMsg->second->getRxPackets() + 1 );
+                itStatsEntMsg->second->setRxBytes( itStatsEntMsg->second->getRxBytes() + entMsgA->getByteLength());
                 delay = simTime() - entMsgA->getTimestamp();
-                itStatsEntMsg->second.delaySum +=  delay;
-                jitter = itStatsEntMsg->second.lastDelay - delay;
-                itStatsEntMsg->second.lastDelay = delay;
+                itStatsEntMsg->second->setDelaySum( itStatsEntMsg->second->getDelaySum() + delay);
+                jitter = itStatsEntMsg->second->getLastDelay() - delay;
+                itStatsEntMsg->second->setLastDelay( delay );
                 if (jitter > SimTime(0)) {
-                    itStatsEntMsg->second.jitterSum += jitter;
+                    itStatsEntMsg->second->setJitterSum( itStatsEntMsg->second->getJitterSum( ) + jitter);
                 }
                 else{
-                    itStatsEntMsg->second.jitterSum -= jitter;
+                    itStatsEntMsg->second->setJitterSum( itStatsEntMsg->second->getJitterSum( ) - jitter);
                 }
 
             }
@@ -335,47 +337,48 @@ void RSUApp::handleLowerMsg(cMessage* msg) {
             onEntMsgA(entMsgA);
         }
         else{
-            std::map<int, NetMetrics>::iterator itStatsEntMsg = netMetricsEntA.begin();
+            std::map<int, NetMetrics*>::iterator itStatsEntMsg = netMetricsEntA.begin();
             itStatsEntMsg = netMetricsEntA.find(entMsgA->getSenderAddress());
-            itStatsEntMsg->second.receivedNeighborPackets++;
+            itStatsEntMsg->second->setRxNeighborPackets( itStatsEntMsg->second->getRxNeighborPackets() + 1 );
         }
     }
     else if (EntertainmentMessageB* entMsgB = dynamic_cast<EntertainmentMessageB*>(wsm)) {
         //XXX Only handle msgs destinated to me
         if (entMsgB->getRcvAddress() == myId) {
 
-            std::map<int, NetMetrics>::iterator itStatsEntMsg = netMetricsEntB.begin();
+            std::map<int, NetMetrics*>::iterator itStatsEntMsg = netMetricsEntB.begin();
             itStatsEntMsg = netMetricsEntB.find(entMsgB->getSenderAddress());
 
             if (itStatsEntMsg != netMetricsEntB.end()) {
 
-                if (itStatsEntMsg->second.receivedPackets == 0) {
-                    itStatsEntMsg->second.timeRxFirst = simTime();
+                if (itStatsEntMsg->second->getRxPackets() == 0) {
+                    itStatsEntMsg->second->setTimeRxFirst( simTime() );
+                    itStatsEntMsg->second->setTimeRxLast( simTime() );
                 }
                 else {
-                    itStatsEntMsg->second.timeRxLast = simTime();
+                    itStatsEntMsg->second->setTimeRxLast( simTime() );
                 }
 
-                itStatsEntMsg->second.receivedPackets++;
-                itStatsEntMsg->second.rxBytesSum += entMsgB->getByteLength();
+                itStatsEntMsg->second->setRxPackets( itStatsEntMsg->second->getRxPackets() + 1 );
+                itStatsEntMsg->second->setRxBytes( itStatsEntMsg->second->getRxBytes() + entMsgB->getByteLength() );
                 delay = simTime() - entMsgB->getTimestamp();
-                itStatsEntMsg->second.delaySum +=  delay;
-                jitter = itStatsEntMsg->second.lastDelay - delay;
-                itStatsEntMsg->second.lastDelay = delay;
+                itStatsEntMsg->second->setDelaySum( itStatsEntMsg->second->getDelaySum() + delay);
+                jitter = itStatsEntMsg->second->getLastDelay() - delay;
+                itStatsEntMsg->second->setLastDelay( delay );
                 if (jitter > SimTime(0)) {
-                    itStatsEntMsg->second.jitterSum += jitter;
+                    itStatsEntMsg->second->setJitterSum( itStatsEntMsg->second->getJitterSum() + jitter );
                 }
                 else{
-                    itStatsEntMsg->second.jitterSum -= jitter;
+                    itStatsEntMsg->second->setJitterSum( itStatsEntMsg->second->getJitterSum() - jitter );
                 }
 
             }
             onEntMsgB(entMsgB);
         }
         else{
-            std::map<int, NetMetrics>::iterator itStatsEntMsg = netMetricsEntB.begin();
+            std::map<int, NetMetrics*>::iterator itStatsEntMsg = netMetricsEntB.begin();
             itStatsEntMsg = netMetricsEntB.find(entMsgB->getSenderAddress());
-            itStatsEntMsg->second.receivedNeighborPackets++;
+            itStatsEntMsg->second->setRxNeighborPackets( itStatsEntMsg->second->getRxNeighborPackets() + 1 );
         }
     }
     else {
@@ -413,7 +416,9 @@ void RSUApp::handleSelfMsg(cMessage* msg) {
         itVSM = videoStreamMap.find(vehID);
         if (itVSM != videoStreamMap.end()) {
 
-            itVSM->second >> videoFrameSize;
+            //FIXME Changed to testes in packet size and frequency o data service
+            //itVSM->second >> videoFrameSize;
+            videoFrameSize = entMsgADataLengthBytes;
 
             numFragments = std::floor( (videoFrameSize / maximumTransUnit) );
             restFragmentSize = videoFrameSize % maximumTransUnit;
@@ -459,12 +464,13 @@ void RSUApp::handleSelfMsg(cMessage* msg) {
         int i, numFragments;
 
         std::cout << "RSU: Sending a Video Frame B" << endl;
-
         std::map<int,std::fstream>::iterator itVSM = videoStreamMap.begin();
         itVSM = videoStreamMap.find(vehID);
         if (itVSM != videoStreamMap.end()) {
 
-            itVSM->second >> videoFrameSize;
+            //FIXME Changed to testes in packet size and frequency o data service
+            //itVSM->second >> videoFrameSize;
+            videoFrameSize = entMsgBDataLengthBytes;
 
             numFragments = std::floor( (videoFrameSize / maximumTransUnit) );
             restFragmentSize = videoFrameSize % maximumTransUnit;
@@ -525,8 +531,6 @@ void RSUApp::onWSA(WaveServiceAdvertisment* wsa){
 //        currentOfferedServiceId = wsa->getPsid();
 //        currentServiceChannel = (Channels::ChannelNumber) wsa->getTargetChannel();
 //        currentServiceDescription = wsa->getServiceDescription();
-
-
 
 }
 
@@ -606,12 +610,16 @@ void RSUApp::InitializeEntService(BasicSafetyMessage* bsm){
         std::map<int,cMessage*>::iterator it = timersVideoStreamMap.begin();
         it = timersVideoStreamMap.insert (it, std::pair<int,cMessage*>(bsm->getSenderAddress(),
                 new cMessage(std::to_string(bsm->getSenderAddress()).c_str(), SEND_ENT_A_EVT) ));
-        mac->changeServiceChannel(Channels::SCH1);
+
+        //mac->changeServiceChannel(Channels::SCH1);
+        //FIXME this need to be improved because information of the slice will also inform it
+
         scheduleAt(simTime() + computeAsynchronousSendingTime(entMsgAInterval, type_SCH), it->second);
 
         //Statistics of this service
-        std::map<int,NetMetrics>::iterator itNetM = netMetricsEntA.begin();
-        itNetM = netMetricsEntA.insert (itNetM, std::pair<int,NetMetrics>(bsm->getSenderAddress(),netmetrics));
+        std::map<int,NetMetrics*>::iterator itNetM = netMetricsEntA.begin();
+        itNetM = netMetricsEntA.insert (itNetM, std::pair<int,NetMetrics*>(bsm->getSenderAddress(),
+                new NetMetrics() ));
 
         //This could be outside but for effects of error control we willpu in the two coditions
         std::map<int,simtime_t>::iterator itBVS = lastBeaconVideoStream.begin();
@@ -630,12 +638,13 @@ void RSUApp::InitializeEntService(BasicSafetyMessage* bsm){
             std::map<int,cMessage*>::iterator it = timersVideoStreamMap.begin();
             it = timersVideoStreamMap.insert (it, std::pair<int,cMessage*>( bsm->getSenderAddress(),
                     new cMessage(std::to_string(bsm->getSenderAddress()).c_str(), SEND_ENT_B_EVT) ));
-            mac->changeServiceChannel(Channels::SCH1);
+            //mac->changeServiceChannel(Channels::SCH1);
             scheduleAt(simTime() + computeAsynchronousSendingTime(entMsgBInterval, type_SCH), it->second);
 
             //Statistics of this service
-            std::map<int,NetMetrics>::iterator itNetM = netMetricsEntB.begin();
-            itNetM = netMetricsEntB.insert (itNetM, std::pair<int,NetMetrics>(bsm->getSenderAddress(),netmetrics));
+            std::map<int,NetMetrics*>::iterator itNetM = netMetricsEntB.begin();
+            itNetM = netMetricsEntB.insert (itNetM, std::pair<int,NetMetrics*>(bsm->getSenderAddress(),
+                    new NetMetrics() ));
 
             //This could be outside but for effects of error control we willpu in the two coditions
             std::map<int,simtime_t>::iterator itBVS = lastBeaconVideoStream.begin();
@@ -895,16 +904,16 @@ void RSUApp::checkAndTrackPacket(cMessage* msg) {
     if (BasicSafetyMessage* bsm = dynamic_cast<BasicSafetyMessage*>(msg)) {
         DBG_APP << "sending down a BSM" << std::endl;
 
-        if(netMetricsBSM.generatedPackets == 0){
-            netMetricsBSM.timeTxFirst = simTime();
-            netMetricsBSM.timeTxLast = simTime();
+        if(netMetricsBSM.getTxPackets() == 0){
+            netMetricsBSM.setTimeTxFirst( simTime() );
+            netMetricsBSM.setTimeTxLast( simTime() );
         }
         else{
-            netMetricsBSM.timeTxLast = simTime();
+            netMetricsBSM.setTimeTxLast( simTime() );
         }
 
-        netMetricsBSM.txBytesSum += bsm->getByteLength();
-        netMetricsBSM.generatedPackets++;
+        netMetricsBSM.setTxBytes( netMetricsBSM.getTxBytes() + bsm->getByteLength());
+        netMetricsBSM.setTxPackets( netMetricsBSM.getTxPackets() + 1 );
     }
     else if (dynamic_cast<WaveServiceAdvertisment*>(msg)) {
         DBG_APP << "sending down a WSA" << std::endl;
@@ -914,38 +923,38 @@ void RSUApp::checkAndTrackPacket(cMessage* msg) {
 
         std::cout << "Sending down a esm A to Vehicle: " << std::to_string(entMsgA->getRcvAddress()) << std::endl;
 
-        std::map<int,NetMetrics>::iterator itStatsEntMsg = netMetricsEntA.begin();
+        std::map<int,NetMetrics*>::iterator itStatsEntMsg = netMetricsEntA.begin();
         itStatsEntMsg = netMetricsEntA.find(entMsgA->getRcvAddress());
         if (itStatsEntMsg != netMetricsEntA.end()) {
-            if(itStatsEntMsg->second.generatedPackets == 0){
-                itStatsEntMsg->second.timeTxFirst = simTime();
-                itStatsEntMsg->second.timeTxLast = simTime();
+            if(itStatsEntMsg->second->getTxPackets() == 0){
+                itStatsEntMsg->second->setTimeTxFirst( simTime() );
+                itStatsEntMsg->second->setTimeTxLast( simTime() );
             }
             else{
-                itStatsEntMsg->second.timeTxLast = simTime();
+                itStatsEntMsg->second->setTimeTxLast( simTime() );
             }
 
-            itStatsEntMsg->second.txBytesSum += entMsgA->getByteLength();
-            itStatsEntMsg->second.generatedPackets++;
+            itStatsEntMsg->second->setTxBytes( itStatsEntMsg->second->getTxBytes() + entMsgA->getByteLength() );
+            itStatsEntMsg->second->setTxPackets( itStatsEntMsg->second->getTxPackets() + 1);
         }
     }
     else if (EntertainmentMessageB* entMsgB = dynamic_cast<EntertainmentMessageB*>(msg)) {
 
         std::cout << "Sending down a esm B to vehicle: " << std::to_string(entMsgB->getRcvAddress()) << std::endl;
 
-        std::map<int,NetMetrics>::iterator itStatsEntMsg = netMetricsEntB.begin();
+        std::map<int,NetMetrics*>::iterator itStatsEntMsg = netMetricsEntB.begin();
         itStatsEntMsg = netMetricsEntB.find(entMsgB->getRcvAddress());
         if (itStatsEntMsg != netMetricsEntB.end()) {
-            if(itStatsEntMsg->second.generatedPackets == 0){
-                itStatsEntMsg->second.timeTxFirst = simTime();
-                itStatsEntMsg->second.timeTxLast = simTime();
+            if(itStatsEntMsg->second->getTxPackets() == 0){
+                itStatsEntMsg->second->setTimeTxFirst( simTime() );
+                itStatsEntMsg->second->setTimeTxLast( simTime() );
             }
             else{
-                itStatsEntMsg->second.timeTxLast = simTime();
+                itStatsEntMsg->second->setTimeTxLast( simTime() );
             }
 
-            itStatsEntMsg->second.txBytesSum += entMsgB->getByteLength();
-            itStatsEntMsg->second.generatedPackets++;
+            itStatsEntMsg->second->setTxBytes( itStatsEntMsg->second->getTxBytes() + entMsgB->getByteLength() );
+            itStatsEntMsg->second->setTxPackets(itStatsEntMsg->second->getTxPackets() + 1 );
         }
 
     }
