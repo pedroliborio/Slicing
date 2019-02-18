@@ -83,6 +83,14 @@ double NetMetrics::Compute_MeanRxThroughput (void) {
     }
 }
 
+double NetMetrics::Compute_TxTimeOfService (void){
+    return (timeTxLast - timeTxFirst).dbl();
+}
+
+double NetMetrics::Compute_RxTimeOfService (void){
+    return (timeRxLast - timeRxFirst).dbl();
+}
+
 const simtime_t& NetMetrics::getDelaySum() const {
     return delaySum;
 }

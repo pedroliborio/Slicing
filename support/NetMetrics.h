@@ -38,6 +38,8 @@ class NetMetrics {
             double Compute_MeanRxPacketSize (void);
             double Compute_MeanTxThroughput (void);
             double Compute_MeanRxThroughput (void);
+            double Compute_TxTimeOfService (void);
+            double Compute_RxTimeOfService (void);
             const simtime_t& getDelaySum() const;
             void setDelaySum(const simtime_t& delaySum);
             const simtime_t& getJitterSum() const;

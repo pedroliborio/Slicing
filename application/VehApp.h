@@ -62,6 +62,9 @@ using Veins::AnnotationManagerAccess;
  * @see PhyLayer80211p
  * @see Decider80211p
  */
+
+int count = 0;
+
 class VehApp : public BaseApplLayer {
 
     public:

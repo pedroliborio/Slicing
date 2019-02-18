@@ -35,6 +35,10 @@
 #include "support/Support.h"
 #include "support/NetMetrics.h"
 
+
+#include <iomanip>
+#include <limits>
+
 using namespace Support;
 
 using Veins::TraCIMobility;
@@ -64,6 +68,9 @@ using Veins::AnnotationManagerAccess;
  * @see PhyLayer80211p
  * @see Decider80211p
  */
+
+int cont = 0;
+
 class RSUApp : public BaseApplLayer {
 
     public:
@@ -161,6 +168,8 @@ class RSUApp : public BaseApplLayer {
         virtual void TimeOutEntService();
 
     protected:
+
+
 
         /* pointers ill be set when used with TraCIMobility */
         TraCIMobility* mobility;
