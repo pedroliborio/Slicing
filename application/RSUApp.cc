@@ -124,6 +124,7 @@ void RSUApp::initialize(int stage) {
             }
 
             if (sendBeacons) {
+                //XXX Added a little time to send the first beacons respecting the dessincronization
                 scheduleAt(firstBeacon, sendBeaconEvt);
             }
 

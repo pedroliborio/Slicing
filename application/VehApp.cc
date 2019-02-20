@@ -126,7 +126,7 @@ void VehApp::initialize(int stage) {
             }
 
             if (sendBeacons) {
-                scheduleAt(firstBeacon, sendBeaconEvt);
+                scheduleAt(firstBeacon+SimTime(5.0), sendBeaconEvt);
             }
 
         }
@@ -360,7 +360,7 @@ void VehApp::handleLowerMsg(cMessage* msg) {
             }
         }
         else{
-            netMetricsEntB.setRxPackets(netMetricsEntB.getRxPackets() + 1); // SCH packets that not are adressed to me
+            netMetricsEntB.setRxNeighborPackets(netMetricsEntB.getRxNeighborPackets() + 1); // SCH packets that not are adressed to me
         }
     }
     else {
