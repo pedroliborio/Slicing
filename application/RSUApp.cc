@@ -749,7 +749,7 @@ void RSUApp::TimeOutEntService(int senderAddress, int psid){
         videoStreamMap.erase (itVSM); //remove do map
     }
     else{
-        cRuntimeError("Vehicle ID does not in list of video stream. ", std::to_string(senderAddress), std::to_string(psid) );
+        cRuntimeError("Vehicle ID does not in list of video stream.");
     }
 
     std::map<int,cMessage*>::iterator itTimerVSM = timersVideoStreamMap.begin();
@@ -763,7 +763,7 @@ void RSUApp::TimeOutEntService(int senderAddress, int psid){
         timersVideoStreamMap.erase (itTimerVSM); //remove do map
     }
     else{
-        cRuntimeError("Vehicle ID does not in list of schedule messages. ", std::to_string(senderAddress), std::to_string(psid) );
+        cRuntimeError("Vehicle ID does not in list of video stream. ");
     }
 
 }
