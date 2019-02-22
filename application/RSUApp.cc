@@ -596,6 +596,11 @@ void RSUApp::onEntMsgB(EntertainmentMessageB* entMsgB){
  */
 
 void RSUApp::InitializeEntService(int senderAddress, int psid){
+
+    //XXX Since this module is called by another module, this is necessary
+    //@see 4.12 Direct Method Calls Between Modules -  Simulation Manual
+    Enter_Method_Silent();
+
     std::cout << "initializing service on RSU" << endl;
 
     std::string msgText;
@@ -728,6 +733,10 @@ void RSUApp::MaintenanceEntService(BasicSafetyMessage* bsm){
  * because vehicle will get in coverage of the subsequent RSU.
  */
 void RSUApp::TimeOutEntService(int senderAddress, int psid){
+
+    //XXX Since this module is called by another module, this is necessary
+    //@see 4.12 Direct Method Calls Between Modules -  Simulation Manual
+    Enter_Method_Silent();
 
     std::cout << "Time Now: " << simTime() << endl;
     std::cout << "Finalizing service instance for Vehicle ID: " << senderAddress << endl;

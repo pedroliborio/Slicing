@@ -437,17 +437,15 @@ void VehApp::InitializeEntService(){
 
     //FIXME For now we dont use control packets to initialize services
     //Just get the RSU pointer and initialize the service once a vehicle spawn on simulation
-    RSUApp *rsuApp;
-    rsuApp = FindModule<RSUApp*>::findSubModule(getParentModule());
 
-    if (FindModule<RSUApp*>::findSubModule(getParentModule())) {
-        RSUApp *rsuApp;
-        rsuApp = FindModule<RSUApp*>::findSubModule(getParentModule());
-        rsuApp->InitializeEntService(myId, currentOfferedServiceId);
-    }
-    else{
+    RSUApp *rsuApp = check_and_cast<RSUApp*>(getSimulation()->getModuleByPath("rsu[0].appl"));
+
+    if(rsuApp == NULL) {
         std::cout <<" Not achieve initialization" << endl;
         exit(0);
+    }
+    else{
+        rsuApp->InitializeEntService(myId, currentOfferedServiceId);
     }
 
     //serviceState = WaveEntServiceState::REQUESTING; // set service state to requesting
