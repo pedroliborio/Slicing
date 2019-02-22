@@ -31,6 +31,7 @@
 //XXX My Includes
 #include "veins/modules/messages/EntertainmentMessageA_m.h"
 #include "veins/modules/messages/EntertainmentMessageB_m.h"
+#include "RSUApp.h"
 
 #include "support/Support.h"
 #include "support/NetMetrics.h"
@@ -62,8 +63,6 @@ using Veins::AnnotationManagerAccess;
  * @see PhyLayer80211p
  * @see Decider80211p
  */
-
-int count = 0;
 
 class VehApp : public BaseApplLayer {
 

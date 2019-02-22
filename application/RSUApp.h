@@ -69,7 +69,6 @@ using Veins::AnnotationManagerAccess;
  * @see Decider80211p
  */
 
-int cont = 0;
 
 class RSUApp : public BaseApplLayer {
 
@@ -88,6 +87,10 @@ class RSUApp : public BaseApplLayer {
             SEND_ENT_B_EVT,
             SERVICE_MAINTENANCE_EVT //timer for maintenance of the services
         };
+
+        //XXX My Methods
+        virtual void InitializeEntService(int senderAddress, int psid);
+        virtual void TimeOutEntService(int senderAddress, int psid);
 
     protected:
 
@@ -163,9 +166,9 @@ class RSUApp : public BaseApplLayer {
         virtual void onEntMsgB(EntertainmentMessageB* entMsgB);
 
         virtual void SendDataEntService(WaveShortMessage* wsm, uint32_t size);
-        virtual void InitializeEntService(BasicSafetyMessage* bsm);
+        //virtual void InitializeEntService(BasicSafetyMessage* bsm);
         virtual void MaintenanceEntService(BasicSafetyMessage* bsm);
-        virtual void TimeOutEntService();
+        //virtual void TimeOutEntService();
 
     protected:
 

@@ -140,7 +140,7 @@ void RSUApp::initialize(int stage) {
 
         std::cout <<"RSU ID RSU: "<< myId << endl;
         //XXX Schedule Maintenance of service Event
-        scheduleAt(simTime()+serviceMaintInterval, serviceMaintEvt);
+        //scheduleAt(simTime()+serviceMaintInterval, serviceMaintEvt);
         //findHost()->getDisplayString().updateWith("r=500,green");
 
     }
@@ -439,11 +439,6 @@ void RSUApp::handleSelfMsg(cMessage* msg) {
                 std::cout << "Fragment Timestamp: " << entMsgA->getTimestamp() << endl;
                 std::cout << "Fragment Size: " << entMsgA->getByteLength() << "bytes." << endl;
 
-                entMsgA->setSerial(cont);
-                //FIXME
-                std::cout << "------ CONTAdor RSU ----------" << (cont++) << endl;
-
-
                 sendDown(entMsgA);
             }
 
@@ -454,9 +449,6 @@ void RSUApp::handleSelfMsg(cMessage* msg) {
                 std::cout << "Fragment Timestamp: " << entMsgA->getTimestamp() << endl;
                 std::cout << "Fragment Size: " << entMsgA->getByteLength() << "bytes." << endl;
 
-                entMsgA->setSerial(cont);
-                //FIXME
-                std::cout << "------ CONTAdor RSU ----------" << (cont++) << endl;
                 sendDown(entMsgA);
             }
 
@@ -526,7 +518,8 @@ void RSUApp::handleSelfMsg(cMessage* msg) {
         break;
     }
     case SERVICE_MAINTENANCE_EVT: {
-        TimeOutEntService();
+        //FIXME
+        //TimeOutEntService();
         scheduleAt(simTime()+serviceMaintInterval, serviceMaintEvt);
         break;
     }
@@ -568,7 +561,8 @@ void RSUApp::onBSM(BasicSafetyMessage* bsm){
         else{
             //This vehicle not was find in the list of recent received beacons
             //initialize service for it
-            InitializeEntService(bsm);
+
+            //FIXMEInitializeEntService(bsm);
         }
     }
     else{
@@ -601,7 +595,7 @@ void RSUApp::onEntMsgB(EntertainmentMessageB* entMsgB){
  * stream of video to receive with different times of access.
  */
 
-void RSUApp::InitializeEntService(BasicSafetyMessage* bsm){
+void RSUApp::InitializeEntService(int senderAddress, int psid){
     std::cout << "initializing service on RSU" << endl;
 
     std::string msgText;
@@ -611,20 +605,20 @@ void RSUApp::InitializeEntService(BasicSafetyMessage* bsm){
     //Entertainment_A = 40,
     //Entertainment_B = 41
 
-    std::cout << "Sender Address " << bsm->getSenderAddress() << endl;
-    std::cout << "Service State Variable" << bsm->getServiceState() << endl;
+    std::cout << "Sender Address " << senderAddress << endl;
+    std::cout << "Service State Variable" << psid << endl;
 
-    if ( bsm->getPsid() == WavePsid::Entertainment_A ) {
+    if ( psid == WavePsid::Entertainment_A ) {
 
         //Video File Stream
         videoStreamMap.emplace(
-            bsm->getSenderAddress(),
+            senderAddress,
             std::fstream("../../video_dataset/Terse_Parkplatz_10.dat.txt",std::fstream::in));
 
         //Event of send each frame of the video
         std::map<int,cMessage*>::iterator it = timersVideoStreamMap.begin();
-        it = timersVideoStreamMap.insert (it, std::pair<int,cMessage*>(bsm->getSenderAddress(),
-                new cMessage(std::to_string(bsm->getSenderAddress()).c_str(), SEND_ENT_A_EVT) ));
+        it = timersVideoStreamMap.insert (it, std::pair<int,cMessage*>(senderAddress,
+                new cMessage(std::to_string(senderAddress).c_str(), SEND_ENT_A_EVT) ));
 
         //mac->changeServiceChannel(Channels::SCH1);
         //FIXME this need to be improved because information of the slice will also inform it
@@ -633,40 +627,42 @@ void RSUApp::InitializeEntService(BasicSafetyMessage* bsm){
 
         //Statistics of this service
         std::map<int,NetMetrics*>::iterator itNetM = netMetricsEntA.begin();
-        itNetM = netMetricsEntA.insert (itNetM, std::pair<int,NetMetrics*>(bsm->getSenderAddress(),
+        itNetM = netMetricsEntA.insert (itNetM, std::pair<int,NetMetrics*>(senderAddress,
                 new NetMetrics() ));
 
+        //FIXME For now we dont using control packets
         //This could be outside but for effects of error control we willpu in the two coditions
-        std::map<int,simtime_t>::iterator itBVS = lastBeaconVideoStream.begin();
-        itBVS = lastBeaconVideoStream.insert (itBVS, std::pair<int,simtime_t>(bsm->getSenderAddress(), bsm->getTimestamp()));
+        //std::map<int,simtime_t>::iterator itBVS = lastBeaconVideoStream.begin();
+        //itBVS = lastBeaconVideoStream.insert (itBVS, std::pair<int,simtime_t>(senderAddress, bsm->getTimestamp()));
 
-        std::cout << "Service Initialized for vehicle " << bsm->getSenderAddress()
-                << ", PSID: " << bsm->getPsid() << ", state:" <<  bsm->getServiceState() << endl;
+        std::cout << "Service Initialized for vehicle " << senderAddress
+                << ", PSID: " << psid << endl;
 
     }
     else {
-        if( bsm->getPsid() == WavePsid::Entertainment_B ) {
+        if( psid == WavePsid::Entertainment_B ) {
             videoStreamMap.emplace(
-                        bsm->getSenderAddress(),
+                        senderAddress,
                         std::fstream("../../video_dataset/Terse_Simpsons.dat.txt",std::fstream::in));
 
             std::map<int,cMessage*>::iterator it = timersVideoStreamMap.begin();
-            it = timersVideoStreamMap.insert (it, std::pair<int,cMessage*>( bsm->getSenderAddress(),
-                    new cMessage(std::to_string(bsm->getSenderAddress()).c_str(), SEND_ENT_B_EVT) ));
+            it = timersVideoStreamMap.insert (it, std::pair<int,cMessage*>( senderAddress,
+                    new cMessage(std::to_string(senderAddress).c_str(), SEND_ENT_B_EVT) ));
             //mac->changeServiceChannel(Channels::SCH1);
             scheduleAt(simTime() + computeAsynchronousSendingTime(entMsgBInterval, type_SCH), it->second);
 
             //Statistics of this service
             std::map<int,NetMetrics*>::iterator itNetM = netMetricsEntB.begin();
-            itNetM = netMetricsEntB.insert (itNetM, std::pair<int,NetMetrics*>(bsm->getSenderAddress(),
+            itNetM = netMetricsEntB.insert (itNetM, std::pair<int,NetMetrics*>(senderAddress,
                     new NetMetrics() ));
 
+            //FIXME For now we dont using control packets
             //This could be outside but for effects of error control we willpu in the two coditions
-            std::map<int,simtime_t>::iterator itBVS = lastBeaconVideoStream.begin();
-            itBVS = lastBeaconVideoStream.insert (itBVS, std::pair<int,simtime_t>(bsm->getSenderAddress(), bsm->getTimestamp()));
+            //std::map<int,simtime_t>::iterator itBVS = lastBeaconVideoStream.begin();
+            //itBVS = lastBeaconVideoStream.insert (itBVS, std::pair<int,simtime_t>(bsm->getSenderAddress(), bsm->getTimestamp()));
 
-            std::cout << "Service Initialized for vehicle " << bsm->getSenderAddress()
-                    << ", PSID: " << bsm->getPsid() << ", state:" <<  bsm->getServiceState() << endl;
+            std::cout << "Service Initialized for vehicle " << senderAddress
+                    << ", PSID: " << psid << endl;
         }
         else{
             error("Got a BSM of unknown PSID.");
@@ -704,6 +700,7 @@ void RSUApp::InitializeEntService(BasicSafetyMessage* bsm){
     //videoHighQ->open("../../video_dataset/Terse_Simpsons.dat.txt",std::fstream::in);
 }
 
+
 void RSUApp::MaintenanceEntService(BasicSafetyMessage* bsm){
 
     std::cout << "RSU Maintenance of service." << endl;
@@ -730,51 +727,34 @@ void RSUApp::MaintenanceEntService(BasicSafetyMessage* bsm){
  * FIXME The future version need to begin a handover at this point
  * because vehicle will get in coverage of the subsequent RSU.
  */
-void RSUApp::TimeOutEntService(){
+void RSUApp::TimeOutEntService(int senderAddress, int psid){
 
-    simtime_t serviceTimeOut;
+    std::cout << "Time Now: " << simTime() << endl;
+    std::cout << "Finalizing service instance for Vehicle ID: " << senderAddress << endl;
+    std::cout << "PSID: " << psid << endl;
 
-    std::cout << "RSU: Performing the maintenance of service." << endl;
+    std::map<int,std::fstream>::iterator itVSM = videoStreamMap.begin();
+    itVSM = videoStreamMap.find(senderAddress);
+    if (itVSM != videoStreamMap.end()) {
+        itVSM->second.close(); //fecha o arquivo de stream de video
+        videoStreamMap.erase (itVSM); //remove do map
+    }
+    else{
+        cRuntimeError("Vehicle ID does not in list of video stream. ", std::to_string(senderAddress), std::to_string(psid) );
+    }
 
-    std::map<int,simtime_t>::iterator itr = lastBeaconVideoStream.begin();
-    while (itr != lastBeaconVideoStream.end()) {
-
-        serviceTimeOut = simTime().dbl() - itr->second.dbl();
-
-        std::cout << "Time Now: " << std::setprecision(10) << simTime().dbl() << endl;
-        std::cout << "LastTimestamp: " << itr->second << endl;
-        std::cout << "Service Time Out: " << serviceTimeOut << endl;
-        std::cout << "Maintaining service instance for Vehicle ID: " << itr->first << endl;
-
-
-        if (serviceTimeOut >= 4.0) {
-            std::cout << "Time Now: " << simTime() << endl;
-            std::cout << "Service Time Out: " << serviceTimeOut << endl;
-            std::cout << "Finalizing service instance for Vehicle ID: " << itr->first << endl;
-
-            std::map<int,std::fstream>::iterator itVSM = videoStreamMap.begin();
-            itVSM = videoStreamMap.find(itr->first);
-            if (itVSM != videoStreamMap.end()) {
-                itVSM->second.close(); //fecha o arquivo de stream de video
-                videoStreamMap.erase (itVSM); //remove do map
-            }
-
-            std::map<int,cMessage*>::iterator itTimerVSM = timersVideoStreamMap.begin();
-            itTimerVSM = timersVideoStreamMap.find(itr->first);
-            if (itTimerVSM != timersVideoStreamMap.end()) {
-                //we need to verify if its message is currently scheduled (should be)
-                //if so, it needs to be canceled and deleted
-                if(itTimerVSM->second->isScheduled()){
-                    cancelAndDelete(itTimerVSM->second);
-                }
-                timersVideoStreamMap.erase (itTimerVSM); //remove do map
-            }
-
-            itr = lastBeaconVideoStream.erase(itr);
+    std::map<int,cMessage*>::iterator itTimerVSM = timersVideoStreamMap.begin();
+    itTimerVSM = timersVideoStreamMap.find(senderAddress);
+    if (itTimerVSM != timersVideoStreamMap.end()) {
+        //we need to verify if its message is currently scheduled (should be)
+        //if so, it needs to be canceled and deleted
+        if(itTimerVSM->second->isScheduled()){
+            cancelAndDelete(itTimerVSM->second);
         }
-        else {
-           ++itr;
-        }
+        timersVideoStreamMap.erase (itTimerVSM); //remove do map
+    }
+    else{
+        cRuntimeError("Vehicle ID does not in list of schedule messages. ", std::to_string(senderAddress), std::to_string(psid) );
     }
 
 }

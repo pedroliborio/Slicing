@@ -324,9 +324,6 @@ void VehApp::handleLowerMsg(cMessage* msg) {
                 netMetricsEntA.setJitterSum( netMetricsEntA.getJitterSum() - jitter);
             }
 
-            //FIXME
-            std::cout << "------ CONTAdor Veiculo ----------" << (entMsgA->getSerial()) << endl;
-
             onEntMsgA(entMsgA);
         }
         else{
@@ -423,6 +420,7 @@ void VehApp::onEntMsgB(EntertainmentMessageB* entMsgB){
 
 }
 
+//XXX Service is initialized following a bernoulli distributions with probability p = 0.5
 void VehApp::InitializeEntService(){
 
     currentServiceChannel = Channels::SCH1;
@@ -437,8 +435,24 @@ void VehApp::InitializeEntService(){
         currentServiceDescription = "Entertainment Application B";
     }
 
-    serviceState = WaveEntServiceState::REQUESTING; // set service state to requesting
+    //FIXME For now we dont use control packets to initialize services
+    //Just get the RSU pointer and initialize the service once a vehicle spawn on simulation
+    RSUApp *rsuApp;
+    rsuApp = FindModule<RSUApp*>::findSubModule(getParentModule());
 
+    if (FindModule<RSUApp*>::findSubModule(getParentModule())) {
+        RSUApp *rsuApp;
+        rsuApp = FindModule<RSUApp*>::findSubModule(getParentModule());
+        rsuApp->InitializeEntService(myId, currentOfferedServiceId);
+    }
+    else{
+        std::cout <<" Not achieve initialization" << endl;
+        exit(0);
+    }
+
+    //serviceState = WaveEntServiceState::REQUESTING; // set service state to requesting
+    //FIXME I just set to -1 because this does not has been used for now
+    serviceState = -1; // set service state to requesting
 }
 
 void VehApp::ManageEntServiceState(){
