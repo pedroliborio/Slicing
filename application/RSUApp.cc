@@ -628,7 +628,7 @@ void RSUApp::InitializeEntService(int senderAddress, int psid){
         //mac->changeServiceChannel(Channels::SCH1);
         //FIXME this need to be improved because information of the slice will also inform it
 
-        scheduleAt(simTime() + computeAsynchronousSendingTime(entMsgAInterval, type_SCH), it->second);
+        scheduleAt(simTime() + computeAsynchronousSendingTime(entMsgAInterval, type_SCH) + 5.0, it->second);
 
         //Statistics of this service
         std::map<int,NetMetrics*>::iterator itNetM = netMetricsEntA.begin();
@@ -654,7 +654,7 @@ void RSUApp::InitializeEntService(int senderAddress, int psid){
             it = timersVideoStreamMap.insert (it, std::pair<int,cMessage*>( senderAddress,
                     new cMessage(std::to_string(senderAddress).c_str(), SEND_ENT_B_EVT) ));
             //mac->changeServiceChannel(Channels::SCH1);
-            scheduleAt(simTime() + computeAsynchronousSendingTime(entMsgBInterval, type_SCH), it->second);
+            scheduleAt(simTime() + computeAsynchronousSendingTime(entMsgBInterval, type_SCH) + 5.0, it->second);
 
             //Statistics of this service
             std::map<int,NetMetrics*>::iterator itNetM = netMetricsEntB.begin();
