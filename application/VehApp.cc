@@ -297,10 +297,11 @@ void VehApp::handleLowerMsg(cMessage* msg) {
     }
     else if (EntertainmentMessageA* entMsgA = dynamic_cast<EntertainmentMessageA*>(wsm)) {
 
-        std::cout << " ************SERVICE MSG A:  "<< entMsgA->getRcvAddress() << endl;
-
         //XXX Only handle msgs destinated to me
         if (entMsgA->getRcvAddress() == myId) {
+
+            std::cout << " ************ VEHICLE, SERVICE MSG A, ID Sender:  "<< entMsgA->getSenderAddress() << endl;
+            std::cout << " ************ VEHICLE, SERVICE MSG A, TIMESTAMP:  "<< entMsgA->getTimestamp() << endl;
 
             if(netMetricsEntA.getRxPackets() == 0) {
                 netMetricsEntA.setTimeRxFirst(simTime());
@@ -331,9 +332,14 @@ void VehApp::handleLowerMsg(cMessage* msg) {
         }
     }
     else if (EntertainmentMessageB* entMsgB = dynamic_cast<EntertainmentMessageB*>(wsm)) {
-        std::cout << " ************SERVICE MSG B:  "<< entMsgB->getRcvAddress() << endl;
+
         //XXX Only handle msgs destinated to me
         if(entMsgB->getRcvAddress() == myId){
+
+            std::cout << " ************ VEHICLE, SERVICE MSG B, ID Sender:  "<< entMsgB->getSenderAddress() << endl;
+            std::cout << " ************ VEHICLE, SERVICE MSG B, TIMESTAMP:  "<< entMsgB->getTimestamp() << endl;
+
+
             if(netMetricsEntB.getRxPackets() == 0) {
                 netMetricsEntB.setTimeRxFirst(simTime());
                 netMetricsEntB.setTimeRxLast(simTime());
@@ -470,6 +476,21 @@ void VehApp::finish() {
     else {
         mypsid = std::to_string(WavePsid::Entertainment_B);
     }
+
+
+    //FIXME For now we dont use control packets to initialize services
+    //Just get the RSU pointer and initialize the service once a vehicle spawn on simulation
+
+    RSUApp *rsuApp = check_and_cast<RSUApp*>(getSimulation()->getModuleByPath("rsu[0].appl"));
+
+    if(rsuApp == NULL) {
+        std::cout <<" Not achieve finalization" << endl;
+        exit(0);
+    }
+    else{
+        rsuApp->TimeOutEntService(myId, currentOfferedServiceId);
+    }
+
 
     //recordScalar("generatedWSMs",generatedWSMs);
     //recordScalar("receivedWSMs",receivedWSMs);

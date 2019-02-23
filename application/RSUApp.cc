@@ -938,7 +938,8 @@ void RSUApp::checkAndTrackPacket(cMessage* msg) {
     }
     else if (EntertainmentMessageA* entMsgA = dynamic_cast<EntertainmentMessageA*>(msg)) {
 
-        std::cout << "Sending down a esm A to Vehicle: " << std::to_string(entMsgA->getRcvAddress()) << std::endl;
+        std::cout << " ************ RSU, SERVICE MSG A, ID RECEIVER:  "<< entMsgA->getRcvAddress() << endl;
+        std::cout << " ************ RSU, SERVICE MSG A, TIMESTAMP:  "<< entMsgA->getTimestamp() << endl;
 
         std::map<int,NetMetrics*>::iterator itStatsEntMsg = netMetricsEntA.begin();
         itStatsEntMsg = netMetricsEntA.find(entMsgA->getRcvAddress());
@@ -957,7 +958,8 @@ void RSUApp::checkAndTrackPacket(cMessage* msg) {
     }
     else if (EntertainmentMessageB* entMsgB = dynamic_cast<EntertainmentMessageB*>(msg)) {
 
-        std::cout << "Sending down a esm B to vehicle: " << std::to_string(entMsgB->getRcvAddress()) << std::endl;
+        std::cout << " ************ RSU, SERVICE MSG B, ID RECEIVER:  "<< entMsgB->getRcvAddress() << endl;
+        std::cout << " ************ RSU, SERVICE MSG B, TIMESTAMP:  "<< entMsgB->getTimestamp() << endl;
 
         std::map<int,NetMetrics*>::iterator itStatsEntMsg = netMetricsEntB.begin();
         itStatsEntMsg = netMetricsEntB.find(entMsgB->getRcvAddress());

@@ -1,0 +1,481 @@
+version 2
+run General-88-20190223-14:31:00-11118
+attr configname General
+attr datetime 20190223-14:31:00
+attr experiment General
+attr inifile omnetpp.ini
+attr iterationvars "$vehicles=5, $msgSizeA=1500B, $serviceMsgInterval=1s"
+attr iterationvarsf vehicles=5,msgSizeA=1500B,serviceMsgInterval=1s-
+attr measurement "$vehicles=5, $msgSizeA=1500B, $serviceMsgInterval=1s"
+attr network com.liborio.slicing.SlicingScenario
+attr processid 11118
+attr repetition 8
+attr replication #8
+attr resultdir results
+attr runnumber 88
+attr seedset 8
+itervar msgSizeA 1500B
+itervar serviceMsgInterval 1s
+itervar vehicles 5
+param **.debug false
+param **.coreDebug false
+param *.playgroundSizeX 1200m
+param *.playgroundSizeY 1200m
+param *.playgroundSizeZ 50m
+param *.annotations.draw true
+param *.manager.updateInterval 1s
+param *.manager.host "\"localhost\""
+param *.manager.port 9999
+param *.manager.autoShutdown true
+param *.manager.launchConfig "xmldoc(\"highway-\"+string(5)+\".launchd.xml\")"
+param *.connectionManager.sendDirect true
+param *.connectionManager.maxInterfDist 2600m
+param *.connectionManager.drawMaxIntfDist false
+param *.rsu[*].applType "\"RSUApp\""
+param *.rsu[*].appl.headerLength "80 bit"
+param *.rsu[*].appl.sendBeacons false
+param *.rsu[*].appl.dataOnSch true
+param *.rsu[*].appl.beaconInterval 1s
+param *.rsu[*].appl.beaconUserPriority 7
+param *.rsu[*].appl.dataUserPriority 5
+param *.rsu[*].appl.entMsgADataLengthBytes 1500B
+param *.rsu[*].appl.entMsgAUserPriority 4
+param *.rsu[*].appl.entMsgAInterval 1s
+param *.rsu[*].appl.entMsgBDataLengthBytes 1500B
+param *.rsu[*].appl.entMsgBUserPriority 4
+param *.rsu[*].appl.entMsgBInterval 1s
+param *.rsu[*].nic.mac1609_4.useServiceChannel true
+param *.rsu[*].nic.mac1609_4.txPower 20mW
+param *.rsu[*].nic.mac1609_4.bitrate 6Mbps
+param *.rsu[*].nic.phy80211p.sensitivity -90.00dBm
+param *.rsu[0].mobility.x 515.0
+param *.rsu[0].mobility.y 25.0
+param *.rsu[0].mobility.z 3
+param *.node[*].applType "\"VehApp\""
+param *.node[*].appl.headerLength "80 bit"
+param *.node[*].appl.sendBeacons false
+param *.node[*].appl.dataOnSch true
+param *.node[*].appl.beaconInterval 1s
+param *.node[*].appl.wsaInterval 1s
+param *.node[*].appl.entMsgADataLengthBits 1500B
+param *.node[*].appl.entMsgAUserPriority 4
+param *.node[*].appl.entMsgAInterval 1s
+param *.node[*].appl.entMsgBDataLengthBits 1500B
+param *.node[*].appl.entMsgBUserPriority 4
+param *.node[*].appl.entMsgBInterval 1s
+param *.node[*].nic.mac1609_4.useServiceChannel true
+param *.node[*].nic.mac1609_4.txPower 20mW
+param *.node[*].nic.mac1609_4.bitrate 6Mbps
+param *.node[*].nic.phy80211p.sensitivity -90.00dBm
+param *.node[*].veinsmobilityType.debug true
+param *.node[*].veinsmobility.x 0
+param *.node[*].veinsmobility.y 0
+param *.node[*].veinsmobility.z 1.895
+param *.**.nic.phy80211p.useThermalNoise true
+param *.**.nic.phy80211p.thermalNoise -110dBm
+param *.**.nic.phy80211p.decider "xmldoc(\"config.xml\")"
+param *.**.nic.phy80211p.analogueModels "xmldoc(\"config.xml\")"
+param *.**.nic.phy80211p.usePropagationDelay true
+param *.**.nic.phy80211p.antenna "xmldoc(\"antenna.xml\", \"/root/Antenna[@id='monopole']\")"
+param *.**.nic.phy80211p.collectCollisionStatistics true
+param *.**.nic.phy80211p.allowTxDuringRx false
+
+scalar SlicingScenario.node[0].appl txPackets_13 0
+scalar SlicingScenario.node[0].appl rxPackets_13 0
+scalar SlicingScenario.node[0].appl rxNeighborPackets_13 0
+scalar SlicingScenario.node[0].appl meanDelay_13 0
+scalar SlicingScenario.node[0].appl meanJitter_13 0
+scalar SlicingScenario.node[0].appl meanRxPacketSize_13 0
+scalar SlicingScenario.node[0].appl meanTxPacketSize_13 0
+scalar SlicingScenario.node[0].appl meanRxThroughput_13 0
+scalar SlicingScenario.node[0].appl meanTxThroughput_13 0
+scalar SlicingScenario.node[0].appl rxTimeOfService_13 0
+scalar SlicingScenario.node[0].appl txTimeOfService_13 0
+scalar SlicingScenario.node[0].appl txPackets_41_13 0
+scalar SlicingScenario.node[0].appl rxPackets_41_13 83
+scalar SlicingScenario.node[0].appl rxNeighborPackets_41_13 160
+scalar SlicingScenario.node[0].appl meanDelay_41_13 0.00409659381
+scalar SlicingScenario.node[0].appl meanJitter_41_13 8.7099285e-05
+scalar SlicingScenario.node[0].appl meanRxPacketSize_41_13 1510
+scalar SlicingScenario.node[0].appl meanTxPacketSize_41_13 0
+scalar SlicingScenario.node[0].appl meanRxThroughput_41_13 12227.309322108
+scalar SlicingScenario.node[0].appl meanTxThroughput_41_13 0
+scalar SlicingScenario.node[0].appl rxTimeOfService_41_13 82.000051980952
+scalar SlicingScenario.node[0].appl txTimeOfService_41_13 0
+scalar SlicingScenario.node[0].nic.phy80211p busyTime 0.009063652173913
+scalar SlicingScenario.node[0].nic.phy80211p ncollisions 0
+scalar SlicingScenario.node[0].nic.phy80211p UnderSensitivityPackets 29
+scalar SlicingScenario.node[0].nic.mac1609_4 ReceivedUnicastPackets_CCH 0
+scalar SlicingScenario.node[0].nic.mac1609_4 ReceivedBroadcasts_CCH 0
+scalar SlicingScenario.node[0].nic.mac1609_4 SentPackets_CCH 0
+scalar SlicingScenario.node[0].nic.mac1609_4 SentAcknowledgements_CCH 0
+scalar SlicingScenario.node[0].nic.mac1609_4 SNIRLostPackets_CCH 0
+scalar SlicingScenario.node[0].nic.mac1609_4 RXTXLostPackets_CCH 0
+scalar SlicingScenario.node[0].nic.mac1609_4 TotalLostPackets_CCH 0
+scalar SlicingScenario.node[0].nic.mac1609_4 DroppedPacketsInMac_CCH 0
+scalar SlicingScenario.node[0].nic.mac1609_4 TooLittleTime_CCH 0
+scalar SlicingScenario.node[0].nic.mac1609_4 TimesIntoBackoff_CCH 0
+scalar SlicingScenario.node[0].nic.mac1609_4 SlotsBackoff_CCH 0
+scalar SlicingScenario.node[0].nic.mac1609_4 NumInternalContention_CCH 0
+scalar SlicingScenario.node[0].nic.mac1609_4 RemainingPacketsInEDCA_CCH 0
+scalar SlicingScenario.node[0].nic.mac1609_4 totalBusyTime_CCH 0
+scalar SlicingScenario.node[0].nic.mac1609_4 ReceivedUnicastPackets_SCH 0
+scalar SlicingScenario.node[0].nic.mac1609_4 ReceivedBroadcasts_SCH 404
+scalar SlicingScenario.node[0].nic.mac1609_4 SentPackets_SCH 0
+scalar SlicingScenario.node[0].nic.mac1609_4 SentAcknowledgements_SCH 0
+scalar SlicingScenario.node[0].nic.mac1609_4 SNIRLostPackets_SCH 0
+scalar SlicingScenario.node[0].nic.mac1609_4 RXTXLostPackets_SCH 0
+scalar SlicingScenario.node[0].nic.mac1609_4 TotalLostPackets_SCH 0
+scalar SlicingScenario.node[0].nic.mac1609_4 DroppedPacketsInMac_SCH 0
+scalar SlicingScenario.node[0].nic.mac1609_4 TooLittleTime_SCH 0
+scalar SlicingScenario.node[0].nic.mac1609_4 TimesIntoBackoff_SCH 0
+scalar SlicingScenario.node[0].nic.mac1609_4 SlotsBackoff_SCH 0
+scalar SlicingScenario.node[0].nic.mac1609_4 NumInternalContention_SCH 0
+scalar SlicingScenario.node[0].nic.mac1609_4 RemainingPacketsInEDCA_SCH 0
+scalar SlicingScenario.node[0].nic.mac1609_4 totalBusyTime_SCH 0.833856
+scalar SlicingScenario.node[0].veinsmobility startTime 1
+scalar SlicingScenario.node[0].veinsmobility totalTime 91
+scalar SlicingScenario.node[0].veinsmobility stopTime 93
+scalar SlicingScenario.node[0].veinsmobility minSpeed 10.611675166539
+scalar SlicingScenario.node[0].veinsmobility maxSpeed 11.105057056774
+scalar SlicingScenario.node[0].veinsmobility totalDistance 977.98557058549
+scalar SlicingScenario.node[0].veinsmobility totalCO2Emission 157.31792976289
+scalar SlicingScenario.node[1].appl txPackets_19 0
+scalar SlicingScenario.node[1].appl rxPackets_19 0
+scalar SlicingScenario.node[1].appl rxNeighborPackets_19 0
+scalar SlicingScenario.node[1].appl meanDelay_19 0
+scalar SlicingScenario.node[1].appl meanJitter_19 0
+scalar SlicingScenario.node[1].appl meanRxPacketSize_19 0
+scalar SlicingScenario.node[1].appl meanTxPacketSize_19 0
+scalar SlicingScenario.node[1].appl meanRxThroughput_19 0
+scalar SlicingScenario.node[1].appl meanTxThroughput_19 0
+scalar SlicingScenario.node[1].appl rxTimeOfService_19 0
+scalar SlicingScenario.node[1].appl txTimeOfService_19 0
+scalar SlicingScenario.node[1].appl txPackets_41_19 0
+scalar SlicingScenario.node[1].appl rxPackets_41_19 83
+scalar SlicingScenario.node[1].appl rxNeighborPackets_41_19 161
+scalar SlicingScenario.node[1].appl meanDelay_41_19 0.004917533724
+scalar SlicingScenario.node[1].appl meanJitter_41_19 9.2230584e-05
+scalar SlicingScenario.node[1].appl meanRxPacketSize_41_19 1510
+scalar SlicingScenario.node[1].appl meanTxPacketSize_41_19 0
+scalar SlicingScenario.node[1].appl meanRxThroughput_41_19 12227.309322061
+scalar SlicingScenario.node[1].appl meanTxThroughput_41_19 0
+scalar SlicingScenario.node[1].appl rxTimeOfService_41_19 82.000051981265
+scalar SlicingScenario.node[1].appl txTimeOfService_41_19 0
+scalar SlicingScenario.node[1].nic.phy80211p busyTime 0.0091309565217391
+scalar SlicingScenario.node[1].nic.phy80211p ncollisions 0
+scalar SlicingScenario.node[1].nic.phy80211p UnderSensitivityPackets 31
+scalar SlicingScenario.node[1].nic.mac1609_4 ReceivedUnicastPackets_CCH 0
+scalar SlicingScenario.node[1].nic.mac1609_4 ReceivedBroadcasts_CCH 0
+scalar SlicingScenario.node[1].nic.mac1609_4 SentPackets_CCH 0
+scalar SlicingScenario.node[1].nic.mac1609_4 SentAcknowledgements_CCH 0
+scalar SlicingScenario.node[1].nic.mac1609_4 SNIRLostPackets_CCH 0
+scalar SlicingScenario.node[1].nic.mac1609_4 RXTXLostPackets_CCH 0
+scalar SlicingScenario.node[1].nic.mac1609_4 TotalLostPackets_CCH 0
+scalar SlicingScenario.node[1].nic.mac1609_4 DroppedPacketsInMac_CCH 0
+scalar SlicingScenario.node[1].nic.mac1609_4 TooLittleTime_CCH 0
+scalar SlicingScenario.node[1].nic.mac1609_4 TimesIntoBackoff_CCH 0
+scalar SlicingScenario.node[1].nic.mac1609_4 SlotsBackoff_CCH 0
+scalar SlicingScenario.node[1].nic.mac1609_4 NumInternalContention_CCH 0
+scalar SlicingScenario.node[1].nic.mac1609_4 RemainingPacketsInEDCA_CCH 0
+scalar SlicingScenario.node[1].nic.mac1609_4 totalBusyTime_CCH 0
+scalar SlicingScenario.node[1].nic.mac1609_4 ReceivedUnicastPackets_SCH 0
+scalar SlicingScenario.node[1].nic.mac1609_4 ReceivedBroadcasts_SCH 407
+scalar SlicingScenario.node[1].nic.mac1609_4 SentPackets_SCH 0
+scalar SlicingScenario.node[1].nic.mac1609_4 SentAcknowledgements_SCH 0
+scalar SlicingScenario.node[1].nic.mac1609_4 SNIRLostPackets_SCH 0
+scalar SlicingScenario.node[1].nic.mac1609_4 RXTXLostPackets_SCH 0
+scalar SlicingScenario.node[1].nic.mac1609_4 TotalLostPackets_SCH 0
+scalar SlicingScenario.node[1].nic.mac1609_4 DroppedPacketsInMac_SCH 0
+scalar SlicingScenario.node[1].nic.mac1609_4 TooLittleTime_SCH 0
+scalar SlicingScenario.node[1].nic.mac1609_4 TimesIntoBackoff_SCH 0
+scalar SlicingScenario.node[1].nic.mac1609_4 SlotsBackoff_SCH 0
+scalar SlicingScenario.node[1].nic.mac1609_4 NumInternalContention_SCH 0
+scalar SlicingScenario.node[1].nic.mac1609_4 RemainingPacketsInEDCA_SCH 0
+scalar SlicingScenario.node[1].nic.mac1609_4 totalBusyTime_SCH 0.840048
+scalar SlicingScenario.node[1].veinsmobility startTime 2
+scalar SlicingScenario.node[1].veinsmobility totalTime 91
+scalar SlicingScenario.node[1].veinsmobility stopTime 94
+scalar SlicingScenario.node[1].veinsmobility minSpeed 10.610112987822
+scalar SlicingScenario.node[1].veinsmobility maxSpeed 11.097040256499
+scalar SlicingScenario.node[1].veinsmobility totalDistance 979.06141614671
+scalar SlicingScenario.node[1].veinsmobility totalCO2Emission 159.45514685157
+scalar SlicingScenario.node[2].appl txPackets_25 0
+scalar SlicingScenario.node[2].appl rxPackets_25 0
+scalar SlicingScenario.node[2].appl rxNeighborPackets_25 0
+scalar SlicingScenario.node[2].appl meanDelay_25 0
+scalar SlicingScenario.node[2].appl meanJitter_25 0
+scalar SlicingScenario.node[2].appl meanRxPacketSize_25 0
+scalar SlicingScenario.node[2].appl meanTxPacketSize_25 0
+scalar SlicingScenario.node[2].appl meanRxThroughput_25 0
+scalar SlicingScenario.node[2].appl meanTxThroughput_25 0
+scalar SlicingScenario.node[2].appl rxTimeOfService_25 0
+scalar SlicingScenario.node[2].appl txTimeOfService_25 0
+scalar SlicingScenario.node[2].appl txPackets_40_25 0
+scalar SlicingScenario.node[2].appl rxPackets_40_25 83
+scalar SlicingScenario.node[2].appl rxNeighborPackets_40_25 82
+scalar SlicingScenario.node[2].appl meanDelay_40_25 0.002069535374
+scalar SlicingScenario.node[2].appl meanJitter_40_25 2.5282145e-05
+scalar SlicingScenario.node[2].appl meanRxPacketSize_40_25 1510
+scalar SlicingScenario.node[2].appl meanTxPacketSize_40_25 0
+scalar SlicingScenario.node[2].appl meanRxThroughput_40_25 12227.317075376
+scalar SlicingScenario.node[2].appl meanTxThroughput_40_25 0
+scalar SlicingScenario.node[2].appl rxTimeOfService_40_25 81.99999998521
+scalar SlicingScenario.node[2].appl txTimeOfService_40_25 0
+scalar SlicingScenario.node[2].nic.phy80211p busyTime 0.0091982608695652
+scalar SlicingScenario.node[2].nic.phy80211p ncollisions 0
+scalar SlicingScenario.node[2].nic.phy80211p UnderSensitivityPackets 32
+scalar SlicingScenario.node[2].nic.mac1609_4 ReceivedUnicastPackets_CCH 0
+scalar SlicingScenario.node[2].nic.mac1609_4 ReceivedBroadcasts_CCH 0
+scalar SlicingScenario.node[2].nic.mac1609_4 SentPackets_CCH 0
+scalar SlicingScenario.node[2].nic.mac1609_4 SentAcknowledgements_CCH 0
+scalar SlicingScenario.node[2].nic.mac1609_4 SNIRLostPackets_CCH 0
+scalar SlicingScenario.node[2].nic.mac1609_4 RXTXLostPackets_CCH 0
+scalar SlicingScenario.node[2].nic.mac1609_4 TotalLostPackets_CCH 0
+scalar SlicingScenario.node[2].nic.mac1609_4 DroppedPacketsInMac_CCH 0
+scalar SlicingScenario.node[2].nic.mac1609_4 TooLittleTime_CCH 0
+scalar SlicingScenario.node[2].nic.mac1609_4 TimesIntoBackoff_CCH 0
+scalar SlicingScenario.node[2].nic.mac1609_4 SlotsBackoff_CCH 0
+scalar SlicingScenario.node[2].nic.mac1609_4 NumInternalContention_CCH 0
+scalar SlicingScenario.node[2].nic.mac1609_4 RemainingPacketsInEDCA_CCH 0
+scalar SlicingScenario.node[2].nic.mac1609_4 totalBusyTime_CCH 0
+scalar SlicingScenario.node[2].nic.mac1609_4 ReceivedUnicastPackets_SCH 0
+scalar SlicingScenario.node[2].nic.mac1609_4 ReceivedBroadcasts_SCH 410
+scalar SlicingScenario.node[2].nic.mac1609_4 SentPackets_SCH 0
+scalar SlicingScenario.node[2].nic.mac1609_4 SentAcknowledgements_SCH 0
+scalar SlicingScenario.node[2].nic.mac1609_4 SNIRLostPackets_SCH 0
+scalar SlicingScenario.node[2].nic.mac1609_4 RXTXLostPackets_SCH 0
+scalar SlicingScenario.node[2].nic.mac1609_4 TotalLostPackets_SCH 0
+scalar SlicingScenario.node[2].nic.mac1609_4 DroppedPacketsInMac_SCH 0
+scalar SlicingScenario.node[2].nic.mac1609_4 TooLittleTime_SCH 0
+scalar SlicingScenario.node[2].nic.mac1609_4 TimesIntoBackoff_SCH 0
+scalar SlicingScenario.node[2].nic.mac1609_4 SlotsBackoff_SCH 0
+scalar SlicingScenario.node[2].nic.mac1609_4 NumInternalContention_SCH 0
+scalar SlicingScenario.node[2].nic.mac1609_4 RemainingPacketsInEDCA_SCH 0
+scalar SlicingScenario.node[2].nic.mac1609_4 totalBusyTime_SCH 0.84624
+scalar SlicingScenario.node[2].veinsmobility startTime 3
+scalar SlicingScenario.node[2].veinsmobility totalTime 91
+scalar SlicingScenario.node[2].veinsmobility stopTime 95
+scalar SlicingScenario.node[2].veinsmobility minSpeed 10.621034143157
+scalar SlicingScenario.node[2].veinsmobility maxSpeed 11.108796061962
+scalar SlicingScenario.node[2].veinsmobility totalDistance 979.52275071573
+scalar SlicingScenario.node[2].veinsmobility totalCO2Emission 159.6137123446
+scalar SlicingScenario.node[4].appl txPackets_37 0
+scalar SlicingScenario.node[4].appl rxPackets_37 0
+scalar SlicingScenario.node[4].appl rxNeighborPackets_37 0
+scalar SlicingScenario.node[4].appl meanDelay_37 0
+scalar SlicingScenario.node[4].appl meanJitter_37 0
+scalar SlicingScenario.node[4].appl meanRxPacketSize_37 0
+scalar SlicingScenario.node[4].appl meanTxPacketSize_37 0
+scalar SlicingScenario.node[4].appl meanRxThroughput_37 0
+scalar SlicingScenario.node[4].appl meanTxThroughput_37 0
+scalar SlicingScenario.node[4].appl rxTimeOfService_37 0
+scalar SlicingScenario.node[4].appl txTimeOfService_37 0
+scalar SlicingScenario.node[4].appl txPackets_41_37 0
+scalar SlicingScenario.node[4].appl rxPackets_41_37 81
+scalar SlicingScenario.node[4].appl rxNeighborPackets_41_37 166
+scalar SlicingScenario.node[4].appl meanDelay_41_37 0.002073318949
+scalar SlicingScenario.node[4].appl meanJitter_41_37 2.5960284e-05
+scalar SlicingScenario.node[4].appl meanRxPacketSize_41_37 1510
+scalar SlicingScenario.node[4].appl meanTxPacketSize_41_37 0
+scalar SlicingScenario.node[4].appl meanRxThroughput_41_37 12230.999990898
+scalar SlicingScenario.node[4].appl meanTxThroughput_41_37 0
+scalar SlicingScenario.node[4].appl rxTimeOfService_41_37 80.000000059532
+scalar SlicingScenario.node[4].appl txTimeOfService_41_37 0
+scalar SlicingScenario.node[4].nic.phy80211p busyTime 0.0092655652173912
+scalar SlicingScenario.node[4].nic.phy80211p ncollisions 0
+scalar SlicingScenario.node[4].nic.phy80211p UnderSensitivityPackets 36
+scalar SlicingScenario.node[4].nic.mac1609_4 ReceivedUnicastPackets_CCH 0
+scalar SlicingScenario.node[4].nic.mac1609_4 ReceivedBroadcasts_CCH 0
+scalar SlicingScenario.node[4].nic.mac1609_4 SentPackets_CCH 0
+scalar SlicingScenario.node[4].nic.mac1609_4 SentAcknowledgements_CCH 0
+scalar SlicingScenario.node[4].nic.mac1609_4 SNIRLostPackets_CCH 0
+scalar SlicingScenario.node[4].nic.mac1609_4 RXTXLostPackets_CCH 0
+scalar SlicingScenario.node[4].nic.mac1609_4 TotalLostPackets_CCH 0
+scalar SlicingScenario.node[4].nic.mac1609_4 DroppedPacketsInMac_CCH 0
+scalar SlicingScenario.node[4].nic.mac1609_4 TooLittleTime_CCH 0
+scalar SlicingScenario.node[4].nic.mac1609_4 TimesIntoBackoff_CCH 0
+scalar SlicingScenario.node[4].nic.mac1609_4 SlotsBackoff_CCH 0
+scalar SlicingScenario.node[4].nic.mac1609_4 NumInternalContention_CCH 0
+scalar SlicingScenario.node[4].nic.mac1609_4 RemainingPacketsInEDCA_CCH 0
+scalar SlicingScenario.node[4].nic.mac1609_4 totalBusyTime_CCH 0
+scalar SlicingScenario.node[4].nic.mac1609_4 ReceivedUnicastPackets_SCH 0
+scalar SlicingScenario.node[4].nic.mac1609_4 ReceivedBroadcasts_SCH 413
+scalar SlicingScenario.node[4].nic.mac1609_4 SentPackets_SCH 0
+scalar SlicingScenario.node[4].nic.mac1609_4 SentAcknowledgements_SCH 0
+scalar SlicingScenario.node[4].nic.mac1609_4 SNIRLostPackets_SCH 0
+scalar SlicingScenario.node[4].nic.mac1609_4 RXTXLostPackets_SCH 0
+scalar SlicingScenario.node[4].nic.mac1609_4 TotalLostPackets_SCH 0
+scalar SlicingScenario.node[4].nic.mac1609_4 DroppedPacketsInMac_SCH 0
+scalar SlicingScenario.node[4].nic.mac1609_4 TooLittleTime_SCH 0
+scalar SlicingScenario.node[4].nic.mac1609_4 TimesIntoBackoff_SCH 0
+scalar SlicingScenario.node[4].nic.mac1609_4 SlotsBackoff_SCH 0
+scalar SlicingScenario.node[4].nic.mac1609_4 NumInternalContention_SCH 0
+scalar SlicingScenario.node[4].nic.mac1609_4 RemainingPacketsInEDCA_SCH 0
+scalar SlicingScenario.node[4].nic.mac1609_4 totalBusyTime_SCH 0.852432
+scalar SlicingScenario.node[4].veinsmobility startTime 5
+scalar SlicingScenario.node[4].veinsmobility totalTime 91
+scalar SlicingScenario.node[4].veinsmobility stopTime 97
+scalar SlicingScenario.node[4].veinsmobility minSpeed 10.61194092223
+scalar SlicingScenario.node[4].veinsmobility maxSpeed 11.108894146527
+scalar SlicingScenario.node[4].veinsmobility totalDistance 981.7022789186
+scalar SlicingScenario.node[4].veinsmobility totalCO2Emission 159.74431494161
+scalar SlicingScenario.node[3].appl txPackets_31 0
+scalar SlicingScenario.node[3].appl rxPackets_31 0
+scalar SlicingScenario.node[3].appl rxNeighborPackets_31 0
+scalar SlicingScenario.node[3].appl meanDelay_31 0
+scalar SlicingScenario.node[3].appl meanJitter_31 0
+scalar SlicingScenario.node[3].appl meanRxPacketSize_31 0
+scalar SlicingScenario.node[3].appl meanTxPacketSize_31 0
+scalar SlicingScenario.node[3].appl meanRxThroughput_31 0
+scalar SlicingScenario.node[3].appl meanTxThroughput_31 0
+scalar SlicingScenario.node[3].appl rxTimeOfService_31 0
+scalar SlicingScenario.node[3].appl txTimeOfService_31 0
+scalar SlicingScenario.node[3].appl txPackets_40_31 0
+scalar SlicingScenario.node[3].appl rxPackets_40_31 83
+scalar SlicingScenario.node[3].appl rxNeighborPackets_40_31 83
+scalar SlicingScenario.node[3].appl meanDelay_40_31 0.005821946598
+scalar SlicingScenario.node[3].appl meanJitter_40_31 0.000107132565
+scalar SlicingScenario.node[3].appl meanRxPacketSize_40_31 1510
+scalar SlicingScenario.node[3].appl meanTxPacketSize_40_31 0
+scalar SlicingScenario.node[3].appl meanRxThroughput_40_31 12227.311256893
+scalar SlicingScenario.node[3].appl meanTxThroughput_40_31 0
+scalar SlicingScenario.node[3].appl rxTimeOfService_40_31 82.000039005694
+scalar SlicingScenario.node[3].appl txTimeOfService_40_31 0
+scalar SlicingScenario.node[3].nic.phy80211p busyTime 0.0091659354838709
+scalar SlicingScenario.node[3].nic.phy80211p ncollisions 0
+scalar SlicingScenario.node[3].nic.phy80211p UnderSensitivityPackets 38
+scalar SlicingScenario.node[3].nic.mac1609_4 ReceivedUnicastPackets_CCH 0
+scalar SlicingScenario.node[3].nic.mac1609_4 ReceivedBroadcasts_CCH 0
+scalar SlicingScenario.node[3].nic.mac1609_4 SentPackets_CCH 0
+scalar SlicingScenario.node[3].nic.mac1609_4 SentAcknowledgements_CCH 0
+scalar SlicingScenario.node[3].nic.mac1609_4 SNIRLostPackets_CCH 0
+scalar SlicingScenario.node[3].nic.mac1609_4 RXTXLostPackets_CCH 0
+scalar SlicingScenario.node[3].nic.mac1609_4 TotalLostPackets_CCH 0
+scalar SlicingScenario.node[3].nic.mac1609_4 DroppedPacketsInMac_CCH 0
+scalar SlicingScenario.node[3].nic.mac1609_4 TooLittleTime_CCH 0
+scalar SlicingScenario.node[3].nic.mac1609_4 TimesIntoBackoff_CCH 0
+scalar SlicingScenario.node[3].nic.mac1609_4 SlotsBackoff_CCH 0
+scalar SlicingScenario.node[3].nic.mac1609_4 NumInternalContention_CCH 0
+scalar SlicingScenario.node[3].nic.mac1609_4 RemainingPacketsInEDCA_CCH 0
+scalar SlicingScenario.node[3].nic.mac1609_4 totalBusyTime_CCH 0
+scalar SlicingScenario.node[3].nic.mac1609_4 ReceivedUnicastPackets_SCH 0
+scalar SlicingScenario.node[3].nic.mac1609_4 ReceivedBroadcasts_SCH 413
+scalar SlicingScenario.node[3].nic.mac1609_4 SentPackets_SCH 0
+scalar SlicingScenario.node[3].nic.mac1609_4 SentAcknowledgements_SCH 0
+scalar SlicingScenario.node[3].nic.mac1609_4 SNIRLostPackets_SCH 0
+scalar SlicingScenario.node[3].nic.mac1609_4 RXTXLostPackets_SCH 0
+scalar SlicingScenario.node[3].nic.mac1609_4 TotalLostPackets_SCH 0
+scalar SlicingScenario.node[3].nic.mac1609_4 DroppedPacketsInMac_SCH 0
+scalar SlicingScenario.node[3].nic.mac1609_4 TooLittleTime_SCH 0
+scalar SlicingScenario.node[3].nic.mac1609_4 TimesIntoBackoff_SCH 0
+scalar SlicingScenario.node[3].nic.mac1609_4 SlotsBackoff_SCH 0
+scalar SlicingScenario.node[3].nic.mac1609_4 NumInternalContention_SCH 0
+scalar SlicingScenario.node[3].nic.mac1609_4 RemainingPacketsInEDCA_SCH 0
+scalar SlicingScenario.node[3].nic.mac1609_4 totalBusyTime_SCH 0.852432
+scalar SlicingScenario.node[3].veinsmobility startTime 4
+scalar SlicingScenario.node[3].veinsmobility totalTime 92
+scalar SlicingScenario.node[3].veinsmobility stopTime 97
+scalar SlicingScenario.node[3].veinsmobility minSpeed 7.7137547525209
+scalar SlicingScenario.node[3].veinsmobility maxSpeed 11.109454776291
+scalar SlicingScenario.node[3].veinsmobility totalDistance 982.01104892563
+scalar SlicingScenario.node[3].veinsmobility totalCO2Emission 168.98441625839
+scalar SlicingScenario.manager roiArea 0
+scalar SlicingScenario.rsu[0].appl txPackets_7 0
+scalar SlicingScenario.rsu[0].appl rxPackets_7 0
+scalar SlicingScenario.rsu[0].appl rxNeighborPackets_7 0
+scalar SlicingScenario.rsu[0].appl meanDelay_7 0
+scalar SlicingScenario.rsu[0].appl meanJitter_7 0
+scalar SlicingScenario.rsu[0].appl meanRxPacketSize_7 0
+scalar SlicingScenario.rsu[0].appl meanTxPacketSize_7 0
+scalar SlicingScenario.rsu[0].appl meanRxThroughput_7 0
+scalar SlicingScenario.rsu[0].appl meanTxThroughput_7 0
+scalar SlicingScenario.rsu[0].appl rxTimeOfService_7 0
+scalar SlicingScenario.rsu[0].appl txTimeOfService_7 0
+scalar SlicingScenario.rsu[0].appl txPackets_40_25 493
+scalar SlicingScenario.rsu[0].appl rxPackets_40_25 0
+scalar SlicingScenario.rsu[0].appl rxNeighborPackets_40_25 0
+scalar SlicingScenario.rsu[0].appl meanDelay_40_25 0
+scalar SlicingScenario.rsu[0].appl meanJitter_40_25 0
+scalar SlicingScenario.rsu[0].appl meanRxPacketSize_40_25 0
+scalar SlicingScenario.rsu[0].appl meanTxPacketSize_40_25 1510
+scalar SlicingScenario.rsu[0].appl meanRxThroughput_40_25 0
+scalar SlicingScenario.rsu[0].appl meanTxThroughput_40_25 12104.552845528
+scalar SlicingScenario.rsu[0].appl rxTimeOfService_40_25 0
+scalar SlicingScenario.rsu[0].appl txTimeOfService_40_25 492
+scalar SlicingScenario.rsu[0].appl txPackets_40_31 492
+scalar SlicingScenario.rsu[0].appl rxPackets_40_31 0
+scalar SlicingScenario.rsu[0].appl rxNeighborPackets_40_31 0
+scalar SlicingScenario.rsu[0].appl meanDelay_40_31 0
+scalar SlicingScenario.rsu[0].appl meanJitter_40_31 0
+scalar SlicingScenario.rsu[0].appl meanRxPacketSize_40_31 0
+scalar SlicingScenario.rsu[0].appl meanTxPacketSize_40_31 1510
+scalar SlicingScenario.rsu[0].appl meanRxThroughput_40_31 0
+scalar SlicingScenario.rsu[0].appl meanTxThroughput_40_31 12104.602851324
+scalar SlicingScenario.rsu[0].appl rxTimeOfService_40_31 0
+scalar SlicingScenario.rsu[0].appl txTimeOfService_40_31 491
+scalar SlicingScenario.rsu[0].appl txPackets_41_13 498
+scalar SlicingScenario.rsu[0].appl rxPackets_41_13 0
+scalar SlicingScenario.rsu[0].appl rxNeighborPackets_41_13 0
+scalar SlicingScenario.rsu[0].appl meanDelay_41_13 0
+scalar SlicingScenario.rsu[0].appl meanJitter_41_13 0
+scalar SlicingScenario.rsu[0].appl meanRxPacketSize_41_13 0
+scalar SlicingScenario.rsu[0].appl meanTxPacketSize_41_13 1510
+scalar SlicingScenario.rsu[0].appl meanRxThroughput_41_13 0
+scalar SlicingScenario.rsu[0].appl meanTxThroughput_41_13 12104.30583501
+scalar SlicingScenario.rsu[0].appl rxTimeOfService_41_13 0
+scalar SlicingScenario.rsu[0].appl txTimeOfService_41_13 497
+scalar SlicingScenario.rsu[0].appl txPackets_41_19 496
+scalar SlicingScenario.rsu[0].appl rxPackets_41_19 0
+scalar SlicingScenario.rsu[0].appl rxNeighborPackets_41_19 0
+scalar SlicingScenario.rsu[0].appl meanDelay_41_19 0
+scalar SlicingScenario.rsu[0].appl meanJitter_41_19 0
+scalar SlicingScenario.rsu[0].appl meanRxPacketSize_41_19 0
+scalar SlicingScenario.rsu[0].appl meanTxPacketSize_41_19 1510
+scalar SlicingScenario.rsu[0].appl meanRxThroughput_41_19 0
+scalar SlicingScenario.rsu[0].appl meanTxThroughput_41_19 12104.404040404
+scalar SlicingScenario.rsu[0].appl rxTimeOfService_41_19 0
+scalar SlicingScenario.rsu[0].appl txTimeOfService_41_19 495
+scalar SlicingScenario.rsu[0].appl txPackets_41_37 489
+scalar SlicingScenario.rsu[0].appl rxPackets_41_37 0
+scalar SlicingScenario.rsu[0].appl rxNeighborPackets_41_37 0
+scalar SlicingScenario.rsu[0].appl meanDelay_41_37 0
+scalar SlicingScenario.rsu[0].appl meanJitter_41_37 0
+scalar SlicingScenario.rsu[0].appl meanRxPacketSize_41_37 0
+scalar SlicingScenario.rsu[0].appl meanTxPacketSize_41_37 1510
+scalar SlicingScenario.rsu[0].appl meanRxThroughput_41_37 0
+scalar SlicingScenario.rsu[0].appl meanTxThroughput_41_37 12104.754098361
+scalar SlicingScenario.rsu[0].appl rxTimeOfService_41_37 0
+scalar SlicingScenario.rsu[0].appl txTimeOfService_41_37 488
+scalar SlicingScenario.rsu[0].nic.phy80211p busyTime 0
+scalar SlicingScenario.rsu[0].nic.phy80211p ncollisions 0
+scalar SlicingScenario.rsu[0].nic.phy80211p UnderSensitivityPackets 0
+scalar SlicingScenario.rsu[0].nic.mac1609_4 ReceivedUnicastPackets_CCH 0
+scalar SlicingScenario.rsu[0].nic.mac1609_4 ReceivedBroadcasts_CCH 0
+scalar SlicingScenario.rsu[0].nic.mac1609_4 SentPackets_CCH 0
+scalar SlicingScenario.rsu[0].nic.mac1609_4 SentAcknowledgements_CCH 0
+scalar SlicingScenario.rsu[0].nic.mac1609_4 SNIRLostPackets_CCH 0
+scalar SlicingScenario.rsu[0].nic.mac1609_4 RXTXLostPackets_CCH 0
+scalar SlicingScenario.rsu[0].nic.mac1609_4 TotalLostPackets_CCH 0
+scalar SlicingScenario.rsu[0].nic.mac1609_4 DroppedPacketsInMac_CCH 0
+scalar SlicingScenario.rsu[0].nic.mac1609_4 TooLittleTime_CCH 0
+scalar SlicingScenario.rsu[0].nic.mac1609_4 TimesIntoBackoff_CCH 0
+scalar SlicingScenario.rsu[0].nic.mac1609_4 SlotsBackoff_CCH 0
+scalar SlicingScenario.rsu[0].nic.mac1609_4 NumInternalContention_CCH 0
+scalar SlicingScenario.rsu[0].nic.mac1609_4 RemainingPacketsInEDCA_CCH 0
+scalar SlicingScenario.rsu[0].nic.mac1609_4 totalBusyTime_CCH 0
+scalar SlicingScenario.rsu[0].nic.mac1609_4 ReceivedUnicastPackets_SCH 0
+scalar SlicingScenario.rsu[0].nic.mac1609_4 ReceivedBroadcasts_SCH 0
+scalar SlicingScenario.rsu[0].nic.mac1609_4 SentPackets_SCH 2468
+scalar SlicingScenario.rsu[0].nic.mac1609_4 SentAcknowledgements_SCH 0
+scalar SlicingScenario.rsu[0].nic.mac1609_4 SNIRLostPackets_SCH 0
+scalar SlicingScenario.rsu[0].nic.mac1609_4 RXTXLostPackets_SCH 0
+scalar SlicingScenario.rsu[0].nic.mac1609_4 TotalLostPackets_SCH 0
+scalar SlicingScenario.rsu[0].nic.mac1609_4 DroppedPacketsInMac_SCH 0
+scalar SlicingScenario.rsu[0].nic.mac1609_4 TooLittleTime_SCH 0
+scalar SlicingScenario.rsu[0].nic.mac1609_4 TimesIntoBackoff_SCH 3954
+scalar SlicingScenario.rsu[0].nic.mac1609_4 SlotsBackoff_SCH 8633
+scalar SlicingScenario.rsu[0].nic.mac1609_4 NumInternalContention_SCH 0
+scalar SlicingScenario.rsu[0].nic.mac1609_4 RemainingPacketsInEDCA_SCH 0
+scalar SlicingScenario.rsu[0].nic.mac1609_4 totalBusyTime_SCH 5.09642
+
