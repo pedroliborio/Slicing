@@ -741,6 +741,7 @@ void RSUApp::TimeOutEntService(int senderAddress, int psid){
     std::cout << "Time Now: " << simTime() << endl;
     std::cout << "Finalizing service instance for Vehicle ID: " << senderAddress << endl;
     std::cout << "PSID: " << psid << endl;
+    std::cout << "Active Services: " << videoStreamMap.size() << endl;
 
     std::map<int,std::fstream>::iterator itVSM = videoStreamMap.begin();
     itVSM = videoStreamMap.find(senderAddress);

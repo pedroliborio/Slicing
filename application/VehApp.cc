@@ -457,6 +457,7 @@ void VehApp::InitializeEntService(){
     //serviceState = WaveEntServiceState::REQUESTING; // set service state to requesting
     //FIXME I just set to -1 because this does not has been used for now
     serviceState = -1; // set service state to requesting
+
 }
 
 void VehApp::ManageEntServiceState(){
