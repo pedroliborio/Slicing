@@ -792,27 +792,27 @@ void RSUApp::finish() {
     //recordScalar("receivedWSMs",receivedWSMs);
 
     //XXX I modified this for best stats of BSM the another ones are untouched for now
-    text = "txPackets_"+std::to_string( myId ) ;
+    text = "txPackets_CCH_"+std::to_string( myId ) ;
     recordScalar(text.c_str(),netMetricsBSM.getTxPackets() );
-    text = "rxPackets_"+std::to_string( myId );
+    text = "rxPackets_CCH_"+std::to_string( myId );
     recordScalar(text.c_str(),netMetricsBSM.getRxPackets() );
-    text = "rxNeighborPackets_"+std::to_string( myId );
+    text = "rxNeighborPackets_CCH_"+std::to_string( myId );
     recordScalar(text.c_str(),netMetricsBSM.getRxNeighborPackets() );
-    text = "meanDelay_"+std::to_string( myId );
+    text = "meanDelay_CCH_"+std::to_string( myId );
     recordScalar(text.c_str(),netMetricsBSM.Compute_Delay() );
-    text = "meanJitter_"+std::to_string( myId );
+    text = "meanJitter_CCH_"+std::to_string( myId );
     recordScalar(text.c_str(),netMetricsBSM.Compute_Jitter() );
-    text = "meanRxPacketSize_"+std::to_string( myId );
+    text = "meanRxPacketSize_CCH_"+std::to_string( myId );
     recordScalar(text.c_str(),netMetricsBSM.Compute_MeanRxPacketSize() );
-    text = "meanTxPacketSize_"+std::to_string( myId );
+    text = "meanTxPacketSize_CCH_"+std::to_string( myId );
     recordScalar(text.c_str(),netMetricsBSM.Compute_MeanTxPacketSize() );
-    text = "meanRxThroughput_"+std::to_string( myId );
+    text = "meanRxThroughput_CCH_"+std::to_string( myId );
     recordScalar(text.c_str(),netMetricsBSM.Compute_MeanRxThroughput() );
-    text = "meanTxThroughput_"+std::to_string( myId );
+    text = "meanTxThroughput_CCH_"+std::to_string( myId );
     recordScalar(text.c_str(),netMetricsBSM.Compute_MeanTxThroughput() );
-    text = "rxTimeOfService_"+std::to_string( myId );
+    text = "rxTimeOfService_CCH_"+std::to_string( myId );
     recordScalar(text.c_str(),netMetricsBSM.Compute_RxTimeOfService() );
-    text = "txTimeOfService_"+std::to_string( myId );
+    text = "txTimeOfService_CCH_"+std::to_string( myId );
     recordScalar(text.c_str(),netMetricsBSM.Compute_TxTimeOfService() );
 
     //recordScalar("generatedWSAs",generatedWSAs);
@@ -822,54 +822,54 @@ void RSUApp::finish() {
 
     std::map<int,NetMetrics*>::iterator itStatsEntMsg = netMetricsEntA.begin();
     while (itStatsEntMsg != netMetricsEntA.end()) {
-        text = "txPackets_"+std::to_string(Entertainment_A)+"_"+std::to_string(itStatsEntMsg->first);
+        text = "txPackets_SCH_"+std::to_string(Entertainment_A)+"_"+std::to_string(itStatsEntMsg->first);
         recordScalar(text.c_str(),itStatsEntMsg->second->getTxPackets() );
-        text = "rxPackets_"+std::to_string(Entertainment_A)+"_"+std::to_string(itStatsEntMsg->first );
+        text = "rxPackets_SCH_"+std::to_string(Entertainment_A)+"_"+std::to_string(itStatsEntMsg->first );
         recordScalar(text.c_str(),itStatsEntMsg->second->getRxPackets() );
-        text = "rxNeighborPackets_"+std::to_string(Entertainment_A)+"_"+std::to_string(itStatsEntMsg->first );
+        text = "rxNeighborPackets_SCH_"+std::to_string(Entertainment_A)+"_"+std::to_string(itStatsEntMsg->first );
         recordScalar(text.c_str(),itStatsEntMsg->second->getRxNeighborPackets() );
-        text = "meanDelay_"+std::to_string(Entertainment_A)+"_"+std::to_string(itStatsEntMsg->first );
+        text = "meanDelay_SCH_"+std::to_string(Entertainment_A)+"_"+std::to_string(itStatsEntMsg->first );
         recordScalar(text.c_str(),itStatsEntMsg->second->Compute_Delay() );
-        text = "meanJitter_"+std::to_string(Entertainment_A)+"_"+std::to_string(itStatsEntMsg->first );
+        text = "meanJitter_SCH_"+std::to_string(Entertainment_A)+"_"+std::to_string(itStatsEntMsg->first );
         recordScalar(text.c_str(),itStatsEntMsg->second->Compute_Jitter() );
-        text = "meanRxPacketSize_"+std::to_string(Entertainment_A)+"_"+std::to_string(itStatsEntMsg->first );
+        text = "meanRxPacketSize_SCH_"+std::to_string(Entertainment_A)+"_"+std::to_string(itStatsEntMsg->first );
         recordScalar(text.c_str(),itStatsEntMsg->second->Compute_MeanRxPacketSize() );
-        text = "meanTxPacketSize_"+std::to_string(Entertainment_A)+"_"+std::to_string(itStatsEntMsg->first );
+        text = "meanTxPacketSize_SCH_"+std::to_string(Entertainment_A)+"_"+std::to_string(itStatsEntMsg->first );
         recordScalar(text.c_str(),itStatsEntMsg->second->Compute_MeanTxPacketSize() );
-        text = "meanRxThroughput_"+std::to_string(Entertainment_A)+"_"+std::to_string(itStatsEntMsg->first );
+        text = "meanRxThroughput_SCH_"+std::to_string(Entertainment_A)+"_"+std::to_string(itStatsEntMsg->first );
         recordScalar(text.c_str(),itStatsEntMsg->second->Compute_MeanRxThroughput() );
-        text = "meanTxThroughput_"+std::to_string(Entertainment_A)+"_"+std::to_string(itStatsEntMsg->first );
+        text = "meanTxThroughput_SCH_"+std::to_string(Entertainment_A)+"_"+std::to_string(itStatsEntMsg->first );
         recordScalar(text.c_str(),itStatsEntMsg->second->Compute_MeanTxThroughput() );
-        text = "rxTimeOfService_"+std::to_string(Entertainment_A)+"_"+std::to_string(itStatsEntMsg->first );
+        text = "rxTimeOfService_SCH_"+std::to_string(Entertainment_A)+"_"+std::to_string(itStatsEntMsg->first );
         recordScalar(text.c_str(),itStatsEntMsg->second->Compute_RxTimeOfService() );
-        text = "txTimeOfService_"+std::to_string(Entertainment_A)+"_"+std::to_string(itStatsEntMsg->first );
+        text = "txTimeOfService_SCH_"+std::to_string(Entertainment_A)+"_"+std::to_string(itStatsEntMsg->first );
         recordScalar(text.c_str(),itStatsEntMsg->second->Compute_TxTimeOfService() );
         itStatsEntMsg = netMetricsEntA.erase(itStatsEntMsg);
     }
 
     itStatsEntMsg = netMetricsEntB.begin();
     while (itStatsEntMsg != netMetricsEntB.end()) {
-        text = "txPackets_"+std::to_string(Entertainment_B)+"_"+std::to_string(itStatsEntMsg->first);
+        text = "txPackets_SCH_"+std::to_string(Entertainment_B)+"_"+std::to_string(itStatsEntMsg->first);
         recordScalar(text.c_str(),itStatsEntMsg->second->getTxPackets() );
-        text = "rxPackets_"+std::to_string(Entertainment_B)+"_"+std::to_string(itStatsEntMsg->first );
+        text = "rxPackets_SCH_"+std::to_string(Entertainment_B)+"_"+std::to_string(itStatsEntMsg->first );
         recordScalar(text.c_str(),itStatsEntMsg->second->getRxPackets() );
-        text = "rxNeighborPackets_"+std::to_string(Entertainment_B)+"_"+std::to_string(itStatsEntMsg->first );
+        text = "rxNeighborPackets_SCH_"+std::to_string(Entertainment_B)+"_"+std::to_string(itStatsEntMsg->first );
         recordScalar(text.c_str(),itStatsEntMsg->second->getRxNeighborPackets() );
-        text = "meanDelay_"+std::to_string(Entertainment_B)+"_"+std::to_string(itStatsEntMsg->first );
+        text = "meanDelay_SCH_"+std::to_string(Entertainment_B)+"_"+std::to_string(itStatsEntMsg->first );
         recordScalar(text.c_str(),itStatsEntMsg->second->Compute_Delay() );
-        text = "meanJitter_"+std::to_string(Entertainment_B)+"_"+std::to_string(itStatsEntMsg->first );
+        text = "meanJitter_SCH_"+std::to_string(Entertainment_B)+"_"+std::to_string(itStatsEntMsg->first );
         recordScalar(text.c_str(),itStatsEntMsg->second->Compute_Jitter() );
-        text = "meanRxPacketSize_"+std::to_string(Entertainment_B)+"_"+std::to_string(itStatsEntMsg->first );
+        text = "meanRxPacketSize_SCH_"+std::to_string(Entertainment_B)+"_"+std::to_string(itStatsEntMsg->first );
         recordScalar(text.c_str(),itStatsEntMsg->second->Compute_MeanRxPacketSize() );
-        text = "meanTxPacketSize_"+std::to_string(Entertainment_B)+"_"+std::to_string(itStatsEntMsg->first );
+        text = "meanTxPacketSize_SCH_"+std::to_string(Entertainment_B)+"_"+std::to_string(itStatsEntMsg->first );
         recordScalar(text.c_str(),itStatsEntMsg->second->Compute_MeanTxPacketSize() );
-        text = "meanRxThroughput_"+std::to_string(Entertainment_B)+"_"+std::to_string(itStatsEntMsg->first );
+        text = "meanRxThroughput_SCH_"+std::to_string(Entertainment_B)+"_"+std::to_string(itStatsEntMsg->first );
         recordScalar(text.c_str(),itStatsEntMsg->second->Compute_MeanRxThroughput() );
-        text = "meanTxThroughput_"+std::to_string(Entertainment_B)+"_"+std::to_string(itStatsEntMsg->first );
+        text = "meanTxThroughput_SCH_"+std::to_string(Entertainment_B)+"_"+std::to_string(itStatsEntMsg->first );
         recordScalar(text.c_str(),itStatsEntMsg->second->Compute_MeanTxThroughput() );
-        text = "rxTimeOfService_"+std::to_string(Entertainment_B)+"_"+std::to_string(itStatsEntMsg->first );
+        text = "rxTimeOfService_SCH_"+std::to_string(Entertainment_B)+"_"+std::to_string(itStatsEntMsg->first );
         recordScalar(text.c_str(),itStatsEntMsg->second->Compute_RxTimeOfService() );
-        text = "txTimeOfService_"+std::to_string(Entertainment_B)+"_"+std::to_string(itStatsEntMsg->first );
+        text = "txTimeOfService_SCH_"+std::to_string(Entertainment_B)+"_"+std::to_string(itStatsEntMsg->first );
         recordScalar(text.c_str(),itStatsEntMsg->second->Compute_TxTimeOfService() );
         itStatsEntMsg = netMetricsEntB.erase(itStatsEntMsg);
     }
