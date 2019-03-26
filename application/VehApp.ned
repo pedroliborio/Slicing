@@ -54,7 +54,10 @@ simple VehApp like IBaseApplLayer
         //Entertainment Message B
         int  entMsgBDataLengthBytes = default(1500 byte) @unit(byte); //This is not being used for now
         int  entMsgBUserPriority = default(4); //De acordo com a UP definida no padrão 802.11p para video
-        double entMsgBInterval = default(0.4s) @unit(s); //enviados a cada 0.4 seg 
+        double entMsgBInterval = default(0.4s) @unit(s); //enviados a cada 0.4 seg
+        
+        //InitializeService Selfmessage Interval
+        double initServiceInterval = default(1s) @unit(s); //verificado a cada 1seg 
         
         @class(VehApp);
 		@display("i=block/app2");
