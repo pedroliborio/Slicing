@@ -218,11 +218,13 @@ void RSUApp::populateWSM(WaveShortMessage* wsm, int rcvId, int serial) {
     else if (EntertainmentMessageA* entMsgA = dynamic_cast<EntertainmentMessageA*>(wsm)) {
         entMsgA->setChannelNumber(Channels::SCH1);
         entMsgA->setUserPriority(4);
+        entMsgA->setPsid(40);
         //the video frame size is setup in the call of this method
     }
     else if (EntertainmentMessageB* entMsgB = dynamic_cast<EntertainmentMessageB*>(wsm)) {
         entMsgB->setChannelNumber(Channels::SCH1);
         entMsgB->setUserPriority(4);
+        entMsgB->setPsid(41);
     }
     //XXX Changed By Me
     else{
